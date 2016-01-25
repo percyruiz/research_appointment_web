@@ -25,8 +25,8 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 	require($path);
    
     // If form submitted, insert values into the database.
-     if (isset($_POST['appointmentdate'])){
-
+	if (isset($_POST['appointmentdate'])){
+	 
 		$appointmentdate = $_POST['appointmentdate'];
         $appointmentstart = $_POST['appointmentstart'];
         $appointmentend = $_POST['appointmentend'];
@@ -55,32 +55,38 @@ include("auth.php"); //include auth.php file on all secure pages ?>
         $resultResearchId = mysql_query($queryResearchId) or die(mysql_error());
         $rows = mysql_num_rows($resultResearchId);
         
-        while ($row = mysql_fetch_array($resultResearchId)) 
-        {
-          $researchId = $row['research_id']; 
-          $facultyId = $row['faculty_id']; 
-        }	
+		if($rows == 0){
+			echo "No Research added.<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/insert_research.php'>Add Research.</a></div>";
+			echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/dashboard_student.php'>Back</a></div>";
+		}else{
+		
+			while ($row = mysql_fetch_array($resultResearchId)) 
+			{
+			  $researchId = $row['research_id']; 
+			  $facultyId = $row['faculty_id']; 
+			}	
 
-        $queryInsert = "INSERT into `appointments` (
-				research_id,
-                faculty_id,
-				appoint_date, 
-				appoint_time_fr, 
-				appoint_time_to, 
-				status
-				) VALUES (
-				'$researchId',
-                '$facultyId',
-				'$appointmentdate', 
-				'$appointmentstart', 
-				'$appointmentend', 
-				'pending')";
-        $resultInsert = mysql_query($queryInsert);
-        if($resultInsert){
-            header("Location: http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/view_appointment.php");
-        }else{
-        	echo mysql_error();
-        }
+			$queryInsert = "INSERT into `appointments` (
+					research_id,
+					faculty_id,
+					appoint_date, 
+					appoint_time_fr, 
+					appoint_time_to, 
+					status
+					) VALUES (
+					'$researchId',
+					'$facultyId',
+					'$appointmentdate', 
+					'$appointmentstart', 
+					'$appointmentend', 
+					'pending')";
+			$resultInsert = mysql_query($queryInsert);
+			if($resultInsert){
+				header("Location: http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/view_appointment.php");
+			}else{
+				echo mysql_error();
+			}
+		}
     }else{
 ?>
 
