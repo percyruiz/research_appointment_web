@@ -58,12 +58,19 @@ Website: https://htmlcssphptutorial.wordpress.com
 				echo "	 		<strong>END</strong>";
 				echo "	 	</td>";
 				echo "	 	<td align='center'>";	
+				echo "	 		<strong>DAY</strong>";
+				echo "	 	</td>";
+				echo "	 	<td align='center'>";	
 				echo "	 		<strong>ACTION</strong>";
 				echo "	 	</td>";
 				echo "	 </tr>";
 				while ($row = mysql_fetch_array($result)) {
 					
 					$research_id = $row['research_id'];
+
+					$sched_time_id = $row['sched_time_id'];
+                    $result_faculty_sched_time = mysql_query("SELECT * FROM `faculty_sched_time` WHERE id='$sched_time_id' LIMIT 1");
+                    $faculty_sched_time = mysql_fetch_assoc($result_faculty_sched_time);
 						
 					$result_r = mysql_query("SELECT * FROM `researches` WHERE research_id='$research_id' LIMIT 1");
 					$row_researches = mysql_fetch_assoc($result_r);
@@ -78,11 +85,15 @@ Website: https://htmlcssphptutorial.wordpress.com
 					echo "      </td>";
 
 					echo "      <td style='padding: 5px;'>";
-					echo 			$row['appoint_time_fr'];
+					echo 			$faculty_sched_time['start_time'];
 					echo "      </td>";
 
 					echo "      <td style='padding: 5px;'>";
-					echo 			$row['appoint_time_to'];
+					echo 			$faculty_sched_time['end_time'];
+					echo "      </td>";
+
+					echo "      <td style='padding: 5px;'>";
+					echo 			$faculty_sched_time['day'];
 					echo "      </td>";
 
 					echo "      <td align='center'>";
