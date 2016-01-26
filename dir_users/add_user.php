@@ -24,7 +24,6 @@ Website: https://htmlcssphptutorial.wordpress.com
     if (isset($_POST['username'])){
         $username = $_POST['username'];
         $password = $_POST['password'];
-        $usertype = $_POST['usertype'];
         $fname = $_POST['fname'];
         $mname = $_POST['mname'];
         $lname = $_POST['lname'];
@@ -38,8 +37,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 		$password = stripslashes($password);
 		$password = mysql_real_escape_string($password);
 		
-		$usertype = stripslashes($usertype);
-		$usertype = mysql_real_escape_string($usertype);
+		$usertype = "STUDENT";
 		
 		$fname = stripslashes($fname);
 		$fname = mysql_real_escape_string($fname);
@@ -90,11 +88,6 @@ Website: https://htmlcssphptutorial.wordpress.com
 <form name="registration" action="" method="post">
 <input type="text" name="username" placeholder="Username" required /><br/><br/>
 <input type="password" name="password" placeholder="Password" required /><br/><br/>
-
-<select name="usertype">
-  <option value="STUDENT">STUDENT</option>
-  <option value="FACULTY">FACULTY</option>
-</select><br/><br/>
 
 <input type="text" name="fname" placeholder="First Name" required /><br/><br/>
 <input type="text" name="mname" placeholder="Middle Name" required /><br/><br/>
