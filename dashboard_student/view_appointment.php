@@ -51,6 +51,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                 $student_no = $row['student_no'];  
             }
 
+<<<<<<< HEAD
         $queryResearchId = "SELECT * FROM `researches` WHERE student_no='$student_no'";
         $resultResearchId = mysql_query($queryResearchId) or die(mysql_error());
         $rows = mysql_num_rows($resultResearchId);
@@ -82,6 +83,86 @@ include("auth.php"); //include auth.php file on all secure pages ?>
             echo mysql_error();
         }
     }else{
+=======
+			$queryAppointment = "SELECT * FROM `appointments`WHERE research_id='$researchId'";
+			$resultAppointment = mysql_query($queryAppointment) or die(mysql_error());
+			$rows = mysql_num_rows($resultAppointment);
+			
+			if($rows==0){
+				echo "No Appoinment made.<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/insert_appointment.php'>Add Appointment.</a></div>";
+				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/dashboard_student.php'>Back</a></div>";
+			}else{
+			
+				echo "<table class='table' border='1' style='width:100%'>";
+				echo "   <tr>";
+				echo "      <td align='center'>";   
+				echo "          <strong>Date</strong>";
+				echo "      </td>";
+				echo "      <td align='center'>";   
+				echo "          <strong>Start Time</strong>";
+				echo "      </td>";
+				echo "      <td align='center'>";   
+				echo "          <strong>End Time</strong>";
+				echo "      </td>";
+				echo "      </td>";
+				echo "      <td align='center'>";   
+				echo "          <strong>Adviser</strong>";
+				echo "      </td>";
+				echo "      <td align='center'>";   
+				echo "          <strong>Status</strong>";
+				echo "      </td>";
+				echo "      <td align='center'>";   
+				echo "          <strong>Tardy</strong>";
+				echo "      </td>";
+				echo "      <td align='center'>";   
+				echo "          <strong>Appearance</strong>";
+				echo "      </td>";
+				echo "      <td align='center'>";   
+				echo "          <strong>Remarks</strong>";
+				echo "      </td>";
+				echo "   </tr>";
+				while ($row = mysql_fetch_array($resultAppointment)) 
+				{
+
+					echo "   <tr>";
+					echo "      <td align='center'>";   
+					echo            $row['appoint_date'];
+					echo "      </td>";
+					echo "      <td align='center'>";   
+					echo            $row['appoint_time_fr'];
+					echo "      </td>";
+					echo "      <td align='center'>";   
+					echo            $row['appoint_time_to'];
+					echo "      </td>";
+					echo "      <td align='center'>";   
+					echo            $facultyName;
+					echo "      </td>";
+					echo "      <td align='center'>";   
+					echo            $row['status'];
+					echo "      </td>";
+					echo "      <td align='center'>";   
+					echo            $row['tardy'];
+					echo "      </td>";
+					echo "      <td align='center'>";   
+					echo            $row['appearance'];
+					echo "      </td>";
+					echo "      <td align='center'>";   
+					echo            $row['remarks'];
+					echo "      </td>";
+					echo "   </tr>";
+				}
+
+				echo "<table>";
+
+				if($resultAppointment){
+					echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/dashboard_student.php'>Back</a></div>";
+				}else{
+					echo mysql_error();
+				}
+			}
+		}
+    // }else{
+>>>>>>> 85c584d6c5095507ffaadbf2ede4b21ed99cf56a
 ?>
 
 <div class="form container">
