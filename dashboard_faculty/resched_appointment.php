@@ -25,48 +25,94 @@ Website: https://htmlcssphptutorial.wordpress.com
 	<body>
 		<div class="container">
 			<p>
-				<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_faculty/dashboard_faculty.php';?>">Home</a> |    
+				<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_faculty/dashboard_faculty.php';?>">Back</a> |
 				<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a>
 			</p>
 		
 			<?php $user_id = $_SESSION['userid']; ?>
 			<?php 
-				if(isset($_POST['appointmentdate'])){ 
-					$appointment_id = $_POST['appointment_id'];
-
-					$queryNotAvail = "SELECT * FROM `appointments` WHERE appoint_date='$appointmentdate' and sched_time_id='$faculty_sched_time_id'";
-			        $resultNotAvail = mysql_query($queryNotAvail) or die(mysql_error());
-			        $rowsNotAvail = mysql_num_rows($resultNotAvail);
-
-			        if($day != $day_calendar){
-			            echo "Date selected is not ". $faculty_sched_time['day'];
-			        }else if($rowsNotAvail > 0){
-			            echo "Date and time schedule already registered";
-			        }else{
-						$query = "UPDATE `appointments` SET `status`='$status' WHERE appointment_id=$appointment_id";
-						$result = mysql_query($query) or die(mysql_error());
-			        }
+				if(isset($_POST['appointment_id'])){ 
+					$resched_appointment_id = $_POST['appointment_id'];
+					$faculty_sched_time_id = $_POST['faculty_sched_time_id'];
+					
+					$result_appointment = mysql_query("SELECT * FROM `appointments` WHERE appointment_id='$resched_appointment_id' and sched_time_id='$faculty_sched_time_id' LIMIT 1");
+					$row_appointment = mysql_fetch_assoc($result_appointment);
+					$faculty_id = $row_appointment['faculty_id'];
+					
+					$resched_date = $row_appointment['appoint_date'];
+					$resched_time = $row_appointment['sched_time_id'];
 				}
 			?>
 			<?php 
-				if(isset($_POST['resched'])){ 
-					$appointment_id = $_POST['appointment_id'];
-                    $result_appointment= mysql_query("SELECT * FROM `appointments` WHERE appointment_id='$appointment_id' LIMIT 1");
-                    $appointment= mysql_fetch_assoc($result_appointment);
-                    $faculty_id = $appointment['faculty_id'];
+				if(isset($_POST['resched_appointment_id'])){ 
+					$resched_appointment_id = $_POST['resched_appointment_id'];
+					$resched_time = $_POST['resched_time'];
+					$resched_date = $_POST['resched_date'];
+					$faculty_id = $_POST['faculty_id'];
+					
+					$result_faculty_sched_time = mysql_query("SELECT * FROM `faculty_sched_time` WHERE id='$resched_time' LIMIT 1");
+					$faculty_sched_time = mysql_fetch_assoc($result_faculty_sched_time);
+					$faculty_sched_time_id = $faculty_sched_time['id'];
+
+					$datePieces = explode("-", $resched_date);
+					$year = $datePieces[0];
+					$month =  $datePieces[1];
+					$day = $faculty_sched_time['day'];
+
+					$timestamp = strtotime($resched_date);
+					$day_calendar = date('D', $timestamp);
+
+					$queryNotAvail = "SELECT * FROM `appointments` WHERE appoint_date='$resched_date' and sched_time_id='$faculty_sched_time_id'
+										AND NOT appointment_id='$resched_appointment_id'";
+					$resultNotAvail = mysql_query($queryNotAvail) or die(mysql_error());
+					$rowsNotAvail = mysql_num_rows($resultNotAvail);
+
+					if($day != $day_calendar){
+						echo "Date selected is not ". $faculty_sched_time['day'];
+					}else if($rowsNotAvail > 0){
+						echo "Date and time schedule already registered";
+					}else{
+						$query = "UPDATE `appointments` SET `appoint_date`='$resched_date', `sched_time_id`='$faculty_sched_time_id' WHERE appointment_id=$resched_appointment_id";
+						$result = mysql_query($query) or die(mysql_error());
+						if($result){
+							echo "Update Succesful!";
+							
+							$querySelectAppointment = mysql_query("SELECT * FROM `appointments` WHERE appointment_id='$resched_appointment_id' LIMIT 1");
+							$resultSelectAppointment = mysql_fetch_assoc($querySelectAppointment);
+							$research_id = $resultSelectAppointment['research_id'];
+							
+							$querySelectFaculty = mysql_query("SELECT * FROM `users` WHERE user_id='$faculty_id' LIMIT 1");
+							$resultSelectFaculty = mysql_fetch_assoc($querySelectFaculty);
+							$sign = $resultSelectFaculty['lname'] . ", " . $resultSelectFaculty['fname'] . " " . $resultSelectFaculty['mname'];
+							
+							$insertConsultation = "INSERT into `consultations` (
+								date,
+								research_id,
+								status,
+								sign
+								) VALUES (
+								'$resched_date',
+								'$research_id',
+								'resched',
+								'$sign')";
+							$insertConsultation = mysql_query($insertConsultation);
+						}
+					}
 				}
 			?>
+			
 			<div class="form">
-                <h4>Add Appointment</h4>
-                <form name="registration" action="" method="post">
-                    <input value="<?php echo $appointment['appoint_date']?>" type="date" placeholder="YYYY-MM-DD" name="appointmentdate" data-date-split-input="true" required/> <br/><br/>
-					<input type='hidden' name='appointment_id' value='$appointment_id'/>
-                    <select name="time">
+                <h4>Reschedule Appointment</h4>
+                <form name="resched" action="" method="post">
+                    <input value="<?php echo $resched_date?>" type="date" placeholder="YYYY-MM-DD" name="resched_date" data-date-split-input="true" required/> <br/><br/>
+					<input type='hidden' name='resched_appointment_id' value='<?php echo "$resched_appointment_id"; ?>'/>
+					<input type='hidden' name='faculty_id' value='<?php echo "$faculty_id"; ?>'/>
+                    <select name="resched_time">
                         <?php
                             $query_sched_time = "SELECT * FROM `faculty_sched_time` WHERE user_id=$faculty_id";
                             $result_sched_time = mysql_query($query_sched_time) or die(mysql_error());
                             while ($row_sched_time = mysql_fetch_array($result_sched_time)) {
-                            	if($row_sched_time['id'] == $appointment['sched_time_id']){
+                            	if($row_sched_time['id'] == $resched_time){
                             		echo "<option selected value='". $row_sched_time['id'] ."'>". $row_sched_time['start_time'] . "-" . 
                             		$row_sched_time['end_time'] . " @ " . $row_sched_time['day'] ."</option>";
                             	}else{
@@ -76,7 +122,7 @@ Website: https://htmlcssphptutorial.wordpress.com
                             }
                         ?>
                     </select><br/><br/>
-                    <input type="submit" name="submit" value="Register" />
+                    <input type="submit" name="submit" value="Update" />
                 </form>
             </div>
 		</div>
