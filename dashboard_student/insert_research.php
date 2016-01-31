@@ -23,18 +23,37 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 	$path = $_SERVER['DOCUMENT_ROOT'];
 	$path .= "/db.php";
 	require($path);
-   
-    // If form submitted, insert values into the database.
-     if (isset($_POST['research'])){
+	
+	$userid = $_SESSION['userid'];
 
-		    $research = $_POST['research'];
+	$queryStudentNum = "SELECT * FROM `users` WHERE user_id='$userid'";
+	$resultStudentNum = mysql_query($queryStudentNum) or die(mysql_error());
+	$rows = mysql_num_rows($resultStudentNum);
+    	
+    while ($row = mysql_fetch_array($resultStudentNum)) 
+    {
+    	$student_no = $row['student_no'];  
+    }
+	
+	$querySelect = "SELECT * FROM `researches`WHERE student_no='$student_no'";
+	$result = mysql_query($querySelect) or die(mysql_error());
+	$rows = mysql_num_rows($result);
+	
+	if($rows > 0){
+		echo "There is already an existing Research.";
+		echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/view_research.php'>View Research</a></div>";
+		echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/dashboard_student.php'>Back</a></div>";
+	}
+    // If form submitted, insert values into the database.
+    else if (isset($_POST['research'])){
+
+		$research = $_POST['research'];
         $researchtype = $_POST['researchtype'];
         $schoolyear = $_POST['schoolyear'];
         $semester = $_POST['semester'];
         $facultyId = $_POST['adviser'];
-        echo $facultyId . "kingina";
 
-		    $research = stripslashes($research);
+		$research = stripslashes($research);
         $research = mysql_real_escape_string($research);
 
         $researchtype = stripslashes($researchtype);
@@ -96,15 +115,16 @@ include("auth.php"); //include auth.php file on all secure pages ?>
         $resultFaculty = mysql_query($queryFaculty) or die(mysql_error());
         $rows = mysql_num_rows($resultFaculty);
 
-        echo "<select name='adviser'>";
-        while ($row = mysql_fetch_array($resultFaculty)) 
-        {
-            $faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
-            $facultyId = $row['user_id'];
-            echo "<option value='$facultyId'>$faculty</option><br/>";
-        }
-        echo "</select><br/>";
-
+		if($rows > 0){
+			echo "<select name='adviser'>";
+			while ($row = mysql_fetch_array($resultFaculty)) 
+			{
+				$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
+				$facultyId = $row['user_id'];
+				echo "<option value='$facultyId'>$faculty</option><br/>";
+			}
+			echo "</select><br/>";
+		}
 
 ?>
 <input type="text" name="schoolyear" placeholder="School Year" required/> <br/><br/>

@@ -57,6 +57,8 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				
 				echo "<table>";
 				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/dashboard_student.php'>Back</a></div>";
+				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/insert_members.php'>Add another member</a></div>";
+				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/edit_delete_members.php'>Edit or Delete Member</a></div>";
 			}else{
 				echo mysql_error();
 			}

@@ -44,46 +44,54 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 
         $queryStudentNum = "SELECT * FROM `users` WHERE user_id='$userid'";
         $resultStudentNum = mysql_query($queryStudentNum) or die(mysql_error());
-            $rows = mysql_num_rows($resultStudentNum);
-            
-            while ($row = mysql_fetch_array($resultStudentNum)) 
-            {
-                $student_no = $row['student_no'];  
-            }
+        
+		$rows = mysql_num_rows($resultStudentNum);
 
-<<<<<<< HEAD
+		while ($row = mysql_fetch_array($resultStudentNum)) 
+		{
+			$student_no = $row['student_no'];
+		}
+		
+
         $queryResearchId = "SELECT * FROM `researches` WHERE student_no='$student_no'";
         $resultResearchId = mysql_query($queryResearchId) or die(mysql_error());
         $rows = mysql_num_rows($resultResearchId);
-        
-        while ($row = mysql_fetch_array($resultResearchId)) 
-        {
-          $researchId = $row['research_id']; 
-          $facultyId = $row['faculty_id']; 
-        }   
+		
+		if($rows == 0){
+			echo "No Research added.<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/insert_research.php'>Add Research.</a></div>";
+			echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/dashboard_student.php'>Back</a></div>";
 
-        $queryInsert = "INSERT into `appointments` (
-                research_id,
-                faculty_id,
-                appoint_date, 
-                appoint_time_fr, 
-                appoint_time_to, 
-                status
-                ) VALUES (
-                '$researchId',
-                '$facultyId',
-                '$appointmentdate', 
-                '$appointmentstart', 
-                '$appointmentend', 
-                'pending')";
-        $resultInsert = mysql_query($queryInsert);
-        if($resultInsert){
-            header("Location: http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/view_appointment.php");
-        }else{
-            echo mysql_error();
-        }
+		}else{
+        
+			while ($row = mysql_fetch_array($resultResearchId)) 
+			{
+			  $researchId = $row['research_id']; 
+			  $facultyId = $row['faculty_id']; 
+			}   
+
+			$queryInsert = "INSERT into `appointments` (
+					research_id,
+					faculty_id,
+					appoint_date, 
+					appoint_time_fr, 
+					appoint_time_to, 
+					status
+					) VALUES (
+					'$researchId',
+					'$facultyId',
+					'$appointmentdate', 
+					'$appointmentstart', 
+					'$appointmentend', 
+					'pending')";
+			$resultInsert = mysql_query($queryInsert);
+			if($resultInsert){
+				header("Location: http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/view_appointment.php");
+			}else{
+				echo mysql_error();
+			}
+		}
     }else{
-=======
+
 			$queryAppointment = "SELECT * FROM `appointments`WHERE research_id='$researchId'";
 			$resultAppointment = mysql_query($queryAppointment) or die(mysql_error());
 			$rows = mysql_num_rows($resultAppointment);
@@ -162,7 +170,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 			}
 		}
     // }else{
->>>>>>> 85c584d6c5095507ffaadbf2ede4b21ed99cf56a
+
 ?>
 
 <div class="form container">
@@ -175,6 +183,6 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 </form>
 <?php echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/dashboard_student.php'>Back</a></div>";?>
 </div>
-<?php } ?>
+<?php //} ?>
 </body>
 </html>
