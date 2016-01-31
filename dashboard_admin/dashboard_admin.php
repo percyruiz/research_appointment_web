@@ -59,32 +59,43 @@ include("auth.php");
 		$studentnum = stripslashes($studentnum);
 		$studentnum = mysql_real_escape_string($studentnum);
 		
-        $query = "INSERT into `users` (
-				username, 
-				password, 
-				user_type, 
-				fname, 
-				mname, 
-				lname, 
-				email, 
-				contact,
-				student_no
-				) VALUES (
-				'$username', 
-				'".md5($password)."', 
-				'$usertype', 
-				'$fname', 
-				'$mname', 
-				'$lname', 
-				'$email', 
-				'$contact',
-				'$studentnum')";
-        $result = mysql_query($query);
-        if($result){
-            echo "add success!";
-        }else{
-        	echo mysql_error();
-        }
+		$queryUsername = "SELECT * FROM `users` WHERE username='$username'";
+		$resultUsername = mysql_query($queryUsername);
+		
+		$rows = mysql_num_rows($resultUsername);
+
+		
+		if($rows > 0){
+			echo "Username is in use. Choose another Username";
+		}else{
+		
+			$query = "INSERT into `users` (
+					username, 
+					password, 
+					user_type, 
+					fname, 
+					mname, 
+					lname, 
+					email, 
+					contact,
+					student_no
+					) VALUES (
+					'$username', 
+					'".md5($password)."', 
+					'$usertype', 
+					'$fname', 
+					'$mname', 
+					'$lname', 
+					'$email', 
+					'$contact',
+					'$studentnum')";
+			$result = mysql_query($query);
+			if($result){
+				echo "add success!";
+			}else{
+				echo mysql_error();
+			}
+		}
     	}
 		?>
 			<p>
