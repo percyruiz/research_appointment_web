@@ -55,32 +55,44 @@ Website: https://htmlcssphptutorial.wordpress.com
 		$studentnum = stripslashes($studentnum);
 		$studentnum = mysql_real_escape_string($studentnum);
 		
-        $query = "INSERT into `users` (
-				username, 
-				password, 
-				user_type, 
-				fname, 
-				mname, 
-				lname, 
-				email, 
-				contact,
-				student_no
-				) VALUES (
-				'$username', 
-				'".md5($password)."', 
-				'$usertype', 
-				'$fname', 
-				'$mname', 
-				'$lname', 
-				'$email', 
-				'$contact',
-				'$studentnum')";
-        $result = mysql_query($query);
-        if($result){
-            echo "<div class='form'><h3>You are registered successfully.</h3><br/>Click here to <a href=http://". $_SERVER['SERVER_NAME'] ."/login.php>Login</a></div>";
-        }else{
-        	echo mysql_error();
-        }
+		$queryUsername = "SELECT * FROM `users` WHERE username='$username'";
+		$resultUsername = mysql_query($queryUsername);
+		
+		$rows = mysql_num_rows($resultUsername);
+
+		
+		if($rows > 0){
+			echo "<div class='form'><h5>Username is in use. Choose another Username</h5><br/></div>";
+			echo "<a href='/dir_users/add_user.php'><input type='button' name='regbutton' value='Click to Register again'></a>";
+		}else{
+		
+			$query = "INSERT into `users` (
+					username, 
+					password, 
+					user_type, 
+					fname, 
+					mname, 
+					lname, 
+					email, 
+					contact,
+					student_no
+					) VALUES (
+					'$username', 
+					'".md5($password)."', 
+					'$usertype', 
+					'$fname', 
+					'$mname', 
+					'$lname', 
+					'$email', 
+					'$contact',
+					'$studentnum')";
+			$result = mysql_query($query);
+			if($result){
+				echo "<div class='form'><h3>You are registered successfully.</h3><br/>Click here to <a href=http://". $_SERVER['SERVER_NAME'] ."/login.php>Login</a></div>";
+			}else{
+				echo mysql_error();
+			}
+		}
     }else{
 ?>
 <div class="form container">
