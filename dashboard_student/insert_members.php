@@ -24,27 +24,32 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 	$path .= "/db.php";
 	require($path);
    
+	$userid = $_SESSION['userid'];
+	$queryStudentNum = "SELECT * FROM `users` WHERE user_id='$userid'";
+    $resultStudentNum = mysql_query($queryStudentNum) or die(mysql_error());
+    $rows = mysql_num_rows($resultStudentNum);
+    		
+    while ($row = mysql_fetch_array($resultStudentNum)) 
+    {
+    	$student_no = $row['student_no'];  
+    }
+		
+    $querySelect = "SELECT * FROM `researches`WHERE student_no='$student_no'";
+    $result = mysql_query($querySelect) or die(mysql_error());
+    $rows = mysql_num_rows($result);
+		
+		if($rows == 0){
+			echo "<div class='form'><h3>No existing Research.</h3><br/>Click here to <a href=http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/insert_research.php>Add Research.</a></div>";
+			echo "<a href=http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/dashboard_student.php>BACK</a></div>";
+		}
+   
     // If form submitted, insert values into the database.
-     if (isset($_POST['name'])){
+    else if (isset($_POST['name'])){
 
 		$name = $_POST['name'];
 		
 		$name = stripslashes($name);
         $name = mysql_real_escape_string($name);
-
-        $userid = $_SESSION['userid'];
-		
-		$queryStudentNum = "SELECT * FROM `users` WHERE user_id='$userid'";
-       	$resultStudentNum = mysql_query($queryStudentNum) or die(mysql_error());
-		
-		
-		$queryResearch = "SELECT * FROM `researches` WHERE student_no='resultStudentNum'";
-		$resultResearch = mysql_query($queryResearch) or die(mysql_error());
-		$rows = mysql_num_rows($resultResearch);
-		if($rows == 0){
-			echo "<div class='form'><h3>No existing Research.</h3><br/>Click here to <a href=http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/insert_research.php>Add Research.</a></div>";
-			echo "<a href=http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/dashboard_student.php>BACK</a></div>";
-		}else{
 		
 			$queryInsert = "INSERT into `members` (
 					user_id, 
@@ -59,7 +64,6 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 			}else{
 				echo mysql_error();
 			}
-		}
     }else{
 ?>
 

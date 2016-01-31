@@ -62,7 +62,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
             echo "          <strong>Sem Type</strong>";
             echo "      </td>";
             echo "      <td align='center'>";   
-            echo "          <strong>Faculty ID</strong>";
+            echo "          <strong>Adviser</strong>";
             echo "      </td>";
             echo "      <td align='center'>";   
             echo "          <strong>Student No </strong>";
@@ -86,8 +86,24 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                 echo "      <td align='center'>";   
                 echo            $row['sem_type'];
                 echo "      </td>";
-                echo "      <td align='center'>";   
-                echo            $row['faculty_id'];
+                echo "      <td align='center'>";
+				
+				$facultyId = $row['faculty_id'];
+				
+				$queryFaculty = "SELECT * FROM `users` WHERE user_id='$facultyId'";
+				$resultFaculty = mysql_query($queryFaculty) or die(mysql_error());
+				$rows = mysql_num_rows($resultFaculty);
+
+				if($rows > 0){
+					while ($rowFac = mysql_fetch_array($resultFaculty)) 
+					{
+						$faculty = $rowFac['fname']." ".$rowFac['mname']." ".$rowFac['lname'];
+					}
+				}else{
+					echo "Adviser Unavailable";
+				}
+				
+                echo            $faculty;
                 echo "      </td>";
                 echo "      <td align='center'>";   
                 echo            $row['student_no'];
@@ -96,6 +112,12 @@ include("auth.php"); //include auth.php file on all secure pages ?>
             }
             
             echo "<table>";
+			if($rows == 0){
+				echo "<br/>No Research Researh.<a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/insert_research.php'><br/>Add Research.</a></div>";
+			}else{
+				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/update_research.php'>Edit Research</a></div>";
+				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/delete_research.php'>Delete Research</a></div>";
+			}
             echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/dashboard_student.php'>Back</a></div>";
         }else{
         	echo mysql_error();
