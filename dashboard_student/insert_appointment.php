@@ -46,7 +46,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
         $timestamp = strtotime($appointmentdate);
         $day_calendar = date('D', $timestamp);
 
-        $queryNotAvail = "SELECT * FROM `appointments` WHERE appoint_date='$appointmentdate' and sched_time_id='$faculty_sched_time_id'";
+        $queryNotAvail = "SELECT * FROM `appointments` WHERE appoint_date='$appointmentdate' AND sched_time_id='$faculty_sched_time_id'";
         $resultNotAvail = mysql_query($queryNotAvail) or die(mysql_error());
         $rowsNotAvail = mysql_num_rows($resultNotAvail);
 
@@ -92,6 +92,15 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                     '$faculty_sched_time_id')";
             $resultInsert = mysql_query($queryInsert);
             if($resultInsert){
+				$insertConsultation = "INSERT into `consultations` (
+								date,
+								research_id,
+								status
+								) VALUES (
+								'$appointmentdate',
+								'$researchId',
+								'pending/requested')";
+				$insertConsultation = mysql_query($insertConsultation);
                 echo 'add success';
             }else{
                 echo mysql_error();

@@ -44,6 +44,10 @@ Website: https://htmlcssphptutorial.wordpress.com
 							
 					$result = mysql_query("SELECT * FROM `researches` WHERE research_id='$research_id' LIMIT 1");
 					$row = mysql_fetch_assoc($result);
+					$student_no = $row['student_no'];
+					
+					$result_student = mysql_query("SELECT * FROM `users` WHERE student_no='$student_no' LIMIT 1");
+					$row_student = mysql_fetch_assoc($result_student);
 
 					echo "<table class='table' border='1' style='width:50%'>";
 						echo "   <tr>";
@@ -69,7 +73,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 						echo 			"<strong>Group Leader</strong>";
 						echo "      </td>";
 						echo "      <td style='padding: 5px;' align='center'>";
-						echo 			$row['student_no'];
+						echo 			"stud no: [" . $row['student_no'] . "] ". $row_student['lname']. ", ". $row_student['fname'] . " " . $row_student['mname']; 
 						echo "      </td>";
 						echo "   </tr>";						
 
