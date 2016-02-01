@@ -110,7 +110,7 @@ include("auth.php");
 							$timeEnd = $row['end_time'];
 							$queryTimeEnd = "SELECT TIME_FORMAT('$timeEnd', '%h:%i:%s %p')";
 							$resultTimeEnd = mysql_query($queryTimeEnd) or die(mysql_error());
-							$row = mysql_fetch_row($resultTimeEnd);
+							$rowTime = mysql_fetch_row($resultTimeEnd);
 							echo $rowTime[0];
 							echo "      </td>";
 
