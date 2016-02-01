@@ -63,13 +63,13 @@ include("auth.php");
 							<input type="time" name="time_start" placeholder="Start Time" required/> <br/><br/>
 							<input type="time" name="time_end" placeholder="End Time" required/> <br/><br/>
 							<select name="day">
-							  <option value="Mon">Monday</option>
-							  <option value="Tue">Tuesday</option>
-							  <option value="Wed">Wednesday</option>
-							  <option value="Thu">Thursday</option>
-							  <option value="Fri">Friday</option>
-							  <option value="Sat">Saturday</option>
-							  <option value="Sun">Sunday</option>
+							  <option value="Monday">Monday</option>
+							  <option value="Tuesday">Tuesday</option>
+							  <option value="Wednesday">Wednesday</option>
+							  <option value="Thursday">Thursday</option>
+							  <option value="Friday">Friday</option>
+							  <option value="Saturday">Saturday</option>
+							  <option value="Sunday">Sunday</option>
 							</select><br/><br/>
 							<input type="submit" name="submit" value="Add" /><br/><br/>
 						</form>
@@ -99,11 +99,19 @@ include("auth.php");
 							echo "      </td>";
 
 							echo "      <td style='padding: 5px;'>";
-							echo 			$row['start_time'];
+							$timeStart = $row['start_time'];
+							$queryTimeStart = "SELECT TIME_FORMAT('$timeStart', '%h:%i:%s %p')";
+							$resultTimeStart = mysql_query($queryTimeStart) or die(mysql_error());
+							$rowTime = mysql_fetch_row($resultTimeStart);
+							echo $rowTime[0];
 							echo "      </td>";
 
 							echo "      <td style='padding: 5px;'>";
-							echo 			$row['end_time'];
+							$timeEnd = $row['end_time'];
+							$queryTimeEnd = "SELECT TIME_FORMAT('$timeEnd', '%h:%i:%s %p')";
+							$resultTimeEnd = mysql_query($queryTimeEnd) or die(mysql_error());
+							$row = mysql_fetch_row($resultTimeEnd);
+							echo $rowTime[0];
 							echo "      </td>";
 
 							echo "   </tr>";
