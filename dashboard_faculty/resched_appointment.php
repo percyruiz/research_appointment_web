@@ -41,6 +41,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 					
 					$resched_date = $row_appointment['appoint_date'];
 					$resched_time = $row_appointment['sched_time_id'];
+					$resched_remark = $row_appointment['remarks'];
 				}
 			?>
 			<?php 
@@ -49,6 +50,8 @@ Website: https://htmlcssphptutorial.wordpress.com
 					$resched_time = $_POST['resched_time'];
 					$resched_date = $_POST['resched_date'];
 					$faculty_id = $_POST['faculty_id'];
+					$resched_remark = $_POST['remarks'];
+					$resched_remark = "RESCHEDULED - " . $resched_remark;
 					
 					$result_faculty_sched_time = mysql_query("SELECT * FROM `faculty_sched_time` WHERE id='$resched_time' LIMIT 1");
 					$faculty_sched_time = mysql_fetch_assoc($result_faculty_sched_time);
@@ -72,7 +75,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 					}else if($rowsNotAvail > 0){
 						echo "Date and time schedule already registered";
 					}else{
-						$query = "UPDATE `appointments` SET `appoint_date`='$resched_date', `sched_time_id`='$faculty_sched_time_id' WHERE appointment_id=$resched_appointment_id";
+						$query = "UPDATE `appointments` SET `appoint_date`='$resched_date', `sched_time_id`='$faculty_sched_time_id', `remarks`='$resched_remark' WHERE appointment_id=$resched_appointment_id";
 						$result = mysql_query($query) or die(mysql_error());
 						if($result){
 							echo "Update Succesful!";
@@ -89,12 +92,14 @@ Website: https://htmlcssphptutorial.wordpress.com
 								date,
 								research_id,
 								status,
-								sign
+								sign,
+								remarks
 								) VALUES (
 								'$resched_date',
 								'$research_id',
 								'resched',
-								'$sign')";
+								'$sign',
+								'$resched_remark')";
 							$insertConsultation = mysql_query($insertConsultation);
 						}
 					}
@@ -122,6 +127,8 @@ Website: https://htmlcssphptutorial.wordpress.com
                             }
                         ?>
                     </select><br/><br/>
+					<textarea name='remarks' rows="4" cols="30"><?php echo substr($resched_remark, 14, strlen($resched_remark)-1);?></textarea>
+					<br/><br/>
                     <input type="submit" name="submit" value="Update" />
                 </form>
             </div>
