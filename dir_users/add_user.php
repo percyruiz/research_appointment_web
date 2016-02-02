@@ -59,57 +59,46 @@ Website: https://htmlcssphptutorial.wordpress.com
 		$resultUsername = mysql_query($queryUsername);
 		
 		$rows = mysql_num_rows($resultUsername);
-
 		
-		if($rows > 0){
-			echo "<div class='form'><h5>Username is in use. Choose another Username</h5><br/></div>";
-			echo "<a href='/dir_users/add_user.php'><input type='button' name='regbutton' value='Click to Register again'></a>";
-		}else{
-		
-			$query = "INSERT into `users` (
-					username, 
-					password, 
-					user_type, 
-					fname, 
-					mname, 
-					lname, 
-					email, 
-					contact,
-					student_no
-					) VALUES (
-					'$username', 
-					'".md5($password)."', 
-					'$usertype', 
-					'$fname', 
-					'$mname', 
-					'$lname', 
-					'$email', 
-					'$contact',
-					'$studentnum')";
-			$result = mysql_query($query);
-			if($result){
-				echo "<div class='form'><h3>You are registered successfully.</h3><br/>Click here to <a href=http://". $_SERVER['SERVER_NAME'] ."/login.php>Login</a></div>";
-			}else{
-				echo mysql_error();
+		$query = "UPDATE `users` SET
+				username='$username', 
+				password='".md5($password)."', 
+				user_type='$usertype', 
+				fname='$fname', 
+				mname='$mname', 
+				lname='$lname', 
+				email='$email', 
+				contact='$contact',
+				student_no='$studentnum'
+				WHERE research_code='$username'";
+		$result = mysql_query($query);
+		if($result){
+			$queryResearches = "UPDATE `researches` SET
+					student_no='$studentnum'
+					WHERE research_code='$username'";
+			$resultResearches = mysql_query($queryResearches);
+			if($resultResearches){
+				echo "You are registered successfully. Click here to <a href=http://". $_SERVER['SERVER_NAME'] ."/login.php>Login</a></div>";
 			}
+		}else{
+			echo mysql_error();
 		}
-    }else{
-?>
-<div class="form container">
-<h3>Registration</h3>
-<form name="registration" action="" method="post">
-<input type="text" name="username" placeholder="Username" required /><br/><br/>
-<input type="password" name="password" placeholder="Password" required /><br/><br/>
+	}
+	?>
+	<div class="form container">
+	<h3>Registration</h3>
+		<form name="registration" action="" method="post">
+			<input type="text" name="username" placeholder="Username" required /><br/><br/>
+			<input type="password" name="password" placeholder="Password" required /><br/><br/>
 
-<input type="text" name="fname" placeholder="First Name" required /><br/><br/>
-<input type="text" name="mname" placeholder="Middle Name" required /><br/><br/>
-<input type="text" name="lname" placeholder="Last Name" required /><br/><br/>
-<input type="number" name="studentnum" placeholder="Student Number" min="0" max="99999999999" required /><br/><br/>
-<input type="email" name="email" placeholder="Email" required /><br/><br/>
-<input type="text" name="contact" placeholder="Contact Number" required /><br/><br/>
-<input type="submit" name="submit" value="Register" /><br/><br/>
-</form>
-</div>
-<?php } ?>
+			<input type="text" name="fname" placeholder="First Name" required /><br/><br/>
+			<input type="text" name="mname" placeholder="Middle Name" required /><br/><br/>
+			<input type="text" name="lname" placeholder="Last Name" required /><br/><br/>
+			<input type="number" name="studentnum" placeholder="Student Number" min="0" max="99999999999" required /><br/><br/>
+			<input type="email" name="email" placeholder="Email" required /><br/><br/>
+			<input type="text" name="contact" placeholder="Contact Number" required /><br/><br/>
+			<input type="submit" name="submit" value="Register" /><br/><br/>
+		</form>
+	</div>
 </body>
 </html>
