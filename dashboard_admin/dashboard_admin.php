@@ -26,22 +26,18 @@ include("auth.php");
     if (isset($_POST['username'])){
         $username = $_POST['username'];
         $password = $_POST['password'];
-        $usertype = $_POST['usertype'];
         $fname = $_POST['fname'];
         $mname = $_POST['mname'];
         $lname = $_POST['lname'];
 		$email = $_POST['email'];
 		$contact = $_POST['contact'];
-		$studentnum = $_POST['studentnum'];
+		$user_type = "FACULTY";
 		
 		$username = stripslashes($username);
 		$username = mysql_real_escape_string($username);
 
 		$password = stripslashes($password);
 		$password = mysql_real_escape_string($password);
-		
-		$usertype = stripslashes($usertype);
-		$usertype = mysql_real_escape_string($usertype);
 		
 		$fname = stripslashes($fname);
 		$fname = mysql_real_escape_string($fname);
@@ -55,9 +51,6 @@ include("auth.php");
 		
 		$contact = stripslashes($contact);
 		$contact = mysql_real_escape_string($contact);
-
-		$studentnum = stripslashes($studentnum);
-		$studentnum = mysql_real_escape_string($studentnum);
 		
 		$queryUsername = "SELECT * FROM `users` WHERE username='$username'";
 		$resultUsername = mysql_query($queryUsername);
@@ -77,18 +70,16 @@ include("auth.php");
 					mname, 
 					lname, 
 					email, 
-					contact,
-					student_no
+					contact
 					) VALUES (
 					'$username', 
 					'".md5($password)."', 
-					'$usertype', 
+					'$user_type', 
 					'$fname', 
 					'$mname', 
 					'$lname', 
 					'$email', 
-					'$contact',
-					'$studentnum')";
+					'$contact')";
 			$result = mysql_query($query);
 			if($result){
 				echo "add success!";
@@ -100,29 +91,24 @@ include("auth.php");
 		?>
 			<p>
 				<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/index.php';?>">Home</a> |	 
-				<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/consultation_history.php';?>">Consultation History</a> |	 
+				<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/consultation_history.php';?>">Consultation History</a> |
+				<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/dashboard_admin.php';?>">Manage Faculty</a> |	 
+				<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/insert_research.php';?>">Add Research</a> |
 				<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a>
 			</p>
-
-			<h4>Manage Users </h4>
+			<h4>Manage Faculty </h4>
 
 			<div class="row">
 				<div class="col-md-3">
 					<div class="form container">
-					<h5>add user</h5>
+					<h5>add faculty</h5>
 						<form name="registration" action="" method="post">
 							<input type="text" name="username" placeholder="Username" required /><br/><br/>
 							<input type="password" name="password" placeholder="Password" required /><br/><br/>
 
-							<select name="usertype">
-							  <option value="STUDENT">STUDENT</option>
-							  <option value="FACULTY">FACULTY</option>
-							</select><br/><br/>
-
 							<input type="text" name="fname" placeholder="First Name" required /><br/><br/>
 							<input type="text" name="mname" placeholder="Middle Name" required /><br/><br/>
 							<input type="text" name="lname" placeholder="Last Name" required /><br/><br/>
-							<input type="number" name="studentnum" placeholder="Student Number" min="0" max="99999999999" /><br/><br/>
 							<input type="email" name="email" placeholder="Email" required /><br/><br/>
 							<input type="text" name="contact" placeholder="Contact Number" required /><br/><br/>
 							<input type="submit" name="submit" value="Register" /><br/><br/>
@@ -130,9 +116,9 @@ include("auth.php");
 					</div>
 					</div>
 					<div class="col-md-9">
-					<h5>user list</h5>
+					<h5>faculty list</h5>
 					<?php
-						$query = "SELECT * FROM `users`";
+						$query = "SELECT * FROM `users` WHERE `user_type`='FACULTY'";
 						$result = mysql_query($query) or die(mysql_error());
 						echo "<table class='table' border='1' style='width:100%'>";
 						echo "	 <tr>";
