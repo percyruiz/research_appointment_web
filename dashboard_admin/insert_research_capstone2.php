@@ -27,7 +27,9 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 			$userid = $_SESSION['userid'];
 			$researchcodeT1 = $_POST['researchcodeT1'];
 			$researchtitleT1 = $_POST['researchtitleT1'];
-
+			$student_num = $_POST['student_no'];
+			$research_id1 = $_POST['research_id1'];
+			
 			if (isset($_POST['researchTitle2'])){
 
 				$researchTitle2 = $_POST['researchTitle2'];
@@ -36,6 +38,9 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				$semester = $_POST['semester'];
 				$facultyId = $_POST['adviser'];
 				$researchCode = $_POST['research_code'];
+				
+				$student_num = $_POST['student_no'];
+				$research_id1 = $_POST['research_id1'];
 
 				$researchTitle2 = stripslashes($researchTitle2);
 				$researchTitle2 = mysql_real_escape_string($researchTitle2);
@@ -66,43 +71,27 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 						school_year, 
 						sem_type,
 						faculty_id, 
-						research_code
+						research_code,
+						student_no,
+						on_going
 						) VALUES (
 						'$researchTitle2', 
 						'$researchtype', 
 						'$schoolyear', 
 						'$semester', 
 						'$facultyId',
-						'$researchCode')";
+						'$researchCode',
+						'$student_num',
+						'1')";
 				$resultInsert = mysql_query($queryInsert);
 				$research_id = mysql_insert_id();
+				
+				$queryUpdateResearch1 = "UPDATE `researches` SET `on_going`= 0 WHERE research_id=$research_id1";
+				echo mysql_error();
+				$resultUpdateResearch1 = mysql_query($queryUpdateResearch1);
+				
 				if($resultInsert){
-					$queryInsertStudent = "INSERT into `users` (
-						user_type, 
-						research_code,
-						username,
-						research_id,
-						faculty_id
-						) VALUES (
-						'STUDENT', 
-						'$researchCode',
-						'$researchCode',
-						'$research_id',
-						'$facultyId')";
-					$resultInsertStudent = mysql_query($queryInsertStudent);
-					echo mysql_error();
 					echo "Add Success";
-					/*
-					?>
-					<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/index.php';?>">Home</a> 
-					<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/insert_research.php';?>">Go to Researches</a>
-					<?php
-					*/
-					//echo '<script language="javascript">';
-					//echo 'alert("Add Success")';
-					
-					//echo "window.location = 'http://". $_SERVER['SERVER_NAME'] ."/dashboard_admin/insert_research.php'";
-					//echo '</script>';
 					header("Location: http://". $_SERVER['SERVER_NAME'] ."/dashboard_admin/insert_research.php");
 				}else{
 					echo mysql_error();
@@ -120,9 +109,11 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 		</p>
 		<div class="row">
 			<div class="col-md-3">
-				<h4>Add Research</h4>
+				<h4>Add Research 2</h4>
 				<form name="registration" action="" method="post">
 				<?php
+					echo "<input type='hidden' name='student_no' value='" .$student_num. "' readonly /> ";
+					echo "<input type='hidden' name='research_id1' value='" .$research_id1. "' readonly /> ";
 					echo "<input type='text' name='research_code' value='" .$researchcodeT1. "' readonly /> <br/><br/>";
 					echo "<input type='text' name='researchTitle2' value='" .$researchtitleT1. "' readonly /> <br/><br/>";
 					
@@ -155,7 +146,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					  <option value="secondsem">2nd Sem</option>
 					  <option value="summer">Summer</option>
 					</select> <br/><br/>
-					<input type="submit" name="submit" value="Register" />
+					<input type="submit" name="submit" value="Register Research 2" />
 				</form>
 			</div>
 			<div class="col-md-9">

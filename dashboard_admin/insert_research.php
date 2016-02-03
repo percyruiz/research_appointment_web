@@ -67,14 +67,16 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 						school_year, 
 						sem_type,
 						faculty_id, 
-						research_code
+						research_code,
+						on_going
 						) VALUES (
 						'$research', 
 						'$researchtype', 
 						'$schoolyear', 
 						'$semester', 
 						'$facultyId',
-						'$researchCode')";
+						'$researchCode',
+						'1')";
 				$resultInsert = mysql_query($queryInsert);
 				$research_id = mysql_insert_id();
 				if($resultInsert){
@@ -181,6 +183,9 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "	 		<strong>student no</strong>";
 					echo "	 	</td>";
 					echo "	 	<td align='center'>";	
+					echo "	 		<strong>on going</strong>";
+					echo "	 	</td>";
+					echo "	 	<td align='center'>";	
 					echo "	 		<strong>action</strong>";
 					echo "	 	</td>";
 					echo "	 </tr>";
@@ -221,17 +226,27 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 						echo "      <td style='padding: 5px;'>";
 						echo 			$row['student_no'];
 						echo "      </td>";
+						
 						echo "      <td style='padding: 5px;'>";
-						if($row['percentage']==100){
+						if($row['on_going']==1){
+							echo 	"YES";
+						}else{
+							echo 	"NO";
+						}
+						echo "      </td>";
+						
+						echo "      <td style='padding: 5px;'>";
+						if($row['percentage']==100 && $row['on_going']==1 && $row['research_type']!="Thesis 2"){
 							echo "		<div class='col-md-6'>";
 							echo "		<form action='insert_research_capstone2.php'  method='post' name='researchForm'>";
+							echo "			<input type='hidden' name='research_id1' value='" .$row['research_id']. "'/>";
 							echo "			<input type='hidden' name='researchcodeT1' value='" .$row['research_code']. "'/>";
 							echo "			<input type='hidden' name='researchtitleT1' value='" .$row['research_title']. "'/>";
+							echo "			<input type='hidden' name='student_no' value='" .$row['student_no']. "'/>";
 							echo "			<input style='color:#0000FF' type='submit' name='register' value='Register as Thesis 2'/>";
 							echo "		</form>";
 							echo "		</div>";
 						}
-						//echo 			"<a href='http://" . $_SERVER['SERVER_NAME'] ."/dashboard_admin/insert_research_capstone2.php'>link here bitch</a>";
 						echo "      </td>";
 
 						echo "   </tr>";

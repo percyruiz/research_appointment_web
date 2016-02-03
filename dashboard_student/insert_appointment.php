@@ -68,7 +68,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				$student_no = $row['student_no'];  
 			}
 
-            $queryResearchId = "SELECT * FROM `researches` WHERE student_no='$student_no'";
+            $queryResearchId = "SELECT * FROM `researches` WHERE student_no='$student_no' AND on_going=1";
             $resultResearchId = mysql_query($queryResearchId) or die(mysql_error());
             $rows = mysql_num_rows($resultResearchId);
             
@@ -117,7 +117,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
         $student_no = $row['student_no'];
     }
 
-    $queryResearchId = "SELECT * FROM `researches` WHERE student_no='$student_no'";
+    $queryResearchId = "SELECT * FROM `researches` WHERE student_no='$student_no' AND on_going=1";
     $resultResearchId = mysql_query($queryResearchId) or die(mysql_error());
     $rows = mysql_num_rows($resultResearchId);
 	

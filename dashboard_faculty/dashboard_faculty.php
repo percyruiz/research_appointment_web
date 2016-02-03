@@ -97,7 +97,6 @@ Website: https://htmlcssphptutorial.wordpress.com
 						$sched_time_id = $row['sched_time_id'];
 						$result_faculty_sched_time = mysql_query("SELECT * FROM `faculty_sched_time` WHERE id='$sched_time_id' LIMIT 1");
 						$faculty_sched_time = mysql_fetch_assoc($result_faculty_sched_time);
-							
 						$result_r = mysql_query("SELECT * FROM `researches` WHERE research_id='$research_id' LIMIT 1");
 						$row_researches = mysql_fetch_assoc($result_r);
 						$appointment_id = $row['appointment_id'];

@@ -23,7 +23,6 @@ include("auth.php"); //include auth.php file on all secure pages
 <body>
 	<div class="form">
 		<p>Welcome to Student Dashboard.</p>
-		<p><a href="insert_research.php">Register Research</a></p>
 		<p><a href="view_research.php">View Research</a></p>
 		<p><a href="insert_appointment.php">Manage Appointment</a><p>
 		<p><a href="insert_members.php">Insert Members</a><p>
