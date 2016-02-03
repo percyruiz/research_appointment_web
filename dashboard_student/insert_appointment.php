@@ -44,7 +44,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
         $day = $faculty_sched_time['day'];
 
         $timestamp = strtotime($appointmentdate);
-        $day_calendar = date('D', $timestamp);
+        $day_calendar = date('l', $timestamp);
 
         $queryNotAvail = "SELECT * FROM `appointments` WHERE appoint_date='$appointmentdate' AND sched_time_id='$faculty_sched_time_id'";
         $resultNotAvail = mysql_query($queryNotAvail) or die(mysql_error());
