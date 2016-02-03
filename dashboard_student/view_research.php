@@ -112,12 +112,14 @@ include("auth.php"); //include auth.php file on all secure pages ?>
             }
             
             echo "<table>";
+			/*
 			if($rows == 0){
 				echo "<br/>No Research Researh.<a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/insert_research.php'><br/>Add Research.</a></div>";
 			}else{
 				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/update_research.php'>Edit Research</a></div>";
 				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/delete_research.php'>Delete Research</a></div>";
 			}
+			*/
             echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/dashboard_student.php'>Back</a></div>";
         }else{
         	echo mysql_error();

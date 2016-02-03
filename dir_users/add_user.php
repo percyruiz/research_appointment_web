@@ -88,7 +88,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 	<div class="form container">
 	<h3>Registration</h3>
 		<form name="registration" action="" method="post">
-			<input type="text" name="username" placeholder="Username" required /><br/><br/>
+			<input type="text" name="username" placeholder="Username/Research Code" required /><br/><br/>
 			<input type="password" name="password" placeholder="Password" required /><br/><br/>
 
 			<input type="text" name="fname" placeholder="First Name" required /><br/><br/>

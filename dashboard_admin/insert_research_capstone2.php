@@ -25,22 +25,21 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 			require($path);
 			
 			$userid = $_SESSION['userid'];
+			$researchcodeT1 = $_POST['researchcodeT1'];
+			$researchtitleT1 = $_POST['researchtitleT1'];
 
-			if (isset($_POST['research'])){
+			if (isset($_POST['researchTitle2'])){
 
-				$research = $_POST['research'];
-				$researchtype = "Thesis 1";
+				$researchTitle2 = $_POST['researchTitle2'];
+				$researchtype = "Thesis 2";
 				$schoolyear = $_POST['schoolyear'];
 				$semester = $_POST['semester'];
 				$facultyId = $_POST['adviser'];
 				$researchCode = $_POST['research_code'];
 
-				$research = stripslashes($research);
-				$research = mysql_real_escape_string($research);
-
-				$researchtype = stripslashes($researchtype);
-				$researchtype = mysql_real_escape_string($researchtype);
-
+				$researchTitle2 = stripslashes($researchTitle2);
+				$researchTitle2 = mysql_real_escape_string($researchTitle2);
+				
 				$schoolyear = stripslashes($schoolyear);
 				$schoolyear = mysql_real_escape_string($schoolyear);
 
@@ -69,7 +68,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 						faculty_id, 
 						research_code
 						) VALUES (
-						'$research', 
+						'$researchTitle2', 
 						'$researchtype', 
 						'$schoolyear', 
 						'$semester', 
@@ -92,7 +91,19 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 						'$facultyId')";
 					$resultInsertStudent = mysql_query($queryInsertStudent);
 					echo mysql_error();
-					echo "add successful!";
+					echo "Add Success";
+					/*
+					?>
+					<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/index.php';?>">Home</a> 
+					<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/insert_research.php';?>">Go to Researches</a>
+					<?php
+					*/
+					//echo '<script language="javascript">';
+					//echo 'alert("Add Success")';
+					
+					//echo "window.location = 'http://". $_SERVER['SERVER_NAME'] ."/dashboard_admin/insert_research.php'";
+					//echo '</script>';
+					header("Location: http://". $_SERVER['SERVER_NAME'] ."/dashboard_admin/insert_research.php");
 				}else{
 					echo mysql_error();
 				}
@@ -111,9 +122,10 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 			<div class="col-md-3">
 				<h4>Add Research</h4>
 				<form name="registration" action="" method="post">
-					<input type="text" name="research_code" placeholder="Research Code" required /> <br/><br/>
-					<input type="text" name="research" placeholder="Research Title" required /> <br/><br/>
-					<?php
+				<?php
+					echo "<input type='text' name='research_code' value='" .$researchcodeT1. "' readonly /> <br/><br/>";
+					echo "<input type='text' name='researchTitle2' value='" .$researchtitleT1. "' readonly /> <br/><br/>";
+					
 							$queryFaculty = "SELECT * FROM `users` WHERE user_type='FACULTY'";
 							$resultFaculty = mysql_query($queryFaculty) or die(mysql_error());
 							$rows = mysql_num_rows($resultFaculty);
@@ -221,17 +233,8 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 						echo "      <td style='padding: 5px;'>";
 						echo 			$row['student_no'];
 						echo "      </td>";
+						
 						echo "      <td style='padding: 5px;'>";
-						if($row['percentage']==100){
-							echo "		<div class='col-md-6'>";
-							echo "		<form action='insert_research_capstone2.php'  method='post' name='researchForm'>";
-							echo "			<input type='hidden' name='researchcodeT1' value='" .$row['research_code']. "'/>";
-							echo "			<input type='hidden' name='researchtitleT1' value='" .$row['research_title']. "'/>";
-							echo "			<input style='color:#0000FF' type='submit' name='register' value='Register as Thesis 2'/>";
-							echo "		</form>";
-							echo "		</div>";
-						}
-						//echo 			"<a href='http://" . $_SERVER['SERVER_NAME'] ."/dashboard_admin/insert_research_capstone2.php'>link here bitch</a>";
 						echo "      </td>";
 
 						echo "   </tr>";
