@@ -81,7 +81,10 @@ include("auth.php");
 					'$email', 
 					'$contact')";
 			$result = mysql_query($query);
+			$user_id = mysql_insert_id();
 			if($result){
+				$queryUpdate = "UPDATE `users` set `faculty_id`=$user_id where `user_id`=$user_id";
+				mysql_query($queryUpdate);
 				echo "add success!";
 			}else{
 				echo mysql_error();
@@ -126,9 +129,6 @@ include("auth.php");
 						echo "	 		<strong>user id</strong>";
 						echo "	 	</td>";
 						echo "	 	<td align='center'>";	
-						echo "	 		<strong>student no</strong>";
-						echo "	 	</td>";
-						echo "	 	<td align='center'>";	
 						echo "	 		<strong>user name</strong>";
 						echo "	 	</td>";
 						echo "	 	<td align='center'>";	
@@ -157,10 +157,6 @@ include("auth.php");
 							echo "      </td>";
 
 							echo "      <td style='padding: 5px;'>";
-							echo 			$row['student_no'];
-							echo "      </td>";
-
-							echo "      <td style='padding: 5px;'>";
 							echo 			$row['username'];
 							echo "      </td>";
 
@@ -185,7 +181,7 @@ include("auth.php");
 							echo "      </td>";
 
 							echo "      <td style='padding: 5px;'>";
-							if($row['user_type']=='FACULTY'){
+							if(strcasecmp($row['user_type'],'FACULTY')==0){
 								echo "<a href='http://" . $_SERVER['SERVER_NAME'] ."/dashboard_admin/faculty_schedule.php?faculty=". $row['user_id'] ."'>schedule</a>";
 							}
 							echo "      </td>";
