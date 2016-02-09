@@ -117,7 +117,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "<input type='text' name='research_code' value='" .$researchcodeT1. "' readonly /> <br/><br/>";
 					echo "<input type='text' name='researchTitle2' value='" .$researchtitleT1. "' readonly /> <br/><br/>";
 					
-							$queryFaculty = "SELECT * FROM `users` WHERE user_type='FACULTY'";
+							$queryFaculty = "SELECT * FROM `users` WHERE LOWER(`user_type`)=LOWER('FACULTY')";
 							$resultFaculty = mysql_query($queryFaculty) or die(mysql_error());
 							$rows = mysql_num_rows($resultFaculty);
 

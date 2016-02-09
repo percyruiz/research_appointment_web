@@ -116,7 +116,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					<input type="text" name="research_code" placeholder="Research Code" required /> <br/><br/>
 					<input type="text" name="research" placeholder="Research Title" required /> <br/><br/>
 					<?php
-							$queryFaculty = "SELECT * FROM `users` WHERE user_type='FACULTY'";
+							$queryFaculty = "SELECT * FROM `users` WHERE LOWER(`user_type`)=LOWER('FACULTY')";
 							$resultFaculty = mysql_query($queryFaculty) or die(mysql_error());
 							$rows = mysql_num_rows($resultFaculty);
 
