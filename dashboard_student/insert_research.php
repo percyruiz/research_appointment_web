@@ -111,7 +111,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
   <option value="Thesis 2">Thesis 2</option>
 </select> <br/><br/>
 <?php
-        $queryFaculty = "SELECT * FROM `users` WHERE user_type='FACULTY'";
+        $queryFaculty = "SELECT * FROM `users` WHERE LOWER(`user_type`)=LOWER('FACULTY')";
         $resultFaculty = mysql_query($queryFaculty) or die(mysql_error());
         $rows = mysql_num_rows($resultFaculty);
 

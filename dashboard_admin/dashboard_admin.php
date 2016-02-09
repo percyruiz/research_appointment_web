@@ -121,7 +121,7 @@ include("auth.php");
 					<div class="col-md-9">
 					<h5>faculty list</h5>
 					<?php
-						$query = "SELECT * FROM `users` WHERE `user_type`='FACULTY'";
+						$query = "SELECT * FROM `users` WHERE LOWER(`user_type`)=LOWER('FACULTY')";
 						$result = mysql_query($query) or die(mysql_error());
 						echo "<table class='table' border='1' style='width:100%'>";
 						echo "	 <tr>";
