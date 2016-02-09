@@ -63,16 +63,18 @@ Website: https://htmlcssphptutorial.wordpress.com
 					$day = $faculty_sched_time['day'];
 
 					$timestamp = strtotime($resched_date);
-					$day_calendar = date('D', $timestamp);
+					$day_calendar = date('l', $timestamp);
 
 					$queryNotAvail = "SELECT * FROM `appointments` WHERE appoint_date='$resched_date' and sched_time_id='$faculty_sched_time_id'
 										AND NOT appointment_id='$resched_appointment_id'";
 					$resultNotAvail = mysql_query($queryNotAvail) or die(mysql_error());
 					$rowsNotAvail = mysql_num_rows($resultNotAvail);
-
 					if($day != $day_calendar){
 						echo "Date selected is not ". $faculty_sched_time['day'];
-					}else if($rowsNotAvail > 0){
+					}else if(date("Y-m-d") > $resched_date){
+						echo "Date selected is less than date today!";
+					}
+					else if($rowsNotAvail > 0){
 						echo "Date and time schedule already registered";
 					}else{
 						$query = "UPDATE `appointments` SET `appoint_date`='$resched_date', `sched_time_id`='$faculty_sched_time_id', `remarks`='$resched_remark' WHERE appointment_id=$resched_appointment_id";
