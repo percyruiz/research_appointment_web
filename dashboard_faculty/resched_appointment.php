@@ -119,12 +119,22 @@ Website: https://htmlcssphptutorial.wordpress.com
                             $query_sched_time = "SELECT * FROM `faculty_sched_time` WHERE user_id=$faculty_id";
                             $result_sched_time = mysql_query($query_sched_time) or die(mysql_error());
                             while ($row_sched_time = mysql_fetch_array($result_sched_time)) {
-                            	if($row_sched_time['id'] == $resched_time){
-                            		echo "<option selected value='". $row_sched_time['id'] ."'>". $row_sched_time['start_time'] . "-" . 
-                            		$row_sched_time['end_time'] . " @ " . $row_sched_time['day'] ."</option>";
+                            	$timeStart = $row_sched_time['start_time'];
+								$queryTimeStart = "SELECT TIME_FORMAT('$timeStart', '%h:%i:%s %p')";
+								$resultTimeStart = mysql_query($queryTimeStart) or die(mysql_error());
+								$rowStartTime = mysql_fetch_row($resultTimeStart);
+								
+								$timeEnd = $row_sched_time['end_time'];
+								$queryTimeEnd = "SELECT TIME_FORMAT('$timeEnd', '%h:%i:%s %p')";
+								$resultTimeEnd = mysql_query($queryTimeEnd) or die(mysql_error());
+								$rowEndTime = mysql_fetch_row($resultTimeEnd);
+								
+								if($row_sched_time['id'] == $resched_time){
+                            		echo "<option selected value='". $row_sched_time['id'] ."'>". $rowStartTime[0] . "-" . 
+                            		$rowEndTime[0] . " @ " . $row_sched_time['day'] ."</option>";
                             	}else{
-                                	echo "<option value='". $row_sched_time['id'] ."'>". $row_sched_time['start_time'] . "-" . 
-                                	$row_sched_time['end_time'] . " @ " . $row_sched_time['day'] ."</option>";
+                                	echo "<option value='". $row_sched_time['id'] ."'>". $rowStartTime[0] . "-" . 
+                                	$rowEndTime[0] . " @ " . $row_sched_time['day'] ."</option>";
                             	}
                             }
                         ?>
