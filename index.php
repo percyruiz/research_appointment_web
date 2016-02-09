@@ -20,11 +20,11 @@ Website: https://htmlcssphptutorial.wordpress.com
 <p>Welcome <?php echo $_SESSION['username']; ?>!</p>
 <p>USER TYPE: <?php echo $_SESSION['usertype']; ?></p>
 
-	<?php if (strcmp($_SESSION['usertype'],"STUDENT")==0){?>
+	<?php if (strcasecmp($_SESSION['usertype'],"STUDENT")==0){?>
 		<p><a href="/dashboard_student/dashboard_student.php">Student Dashboard</a></p>
-	<?php } else if (strcmp($_SESSION['usertype'],"FACULTY")==0){?>
+	<?php } else if (strcasecmp($_SESSION['usertype'],"FACULTY")==0){?>
 		<p><a href="/dashboard_faculty/dashboard_faculty.php">Faculty Dashboard</a></p>
-	<?php }else if (strcmp($_SESSION['usertype'],"ADMIN")==0){?>
+	<?php }else if (strcasecmp($_SESSION['usertype'],"ADMIN")==0){?>
 		<p><a href="/dashboard_admin/dashboard_admin.php">Admin Dashboard</a></p>
 		<?php }?>
 <a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a>
