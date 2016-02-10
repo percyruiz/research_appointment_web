@@ -34,7 +34,10 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				$semester = $_POST['semester'];
 				$facultyId = $_POST['adviser'];
 				$researchCode = $_POST['research_code'];
-
+				$panel1 = $_POST['panel1'];
+				$panel2 = $_POST['panel2'];
+				$panel3 = $_POST['panel3'];
+				
 				$research = stripslashes($research);
 				$research = mysql_real_escape_string($research);
 
@@ -80,6 +83,37 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				$resultInsert = mysql_query($queryInsert);
 				$research_id = mysql_insert_id();
 				if($resultInsert){
+					
+					$queryInsert = "INSERT into `panels` (
+						research_id, 
+						user_id,
+						role						
+						) VALUES (
+						'$research_id', 
+						'$panel1', 
+						'LEAD PANEL')";
+					$resultInsert = mysql_query($queryInsert);
+					
+					$queryInsert = "INSERT into `panels` (
+						research_id, 
+						user_id,
+						role						
+						) VALUES (
+						'$research_id', 
+						'$panel2', 
+						'MEMBER PANEL')";
+					$resultInsert = mysql_query($queryInsert);
+					
+					$queryInsert = "INSERT into `panels` (
+						research_id, 
+						user_id,
+						role						
+						) VALUES (
+						'$research_id', 
+						'$panel3', 
+						'MEMBER PANEL')";
+					$resultInsert = mysql_query($queryInsert);
+					
 					$queryInsertStudent = "INSERT into `users` (
 						user_type, 
 						research_code,
@@ -117,6 +151,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					<input type="text" name="research_code" placeholder="Research Code" required /> <br/><br/>
 					<input type="text" name="research" placeholder="Research Title" required /> <br/><br/>
 					<?php
+							//select adviser
 							$queryFaculty = "SELECT * FROM `users` WHERE LOWER(`user_type`)=LOWER('FACULTY')";
 							$resultFaculty = mysql_query($queryFaculty) or die(mysql_error());
 							$rows = mysql_num_rows($resultFaculty);
@@ -146,116 +181,199 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					  <option value="secondsem">2nd Sem</option>
 					  <option value="summer">Summer</option>
 					</select> <br/><br/>
+					
+			</div>
+			<div class="col-md-9">
+				<br/><br/><br/>
+				<strong>Lead Panel</strong>
+					<?php
+							//select panel 1
+							$queryLeadPanel = "SELECT * FROM `users` WHERE LOWER(`user_type`)=LOWER('FACULTY')";
+							$resultLeadPanel = mysql_query($queryLeadPanel) or die(mysql_error());
+							$rows = mysql_num_rows($resultLeadPanel);
+
+							if($rows > 0){
+								echo "<select name='panel1'>";
+								while ($row = mysql_fetch_array($resultLeadPanel)) 
+								{
+									$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
+									$facultyId = $row['user_id'];
+									echo "<option value='$facultyId'>$faculty</option><br/>";
+								}
+								echo "</select><br/><br/>";
+							}
+							
+							echo "<strong>Panel Member</strong>";
+							//select panel 2
+							$queryMemberPanel1 = "SELECT * FROM `users` WHERE LOWER(`user_type`)=LOWER('FACULTY')";
+							$resultMemberPanel1 = mysql_query($queryMemberPanel1 ) or die(mysql_error());
+							$rows = mysql_num_rows($resultMemberPanel1);
+
+							if($rows > 0){
+								echo "<select name='panel2'>";
+								while ($row = mysql_fetch_array($resultMemberPanel1)) 
+								{
+									$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
+									$facultyId = $row['user_id'];
+									echo "<option value='$facultyId'>$faculty</option><br/>";
+								}
+								echo "</select><br/><br/>";
+							}
+							
+							echo "<strong>Panel Member</strong>";
+							//select panel 3
+							$queryMemberPanel2 = "SELECT * FROM `users` WHERE LOWER(`user_type`)=LOWER('FACULTY')";
+							$resultMemberPanel2 = mysql_query($queryMemberPanel2) or die(mysql_error());
+							$rows = mysql_num_rows($resultMemberPanel2);
+
+							if($rows > 0){
+								echo "<select name='panel3'>";
+								while ($row = mysql_fetch_array($resultMemberPanel2)) 
+								{
+									$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
+									$facultyId = $row['user_id'];
+									echo "<option value='$facultyId'>$faculty</option><br/>";
+								}
+								echo "</select><br/><br/>";
+							}
+					?>
 					<input type="submit" name="submit" value="Register" />
 				</form>
 			</div>
-			<div class="col-md-9">
-				<h4>Researches Registered</h4>
-				<?php
-					$query = "SELECT * FROM `researches`";
-					$result = mysql_query($query) or die(mysql_error());
-					echo "<table class='table' border='1' style='width:100%'>";
-					echo "	 <tr>";
-					echo "	 	<td align='center'>";	
-					echo "	 		<strong>id</strong>";
-					echo "	 	</td>";
-					echo "	 	<td align='center'>";	
-					echo "	 		<strong>research code</strong>";
-					echo "	 	</td>";
-					echo "	 	<td align='center'>";	
-					echo "	 		<strong>research title</strong>";
-					echo "	 	</td>";
-					echo "	 	<td align='center'>";	
-					echo "	 		<strong>research type</strong>";
-					echo "	 	</td>";
-					echo "	 	<td align='center'>";	
-					echo "	 		<strong>percentage</strong>";
-					echo "	 	</td>";
-					echo "	 	<td align='center'>";	
-					echo "	 		<strong>school year</strong>";
-					echo "	 	</td>";
-					echo "	 	<td align='center'>";	
-					echo "	 		<strong>sem type</strong>";
-					echo "	 	</td>";
-					echo "	 	<td align='center'>";	
-					echo "	 		<strong>faculty</strong>";
-					echo "	 	</td>";
-					echo "	 	<td align='center'>";	
-					echo "	 		<strong>student no</strong>";
-					echo "	 	</td>";
-					echo "	 	<td align='center'>";	
-					echo "	 		<strong>on going</strong>";
-					echo "	 	</td>";
-					echo "	 	<td align='center'>";	
-					echo "	 		<strong>action</strong>";
-					echo "	 	</td>";
-					echo "	 </tr>";
-					while ($row = mysql_fetch_array($result)) {
-						echo "   <tr>";
-						echo "      <td style='padding: 5px;'>";
-						echo 			$row['research_id'];
-						echo "      </td>";
-						
-						echo "      <td style='padding: 5px;'>";
-						echo 			$row['research_code'];
-						echo "      </td>";
-
-						echo "      <td style='padding: 5px;'>";
-						echo 			$row['research_title'];
-						echo "      </td>";
-
-						echo "      <td style='padding: 5px;'>";
-						echo 			$row['research_type'];
-						echo "      </td>";
-
-						echo "      <td style='padding: 5px;'>";
-						echo 			$row['percentage'];
-						echo "      </td>";
-
-						echo "      <td style='padding: 5px;'>";
-						echo 			$row['school_year'];
-						echo "      </td>";
-
-						echo "      <td style='padding: 5px;'>";
-						echo 			$row['sem_type'];
-						echo "      </td>";
-						
-						echo "      <td style='padding: 5px;'>";
-						echo 			$row['faculty_id'];
-						echo "      </td>";
-						
-						echo "      <td style='padding: 5px;'>";
-						echo 			$row['student_no'];
-						echo "      </td>";
-						
-						echo "      <td style='padding: 5px;'>";
-						if($row['on_going']==1){
-							echo 	"YES";
-						}else{
-							echo 	"NO";
-						}
-						echo "      </td>";
-						
-						echo "      <td style='padding: 5px;'>";
-						if($row['percentage']==100 && $row['on_going']==1 && $row['research_type']!="Thesis 2"){
-							echo "		<div class='col-md-6'>";
-							echo "		<form action='insert_research_capstone2.php'  method='post' name='researchForm'>";
-							echo "			<input type='hidden' name='research_id1' value='" .$row['research_id']. "'/>";
-							echo "			<input type='hidden' name='researchcodeT1' value='" .$row['research_code']. "'/>";
-							echo "			<input type='hidden' name='researchtitleT1' value='" .$row['research_title']. "'/>";
-							echo "			<input type='hidden' name='student_no' value='" .$row['student_no']. "'/>";
-							echo "			<input style='color:#0000FF' type='submit' name='register' value='Register as Thesis 2'/>";
-							echo "		</form>";
-							echo "		</div>";
-						}
-						echo "      </td>";
-
-						echo "   </tr>";
-					}
-					echo "<table>";
-				?>
-			</div>
 		</div>
+		
+		<h4>Researches Registered</h4>
+		<div class="table-responsive">
+		<?php
+			$query = "SELECT * FROM `researches`";
+			$result = mysql_query($query) or die(mysql_error());
+			echo "<table class='table'>";
+			echo "   <thead>";
+			echo "	 <tr>";
+			echo "	 	<th align='center'>";	
+			echo "	 		<strong>id</strong>";
+			echo "	 	</th>";
+			echo "	 	<th align='center'>";	
+			echo "	 		<strong>research code</strong>";
+			echo "	 	</th>";
+			echo "	 	<th align='center'>";	
+			echo "	 		<strong>research title</strong>";
+			echo "	 	</th>";
+			echo "	 	<th align='center'>";	
+			echo "	 		<strong>research type</strong>";
+			echo "	 	</th>";
+			echo "	 	<th align='center'>";	
+			echo "	 		<strong>percentage</strong>";
+			echo "	 	</th>";
+			echo "	 	<th align='center'>";	
+			echo "	 		<strong>school year</strong>";
+			echo "	 	</th>";
+			echo "	 	<th align='center'>";	
+			echo "	 		<strong>sem type</strong>";
+			echo "	 	</th>";
+			echo "	 	<th align='center'>";	
+			echo "	 		<strong>faculty</strong>";
+			echo "	 	</th>";
+			echo "	 	<th align='center'>";	
+			echo "	 		<strong>panels</strong>";
+			echo "	 	</th>";
+			echo "	 	<th align='center'>";	
+			echo "	 		<strong>student no</strong>";
+			echo "	 	</th>";
+			echo "	 	<th align='center'>";	
+			echo "	 		<strong>on going</strong>";
+			echo "	 	</th>";
+			echo "	 	<th align='center'>";	
+			echo "	 		<strong>action</strong>";
+			echo "	 	</th>";
+			echo "	 </tr>";
+			echo "   </thead>";
+			echo "   <tbody>";
+			while ($row = mysql_fetch_array($result)) {
+				echo "   <tr>";
+				echo "      <td style='padding: 5px;'>";
+				$research_id = $row['research_id'];
+				echo 			$row['research_id'];
+				echo "      </td>";
+				
+				echo "      <td style='padding: 5px;'>";
+				echo 			$row['research_code'];
+				echo "      </td>";
+
+				echo "      <td style='padding: 5px;'>";
+				echo 			$row['research_title'];
+				echo "      </td>";
+
+				echo "      <td style='padding: 5px;'>";
+				echo 			$row['research_type'];
+				echo "      </td>";
+
+				echo "      <td style='padding: 5px;'>";
+				echo 			$row['percentage'];
+				echo "      </td>";
+
+				echo "      <td style='padding: 5px;'>";
+				echo 			$row['school_year'];
+				echo "      </td>";
+
+				echo "      <td style='padding: 5px;'>";
+				echo 			$row['sem_type'];
+				echo "      </td>";
+				
+				echo "      <td style='padding: 5px;'>";
+				$faculty_id = $row['faculty_id'];
+				$resultFaculty = mysql_query("SELECT * FROM `users` WHERE user_id='$faculty_id' LIMIT 1");
+				$faculty = mysql_fetch_assoc($resultFaculty);
+				echo 			$faculty['lname'] . ', ' .$faculty['fname'] . ' ' .  $faculty['mname'];
+				echo "      </td>";
+				
+				echo "      <td style='padding: 5px;'>";
+				$queryPanel = "SELECT * FROM `panels` where `research_id`=$research_id";
+				$resultPanel = mysql_query($queryPanel) or die(mysql_error());
+				while ($rowPanel = mysql_fetch_array($resultPanel)) {
+					$panel_faculty_id = $rowPanel['user_id'];
+					echo "<strong>".$rowPanel['role'] . ":</strong> ";
+					$resultFaculty = mysql_query("SELECT * FROM `users` WHERE user_id='$panel_faculty_id' LIMIT 1");
+					$faculty = mysql_fetch_assoc($resultFaculty);
+					echo 			$faculty['lname'] . ', ' .$faculty['fname'] . ' ' .  $faculty['mname'];
+					echo "<br>";
+				}
+				
+				echo "      </td>";
+				
+				echo "      <td style='padding: 5px;'>";
+				echo 			$row['student_no'];
+				echo "      </td>";
+				
+				echo "      <td style='padding: 5px;'>";
+				if($row['on_going']==1){
+					echo 	"YES";
+				}else{
+					echo 	"NO";
+				}
+				echo "      </td>";
+				
+				echo "      <td style='padding: 5px;'>";
+				if($row['percentage']==100 && $row['on_going']==1 && $row['research_type']!="Thesis 2"){
+					echo "		<div class='col-md-6'>";
+					echo "		<form action='insert_research_capstone2.php'  method='post' name='researchForm'>";
+					echo "			<input type='hidden' name='research_id1' value='" .$row['research_id']. "'/>";
+					echo "			<input type='hidden' name='researchcodeT1' value='" .$row['research_code']. "'/>";
+					echo "			<input type='hidden' name='researchtitleT1' value='" .$row['research_title']. "'/>";
+					echo "			<input type='hidden' name='student_no' value='" .$row['student_no']. "'/>";
+					echo "			<input style='color:#0000FF' type='submit' name='register' value='Register as Thesis 2'/>";
+					echo "		</form>";
+					echo "		</div>";
+				}
+				echo "      </td>";
+
+				echo "   </tr>";
+				echo "   </tbody>";
+			}
+			echo "</table>";
+		?>
+		</div>
+		
 	</div>
 </body>
 </html>
