@@ -65,7 +65,10 @@ include("auth.php"); //include auth.php file on all secure pages ?>
             echo "          <strong>Adviser</strong>";
             echo "      </td>";
             echo "      <td align='center'>";   
-            echo "          <strong>Student No </strong>";
+            echo "          <strong>Student No</strong>";
+            echo "      </td>";
+			echo "      <td align='center'>";   
+            echo "          <strong>Panels</strong>";
             echo "      </td>";
             echo "   </tr>";
             while ($row = mysql_fetch_array($result)) 
@@ -108,10 +111,27 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                 echo "      <td align='center'>";   
                 echo            $row['student_no'];
                 echo "      </td>";
-                echo "   </tr>";
-            }
+				echo "      <td align='center'>";
+				
+				$researchId = $row['research_id'];
+				
+				$queryPanel = "SELECT * FROM `panels` where `research_id`=$researchId";
+				$resultPanel = mysql_query($queryPanel) or die(mysql_error());
+				while ($rowPanel = mysql_fetch_array($resultPanel)) {
+					$panel_faculty_id = $rowPanel['user_id'];
+					echo "<strong>".$rowPanel['role'] . ":</strong> ";
+					$resultFaculty = mysql_query("SELECT * FROM `users` WHERE user_id='$panel_faculty_id' LIMIT 1");
+					$faculty = mysql_fetch_assoc($resultFaculty);
+					echo 			$faculty['lname'] . ', ' .$faculty['fname'] . ' ' .  $faculty['mname'];
+					echo "<br/>";
+				}
+					
+				echo "      </td>";
+				echo "   </tr>";
+			}
             
-            echo "<table>";
+            echo "</table>";
+			
 			/*
 			if($rows == 0){
 				echo "<br/>No Research Researh.<a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/insert_research.php'><br/>Add Research.</a></div>";
