@@ -40,7 +40,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 			<div class="col-md-9">
 				<h4>Student Profiles</h4>
 				<?php
-					$query = "SELECT * FROM `users` WHERE LOWER(`user_type`) = LOWER('FACULTY')";
+					$query = "SELECT * FROM `users` WHERE LOWER(`user_type`) = LOWER('STUDENT')";
 					$result = mysql_query($query) or die(mysql_error());
 					echo "<table class='table' border='1' style='width:100%'>";
 					echo "	 <tr>";
