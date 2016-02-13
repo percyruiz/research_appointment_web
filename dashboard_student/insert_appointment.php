@@ -141,7 +141,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 		}
 
 
-		$queryAppointment = "SELECT * FROM `appointments`WHERE research_id='$researchId'";
+		$queryAppointment = "SELECT * FROM `appointments` WHERE `research_id`='$researchId' ORDER BY `appointment_id` DESC";
 		$resultAppointment = mysql_query($queryAppointment) or die(mysql_error());
 		$rows = mysql_num_rows($resultAppointment);
     

@@ -33,7 +33,7 @@ include("auth.php");
 
 			<h4>Consultation History</h4>
 			<?php
-				$query = "SELECT * FROM `consultations`";
+				$query = "SELECT * FROM `consultations` ORDER BY `consultation_id` DESC";
 				$result = mysql_query($query) or die(mysql_error());
 				echo "<table class='table' border='1' style='width:100%'>";
 				echo "	 <tr>";
