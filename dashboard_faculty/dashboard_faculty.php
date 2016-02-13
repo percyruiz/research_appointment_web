@@ -110,11 +110,19 @@ Website: https://htmlcssphptutorial.wordpress.com
 						echo "      </td>";
 
 						echo "      <td width='10%' style='padding: 5px;'>";
-						echo 			$faculty_sched_time['start_time'];
+						$timeStart=$faculty_sched_time['start_time'];
+						$queryTimeStart = "SELECT TIME_FORMAT('$timeStart', '%h:%i:%s %p')";
+						$resultTimeStart = mysql_query($queryTimeStart) or die(mysql_error());
+						$rowStartTime = mysql_fetch_row($resultTimeStart);
+						echo 		$rowStartTime[0];
 						echo "      </td>";
 
 						echo "      <td width='10%' style='padding: 5px;'>";
-						echo 			$faculty_sched_time['end_time'];
+						$timeEnd = $faculty_sched_time['end_time'];
+						$queryTimeEnd = "SELECT TIME_FORMAT('$timeEnd', '%h:%i:%s %p')";
+						$resultTimeEnd = mysql_query($queryTimeEnd) or die(mysql_error());
+						$rowEndTime = mysql_fetch_row($resultTimeEnd);
+						echo 		$rowEndTime[0];
 						echo "      </td>";
 
 						echo "      <td width='10%' style='padding: 5px;'>";
