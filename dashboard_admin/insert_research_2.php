@@ -196,8 +196,6 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					  <option value="secondsem">2nd Sem</option>
 					  <option value="summer">Summer</option>
 					</select> <br/><br/>
-					<input type="submit" name="submit" value="Register Research 2" />
-
 			</div>
 			<div class="col-md-9">
 				<br/><br/><br/>

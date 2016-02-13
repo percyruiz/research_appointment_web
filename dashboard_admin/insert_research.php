@@ -280,7 +280,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 			echo "	 	<th align='center'>";	
 			echo "	 		<strong>faculty</strong>";
 			echo "	 	</th>";
-			echo "	 	<th align='center'>";	
+			echo "	 	<th align='center'>";
 			echo "	 		<strong>panels</strong>";
 			echo "	 	</th>";
 			echo "	 	<th align='center'>";	
@@ -368,7 +368,11 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "			<input type='hidden' name='researchtitleT1' value='" .$row['research_title']. "'/>";
 					echo "			<input type='hidden' name='researchtypeR1' value='" .$row['research_type']. "'/>";
 					echo "			<input type='hidden' name='student_no' value='" .$row['student_no']. "'/>";
-					echo "			<input style='color:#0000FF' type='submit' name='register' value='Register as Thesis 2'/>";
+					if($row['research_type']=="Thesis 1"){
+						echo "			<input style='color:#0000FF' type='submit' name='register' value='Register as Thesis 2'/>";
+					}else{
+						echo "			<input style='color:#0000FF' type='submit' name='register' value='Register as Capstone 2'/>";
+					}
 					echo "		</form>";
 					echo "		</div>";
 				}
