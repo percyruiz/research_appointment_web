@@ -126,8 +126,14 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 			echo "</select><br/>";
 		}
 
+			echo "<select name = 'schoolyear'>";
+				for ($x = 2015; $x < 2030; $x++) {
+					$temp = $x+1;
+					$value = $x." - ".$temp;
+					echo "<option value='$value'>$value</option>";
+					}
+			echo "</select><br/><br/>";
 ?>
-<input type="text" name="schoolyear" placeholder="School Year" required/> <br/><br/>
 <select name="semester" required>
   <option value="firstsem">1st Sem</option>
   <option value="secondsem">2nd Sem</option>

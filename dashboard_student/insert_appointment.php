@@ -122,7 +122,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
     $rows = mysql_num_rows($resultResearchId);
 	
 	if($rows == 0){
-		echo "No Research added.<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/insert_research.php'>Add Research.</a></div>";
+		//echo "No Research added.<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/insert_research.php'>Add Research.</a></div>";
 	}else{
 		while ($row = mysql_fetch_array($resultResearchId)) {
 			$researchId = $row['research_id'];
@@ -205,6 +205,16 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                     $sched_time_id = $row['sched_time_id'];
                     $result_faculty_sched_time = mysql_query("SELECT * FROM `faculty_sched_time` WHERE id='$sched_time_id' LIMIT 1");
                     $faculty_sched_time = mysql_fetch_assoc($result_faculty_sched_time);
+					
+					$timeStart = $faculty_sched_time['start_time'];
+					$queryTimeStart = "SELECT TIME_FORMAT('$timeStart', '%h:%i:%s %p')";
+					$resultTimeStart = mysql_query($queryTimeStart) or die(mysql_error());
+					$rowStartTime = mysql_fetch_row($resultTimeStart);
+					
+					$timeEnd = $faculty_sched_time['end_time'];
+					$queryTimeEnd = "SELECT TIME_FORMAT('$timeEnd', '%h:%i:%s %p')";
+					$resultTimeEnd = mysql_query($queryTimeEnd) or die(mysql_error());
+					$rowEndTime = mysql_fetch_row($resultTimeEnd);
 
                     echo "   <tr>";
                     echo "      <td align='center'>";   
@@ -214,10 +224,10 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                     echo            $faculty_sched_time['day'];
                     echo "      </td>";
                     echo "      <td align='center'>";   
-                    echo            $faculty_sched_time['start_time'];
+                    echo            $rowStartTime[0];
                     echo "      </td>";
                     echo "      <td align='center'>";   
-                    echo            $faculty_sched_time['end_time'];
+                    echo            $rowEndTime[0];
                     echo "      </td>";
                     echo "      <td align='center'>";   
                     echo            $facultyName;
