@@ -259,7 +259,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 		<h4>Researches Registered</h4>
 		<div class="table-responsive">
 				<?php
-					$query = "SELECT * FROM `researches`";
+					$query = "SELECT * FROM `researches` ORDER BY `research_id` DESC";
 					$result = mysql_query($query) or die(mysql_error());
 					echo "<table class='table' border='1' style='width:100%'>";
 				echo "   <thead>";
