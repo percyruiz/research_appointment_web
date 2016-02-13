@@ -24,7 +24,8 @@ Website: https://htmlcssphptutorial.wordpress.com
 
 	<body>
 		<div class="container">
-			<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a>
+			<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout |</a>
+			<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/change_password_form.php';?>">Change Password</a>
 			<div class="container">
 				<h4>Your appointments</h4>
 				<?php $user_id = $_SESSION['userid']; ?>
