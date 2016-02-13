@@ -22,13 +22,17 @@ include("auth.php"); //include auth.php file on all secure pages ?>
     <a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a>
 </p>
 <?php
-    // require('db.php');
     //access from root folder
     $path = $_SERVER['DOCUMENT_ROOT'];
     $path .= "/db.php";
     require($path);
 
     $userid = $_SESSION['userid'];
+
+    if(isset($_POST['faculty_id'])){
+        $consultation_type = $_POST['consultation_type'];
+        $faculty_id = $_POST['faculty_id'];
+    }
 
     if (isset($_POST['appointmentdate'])){
 
@@ -74,8 +78,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
             
             while ($row = mysql_fetch_array($resultResearchId)) 
             {
-              $researchId = $row['research_id']; 
-              $facultyId = $row['faculty_id']; 
+              $researchId = $row['research_id'];
             }   
 
             $queryInsert = "INSERT into `appointments` (
@@ -83,13 +86,15 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                     faculty_id,
                     appoint_date, 
                     status,
-                    sched_time_id
+                    sched_time_id,
+                    consultation_type
                     ) VALUES (
                     '$researchId',
-                    '$facultyId',
+                    '$faculty_id',
                     '$appointmentdate', 
                     'pending',
-                    '$faculty_sched_time_id')";
+                    '$faculty_sched_time_id',
+                    '$consultation_type')";
             $resultInsert = mysql_query($queryInsert);
             if($resultInsert){
 				$insertConsultation = "INSERT into `consultations` (
@@ -127,7 +132,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 		while ($row = mysql_fetch_array($resultResearchId)) {
 			$researchId = $row['research_id'];
 			$researchTitle = $row['research_title'];
-			$facultyid = $row['faculty_id'];
+			$facultyid = $faculty_id;
 		}
 
 		echo "<h4>".$researchTitle."</h4>";
@@ -137,11 +142,11 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 		$rows = mysql_num_rows($resultFacultyName);
 
 		while ($row = mysql_fetch_array($resultFacultyName)){
-			$facultyName = $row['fname']." ".$row['mname']." ".$row['lname'];
+			$facultyName = $row['lname'] . ', ' .$row['fname']." ".$row['mname'];
 		}
 
 
-		$queryAppointment = "SELECT * FROM `appointments` WHERE `research_id`='$researchId' ORDER BY `appointment_id` DESC";
+		$queryAppointment = "SELECT * FROM `appointments` WHERE `research_id`='$researchId' AND `faculty_id`='$faculty_id' ORDER BY `appointment_id` DESC";
 		$resultAppointment = mysql_query($queryAppointment) or die(mysql_error());
 		$rows = mysql_num_rows($resultAppointment);
     
@@ -162,43 +167,43 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                             }
                         ?>
                     </select><br/><br/>
+                    <input type='hidden' name='consultation_type' value='<?php echo $consultation_type?>'/>
+                    <input type='hidden' name='faculty_id' value='<?php echo $faculty_id;?>'/>
                     <input type="submit" name="submit" value="Register" />
                 </form>
             </div>
         </div>
         <div class="col-md-9">
+            <strong><?php echo $facultyName . ' - consultations for '. $consultation_type;?></strong>
             <?php 
-                echo "<table class='table' border='1' style='width:100%'>";
+                echo "<table class='table' style='width:100%'>";
+                echo "<thead>";
                 echo "   <tr>";
-                echo "      <td align='center'>";   
+                echo "      <th align='center'>";
                 echo "          <strong>Date</strong>";
-                echo "      </td>";
-                echo "      <td align='center'>";   
+                echo "      </th>";
+                echo "      <th align='center'>";
                 echo "          <strong>Day</strong>";
-                echo "      </td>";
-                echo "      <td align='center'>";   
+                echo "      </th>";
+                echo "      <th align='center'>";
                 echo "          <strong>Start Time</strong>";
-                echo "      </td>";
-                echo "      <td align='center'>";   
+                echo "      </th>";
+                echo "      <th align='center'>";
                 echo "          <strong>End Time</strong>";
-                echo "      </td>";
-                echo "      </td>";
-                echo "      <td align='center'>";   
+                echo "      </th>";
+                echo "      </th>";
+                echo "      <th align='center'>";
                 echo "          <strong>Adviser</strong>";
-                echo "      </td>";
-                echo "      <td align='center'>";   
+                echo "      </th>";
+                echo "      <th align='center'>";
                 echo "          <strong>Status</strong>";
-                echo "      </td>";
-                echo "      <td align='center'>";   
-                echo "          <strong>Tardy</strong>";
-                echo "      </td>";
-                echo "      <td align='center'>";   
-                echo "          <strong>Appearance</strong>";
-                echo "      </td>";
-                echo "      <td align='center'>";   
+                echo "      </th>";
+                echo "      <th align='center'>";
                 echo "          <strong>Remarks</strong>";
-                echo "      </td>";
+                echo "      </th>";
                 echo "   </tr>";
+                echo "</thead>";
+                echo "<tbody>";
                 while ($row = mysql_fetch_array($resultAppointment)) 
                 {
                     
@@ -217,36 +222,30 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					$rowEndTime = mysql_fetch_row($resultTimeEnd);
 
                     echo "   <tr>";
-                    echo "      <td align='center'>";   
+                    echo "      <td>";
                     echo            $row['appoint_date'];
                     echo "      </td>";
-                    echo "      <td align='center'>";   
+                    echo "      <td>";
                     echo            $faculty_sched_time['day'];
                     echo "      </td>";
-                    echo "      <td align='center'>";   
+                    echo "      <td>";
                     echo            $rowStartTime[0];
                     echo "      </td>";
-                    echo "      <td align='center'>";   
+                    echo "      <td>";
                     echo            $rowEndTime[0];
                     echo "      </td>";
-                    echo "      <td align='center'>";   
+                    echo "      <td>";
                     echo            $facultyName;
                     echo "      </td>";
-                    echo "      <td align='center'>";   
+                    echo "      <td>";
                     echo            $row['status'];
                     echo "      </td>";
-                    echo "      <td align='center'>";   
-                    echo            $row['tardy'];
-                    echo "      </td>";
-                    echo "      <td align='center'>";   
-                    echo            $row['appearance'];
-                    echo "      </td>";
-                    echo "      <td align='center'>";   
+                    echo "      <td>";
                     echo            $row['remarks'];
                     echo "      </td>";
                     echo "   </tr>";
                 }
-
+                echo "</tbody>";
                 echo "<table>";
                 ?>
         </div>

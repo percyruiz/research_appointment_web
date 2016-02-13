@@ -87,6 +87,9 @@ Website: https://htmlcssphptutorial.wordpress.com
 					echo "	 	<td align='center'>";	
 					echo "	 		<strong>DAY</strong>";
 					echo "	 	</td>";
+					echo "	 	<td align='center'>";
+					echo "	 		<strong>TYPE</strong>";
+					echo "	 	</td>";
 					echo "	 	<td align='center'>";	
 					echo "	 		<strong>ACTION</strong>";
 					echo "	 	</td>";
@@ -102,7 +105,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 						$row_researches = mysql_fetch_assoc($result_r);
 						$appointment_id = $row['appointment_id'];
 						echo "   <tr>";
-						echo "      <td width='35%' style='padding: 5px;'>";
+						echo "      <td width='30%' style='padding: 5px;'>";
 						echo 			"<a href='research.php?id=$research_id'>" .$row_researches['research_title'] . "</a>";
 						echo "      </td>";
 
@@ -128,6 +131,10 @@ Website: https://htmlcssphptutorial.wordpress.com
 
 						echo "      <td width='10%' style='padding: 5px;'>";
 						echo 			$faculty_sched_time['day'];
+						echo "      </td>";
+
+						echo "      <td width='5%' style='padding: 5px;'>";
+						echo 			$row['consultation_type'];
 						echo "      </td>";
 
 						echo "      <td width='15%' align='center'>";
