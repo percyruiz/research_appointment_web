@@ -27,6 +27,7 @@ include("auth.php"); //include auth.php file on all secure pages
 		<p><a href="insert_appointment.php">Manage Appointment</a><p>
 		<p><a href="insert_members.php">Insert Members</a><p>
 		<p><a href="view_members.php">View Members</a><p>
+		<p><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/change_password_form.php';?>">Change Password</a></p>
 		<p><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a></p>
 	</div>
 </body>
