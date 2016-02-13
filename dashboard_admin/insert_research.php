@@ -8,7 +8,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 session_start();
 include("auth.php"); //include auth.php file on all secure pages ?>
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
 <meta charset="utf-8">
 <title>Registration</title>
@@ -29,7 +29,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 			if (isset($_POST['research'])){
 
 				$research = $_POST['research'];
-				$researchtype = "Thesis 1";
+				$researchtype = $_POST['researchtype'];
 				$schoolyear = $_POST['schoolyear'];
 				$semester = $_POST['semester'];
 				$facultyId = $_POST['adviser'];
@@ -150,6 +150,11 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				<form name="registration" action="" method="post">
 					<input type="text" name="research_code" placeholder="Research Code" required /> <br/><br/>
 					<input type="text" name="research" placeholder="Research Title" required /> <br/><br/>
+					<select name="researchtype">
+						<option value="Thesis 1">Thesis 1</option>
+						<option value="Capstone 1">Capstone 1</option>
+					</select>
+					<br/><br/>
 					<?php
 							//select adviser
 							$queryFaculty = "SELECT * FROM `users` WHERE LOWER(`user_type`)=LOWER('FACULTY')";
@@ -238,6 +243,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 							}
 					?>
 					<input type="submit" name="submit" value="Register" />
+
 				</form>
 			</div>
 		</div>
@@ -245,7 +251,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 		<h4>Researches Registered</h4>
 		<div class="table-responsive">
 		<?php
-			$query = "SELECT * FROM `researches`";
+			$query = "SELECT * FROM `researches` ORDER BY `research_id` DESC";
 			$result = mysql_query($query) or die(mysql_error());
 			echo "<table class='table'>";
 			echo "   <thead>";
@@ -274,7 +280,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 			echo "	 	<th align='center'>";	
 			echo "	 		<strong>faculty</strong>";
 			echo "	 	</th>";
-			echo "	 	<th align='center'>";	
+			echo "	 	<th align='center'>";
 			echo "	 		<strong>panels</strong>";
 			echo "	 	</th>";
 			echo "	 	<th align='center'>";	
@@ -354,14 +360,19 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				echo "      </td>";
 				
 				echo "      <td style='padding: 5px;'>";
-				if($row['percentage']==100 && $row['on_going']==1 && $row['research_type']!="Thesis 2"){
+				if($row['percentage']==100 && $row['on_going']==1 && ($row['research_type']!="Thesis 2" || $row['research_type']!="Capstone 2")){
 					echo "		<div class='col-md-6'>";
-					echo "		<form action='insert_research_capstone2.php'  method='post' name='researchForm'>";
+					echo "		<form action='insert_research_2.php'  method='post' name='researchForm'>";
 					echo "			<input type='hidden' name='research_id1' value='" .$row['research_id']. "'/>";
 					echo "			<input type='hidden' name='researchcodeT1' value='" .$row['research_code']. "'/>";
 					echo "			<input type='hidden' name='researchtitleT1' value='" .$row['research_title']. "'/>";
+					echo "			<input type='hidden' name='researchtypeR1' value='" .$row['research_type']. "'/>";
 					echo "			<input type='hidden' name='student_no' value='" .$row['student_no']. "'/>";
-					echo "			<input style='color:#0000FF' type='submit' name='register' value='Register as Thesis 2'/>";
+					if($row['research_type']=="Thesis 1"){
+						echo "			<input style='color:#0000FF' type='submit' name='register' value='Register as Thesis 2'/>";
+					}else{
+						echo "			<input style='color:#0000FF' type='submit' name='register' value='Register as Capstone 2'/>";
+					}
 					echo "		</form>";
 					echo "		</div>";
 				}
