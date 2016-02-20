@@ -20,6 +20,14 @@ include("auth.php"); //include auth.php file on all secure pages
 	<meta charset="utf-8">
 	<title>Dashboard - View Records</title>
 	<link rel="stylesheet" href="../css/bootstrap/css/bootstrap.css" />
+	<link rel="stylesheet" href="../css/bootstrap/css/jquery.dynatable.css" />
+	<script src="../js/jquery-1.12.0.min.js"></script>
+	<script src="../js/jquery.dynatable.js"></script>
+	<script>
+		$( document ).ready(function() {
+			$('.table').dynatable();
+		});
+	</script>
 </head>
 
 <body>
