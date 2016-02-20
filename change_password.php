@@ -9,13 +9,14 @@ Website: https://htmlcssphptutorial.wordpress.com
 <head>
 <meta charset="utf-8">
 <title>Login</title>
-<link rel="stylesheet" href="css/css_login.css" />
+	<link rel="stylesheet" href="../css/bootstrap/css/bootstrap.css" />
 </head>
 <body>
 <?php
 	require('db.php');
 	session_start();
 	$username = $_SESSION['username'];
+    $usertype = $_SESSION['usertype'];
 	
     // If form submitted, insert values into the database.
     if (isset($_POST['newpassword'])){
@@ -39,7 +40,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 		$rows = mysql_num_rows($result);
 
 		if($rows == 0){
-			echo "Old Password incorrect.<br/>";
+			echo "<div class=\"alert alert-danger\">Old Password incorrect.</div>";
 			include 'change_password_form.php';
 		}
 		else{
@@ -48,11 +49,15 @@ Website: https://htmlcssphptutorial.wordpress.com
 			$resultUpdate = mysql_query($queryUpdate) or die(mysql_error());
 			
 				if($resultUpdate){
-						echo "Change Password Successful!<br/>";
-						echo "<a href=http://". $_SERVER['SERVER_NAME'] ."/index.php>Home</a></div>";
+						echo "<div class=\"alert alert-dismissible alert-info\">Change Password Successful! ";
+                        if (strcasecmp($_SESSION['usertype'],"FACULTY")==0){
+                            echo "<strong><a href=http://". $_SERVER['SERVER_NAME'] ."/dashboard_faculty/dashboard_faculty.php>Go to Faculty Dashboard</a></strong></div>";
+                        }else if(strcasecmp($_SESSION['usertype'],"STUDENT")==0){
+                            echo "<strong><a href=http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/dashboard_student.php>Go to STUDENT dashboard</a></strong></div>";
+                        }
 				}
 			}else{
-				echo "New Password and Confirm Password does not match.<br/>";
+				echo "<div class=\"alert alert-danger\">New Password and Confirm Password does not match.</div>";
 				include 'change_password_form.php';
 			}
 		}

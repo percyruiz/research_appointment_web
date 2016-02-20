@@ -24,11 +24,16 @@ include("auth.php"); //include auth.php file on all secure pages
 
 <body>
 <div class="container">
-	<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout |</a>
-	<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/change_password_form.php';?>">Change Password</a>
+
+	<ul class="breadcrumb">
+		<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_faculty/dashboard_faculty.php';?>">Appointments</a></li>
+		<li class="active"><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_faculty/handled_researches.php';?>">View Researches Handled</a></li>
+		<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/change_password_form.php';?>">Change Password</a></li>
+		<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout </a></li>
+	</ul>
 
 	<div class="container">
-		<h4>Your appointments</h4>
+		<h4>Your Advisory Research</h4>
 		<?php $user_id = $_SESSION['userid']; ?>
 		<?php
 		/*
@@ -73,21 +78,24 @@ include("auth.php"); //include auth.php file on all secure pages
 		<?php
 		$query = "SELECT * FROM `researches` WHERE faculty_id='$user_id'";
 		$result = mysql_query($query) or die(mysql_error());
-		echo "<table class='table' border='1' style='width:100%'>";
+		echo "<table class='table table-striped table-hover' style='width:100%'>";
+		echo "	 <thead>";
 		echo "	 <tr>";
-		echo "	 	<td align='center'>";
+		echo "	 	<th>";
 		echo "	 		<strong>TITLE</strong>";
-		echo "	 	</td>";
-		echo "	 	<td align='center'>";
+		echo "	 	</th>";
+		echo "	 	<th>";
 		echo "	 		<strong>RESEARCH TYPE</strong>";
-		echo "	 	</td>";
-		echo "	 	<td align='center'>";
+		echo "	 	</th>";
+		echo "	 	<th>";
 		echo "	 		<strong>SCHOOL YEAR/SEM</strong>";
-		echo "	 	</td>";
-		echo "	 	<td align='center'>";
+		echo "	 	</th>";
+		echo "	 	<th>";
 		echo "	 		<strong>GROUP LEADER</strong>";
-		echo "	 	</td>";
+		echo "	 	</th>";
 		echo "	 </tr>";
+		echo "	 </thead>";
+		echo "	 <tbody>";
 		while ($row = mysql_fetch_array($result)) {
 
 			$research_id = $row['research_id'];
@@ -112,7 +120,8 @@ include("auth.php"); //include auth.php file on all secure pages
 			echo "      </td>";
 			echo "   </tr>";
 		}
-		echo "<table>";
+		echo "</tbody>";
+		echo "</table>";
 		?>
 	</div>
 </div>
