@@ -34,49 +34,9 @@ include("auth.php"); //include auth.php file on all secure pages
 
 	<div class="container">
 		<h4>Your Advisory Research</h4>
-		<?php $user_id = $_SESSION['userid']; ?>
-		<?php
-		/*
-		if(isset($_POST['status'])){
-			if($_POST['status'] == 'accept'){
-				$status = $_POST['status'];
-			}else{
-				$status = "pending";
-			}
+		<?php $user_id = $_SESSION['userid'];
 
-			$appointment_id = $_POST['appointment_id'];
-			$query = "UPDATE `appointments` SET `status`='$status' WHERE appointment_id=$appointment_id";
-			$result = mysql_query($query) or die(mysql_error());
-
-			$querySelectAppointment = mysql_query("SELECT * FROM `appointments` WHERE appointment_id='$appointment_id' LIMIT 1");
-			$resultSelectAppointment = mysql_fetch_assoc($querySelectAppointment);
-			$date = $resultSelectAppointment['appoint_date'];
-			$research_id = $resultSelectAppointment['research_id'];
-			$faculty_id = $resultSelectAppointment['faculty_id'];
-
-			$querySelectFaculty = mysql_query("SELECT * FROM `users` WHERE user_id='$faculty_id' LIMIT 1");
-			$resultSelectFaculty = mysql_fetch_assoc($querySelectFaculty);
-			$sign = $resultSelectFaculty['lname'] . ", " . $resultSelectFaculty['fname'] . " " . $resultSelectFaculty['mname'];
-
-			if($result){
-				$insertConsultation = "INSERT into `consultations` (
-											date,
-											research_id,
-											status,
-											sign
-											) VALUES (
-											'$date',
-											'$research_id',
-											'$status',
-											'$sign')";
-				$insertConsultation = mysql_query($insertConsultation);
-			}
-		}
-		*/
-		?>
-
-		<?php
-		$query = "SELECT * FROM `researches` WHERE faculty_id='$user_id'";
+		$query = "SELECT * FROM `researches` WHERE faculty_id='$user_id' ORDER BY `research_title` ASC ";
 		$result = mysql_query($query) or die(mysql_error());
 		echo "<table class='table table-striped table-hover' style='width:100%'>";
 		echo "	 <thead>";

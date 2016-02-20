@@ -17,10 +17,11 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 <body>
 
 <div class="container">
-<p>
-    <a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_student/dashboard_student.php';?>">Home</a> |    
-    <a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a>
-</p>
+    <ul class="breadcrumb">
+        <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_student/view_research.php';?>">Back</a></li>
+        <li> <a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a></li>
+    </ul>
+
 <?php
     //access from root folder
     $path = $_SERVER['DOCUMENT_ROOT'];
@@ -156,9 +157,9 @@ include("auth.php"); //include auth.php file on all secure pages ?>
         <div class="col-md-3">
             <div class="form">
                 <h4>Add Appointment</h4>
-                <form name="registration" action="" method="post">
-                    <input type="date" placeholder="YYYY-MM-DD" name="appointmentdate" data-date-split-input="true" required/> <br/><br/>
-                    <select name="time">
+                <form class="form-horizontal" name="registration" action="" method="post">
+                    <input class="form-control" type="date" placeholder="YYYY-MM-DD" name="appointmentdate" data-date-split-input="true" required/> <br/>
+                    <select class="form-control" name="time">
                         <?php
                             $query_sched_time = "SELECT * FROM `faculty_sched_time` WHERE user_id=$facultyid";
                             $result_sched_time = mysql_query($query_sched_time) or die(mysql_error());
@@ -166,17 +167,17 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                                 echo "<option value='". $row_sched_time['id'] ."'>". $row_sched_time['start_time'] . "-" . $row_sched_time['end_time'] . " @ " . $row_sched_time['day'] ."</option>";
                             }
                         ?>
-                    </select><br/><br/>
+                    </select><br/>
                     <input type='hidden' name='consultation_type' value='<?php echo $consultation_type?>'/>
                     <input type='hidden' name='faculty_id' value='<?php echo $faculty_id;?>'/>
-                    <input type="submit" name="submit" value="Register" />
+                    <input class="btn btn-primary" type="submit" name="submit" value="Register" />
                 </form>
             </div>
         </div>
         <div class="col-md-9">
             <strong><?php echo $facultyName . ' - consultations for '. $consultation_type;?></strong>
             <?php 
-                echo "<table class='table' style='width:100%'>";
+                echo "<table class='table table-striped table-hover' style='width:100%'>";
                 echo "<thead>";
                 echo "   <tr>";
                 echo "      <th align='center'>";

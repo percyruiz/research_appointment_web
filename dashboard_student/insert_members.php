@@ -59,22 +59,29 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					'$name')";
 			$resultInsert = mysql_query($queryInsert);
 			if($resultInsert){
-				echo "<div class='form'><h3>You successfully added member.</h3><br/>Click here to <a href=http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/insert_members.php>Add another member.</a></div>";
-				echo "<a href=http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/dashboard_student.php>BACK</a></div>";
+				echo "<div class=\"alert alert-info\">Successfully added a member</div>";
 			}else{
 				echo mysql_error();
 			}
-    }else{
+    }
 ?>
 
 <div  class="container">
-<h4>Add Members</h4>
-<form name="registration" action="" method="post">
-<input type="text" name="name" placeholder="Member name" required /> <br/><br/>
-<input type="submit" name="submit" value="Register" />
-</form>
-<?php echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/dashboard_student.php'>Back</a></div>";?>
+
+	<ul class="breadcrumb">
+		<li class="active"><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_student/view_research.php';?>">Research</a></li>
+		<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_student/choose_appointment.php';?>">Appointments</a></li>
+		<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_student/insert_members.php';?>">Add Members</a></li>
+		<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_student/view_members.php';?>">View Members</a></li>
+		<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/change_password_form.php';?>">Change Password</a></li>
+		<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a></li>
+	</ul>
+
+	<h4>Add Members</h4>
+	<form class="form-horizontal" name="registration" action="" method="post">
+	<input class="form-control" type="text" name="name" placeholder="Member name" required /> <br/>
+	<input class="btn btn-primary" type="submit" name="submit" value="Register" />
+	</form>
 </div>
-<?php } ?>
 </body>
 </html>

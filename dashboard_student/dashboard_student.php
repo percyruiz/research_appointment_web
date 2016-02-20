@@ -21,7 +21,7 @@ include("auth.php"); //include auth.php file on all secure pages
 <title>Dashboard - View Records</title>
 </head>
 <body>
-	<div class="form">
+	<div class="container">
 		<p>Welcome to Student Dashboard.</p>
 		<p><a href="view_research.php">View Research</a></p>
 		<p><a href="choose_appointment.php">Manage Appointment</a><p>

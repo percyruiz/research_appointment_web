@@ -60,15 +60,18 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				}
 				else{
 				echo "<div class='form'><h4>HERE ARE THE MEMBERS.</h4><br/>";
-				echo "<table class='table' border='1' style='width:70%'>";
+				echo "<table class='table table-striped table-hover' style='width:70%'>";
+				echo "	 <thead>";
 				echo "   <tr>";
-				echo "      <td align='center'>";   
+				echo "      <th>";
 				echo "          <strong>Name</strong>";
-				echo "      </td>";
-				echo "      <td align='center'>";
+				echo "      </th>";
+				echo "      <th>";
 				echo "          <strong>Action to do</strong>";
-				echo "      </td>";
+				echo "      </th>";
 				echo "   </tr>";
+				echo "	 </thead>";
+				echo "	 <tbody>";
 				while ($row = mysql_fetch_array($resultMembers)) 
 				{
 					echo "   <tr>";
@@ -76,7 +79,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "		<div class='row'>";
 					echo "		<div class='col-md-6'>";
 					echo "		<form method='post' name='saveForm'>";					
-					echo "		<input type='text' name='name' value='". $row['name'] ."'>";
+					echo "		<input class=\"form-control\" type='text' name='name' value='". $row['name'] ."'>";
 					//$_SESSION['membername'] = $row['name'];
 					//$_SESSION['member_id'] = $row['member_id'];
 					echo "      </td>";
@@ -85,13 +88,13 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 
 					//echo '			<input type="hidden" name="membername" value='.$row['name'].'/>';
 					echo '			<input type="hidden" name="memberid" value='.$row['member_id'].'/>';
-					echo "			<input style='color:#0000FF' type='submit' name='savebutton' value='SAVE'/>";
+					echo "			<input class=\"btn btn-primary\" type='submit' name='savebutton' value='SAVE'/>";
 					echo "		</form>";
 					echo "		</div>";
 					echo "		<div class='col-md-6'>";
 					echo "		<form action='delete_member.php'  method='post' name='deleteForm'>";
 					echo '			<input type="hidden" name="memberid" value='.$row['member_id'].'/>';
-					echo "			<input style='color:#0000FF' type='submit' name='delete' value='DELETE'/>";
+					echo "			<input class=\"btn btn-primary\" type='submit' name='delete' value='DELETE'/>";
 					echo "		</form>";
 					echo "		</div>";
 					echo "		</div>";
@@ -100,11 +103,13 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "      </td>";
 					echo "   </tr>";
 				}
-				
-				echo "<table>";
-				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/dashboard_student.php'>Back</a></div>";
-				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/insert_members.php'>Add another member</a></div>";
-				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/dashboard_student.php'>Edit or Delete Member</a></div>";
+
+
+				echo "</tbody>";
+				echo "</table>";
+				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/view_research.php'>Back</a>";
+				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/insert_members.php'>Add another member</a>";
+				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/dashboard_student.php'>Edit or Delete Member</a>";
 			}
 			}else{
 				echo mysql_error();

@@ -43,6 +43,8 @@ Website: https://htmlcssphptutorial.wordpress.com
                 header("Location: dashboard_admin/dashboard_admin.php"); // Redirect user to index.php
             } else if (strcasecmp($_SESSION['usertype'],"FACULTY")==0) {
                 header("Location: dashboard_faculty/dashboard_faculty.php"); // Redirect user to index.php
+            }else if (strcasecmp($_SESSION['usertype'],"STUDENT")==0) {
+                header("Location: dashboard_student/view_research.php"); // Redirect user to index.php
             }
          }else{
 		 	echo "<div><h3>Username/password is incorrect.</h3><br/>Click here to <a href=http://". $_SERVER['SERVER_NAME'] ."/login.php>Login</a></div>";
