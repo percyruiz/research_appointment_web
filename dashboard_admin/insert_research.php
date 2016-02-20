@@ -94,31 +94,31 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				if($resultInsert){
 					
 					$queryInsert = "INSERT into `panels` (
-						research_id, 
-						user_id,
-						role						
+						research_code,
+						faculty_id,
+						user_type
 						) VALUES (
-						'$research_id', 
-						'$panel1', 
+						'$researchCode',
+						'$panel1',
 						'LEAD PANEL')";
 					$resultInsert = mysql_query($queryInsert);
 					
 					$queryInsert = "INSERT into `panels` (
-						research_id, 
-						user_id,
-						role						
+						research_code,
+						faculty_id,
+						user_type
 						) VALUES (
-						'$research_id', 
-						'$panel2', 
+						'$researchCode',
+						'$panel2',
 						'MEMBER PANEL')";
 					$resultInsert = mysql_query($queryInsert);
 					
 					$queryInsert = "INSERT into `panels` (
-						research_id, 
-						user_id,
-						role						
+						research_code,
+						faculty_id,
+						user_type
 						) VALUES (
-						'$research_id', 
+						'$researchCode',
 						'$panel3', 
 						'MEMBER PANEL')";
 					$resultInsert = mysql_query($queryInsert);
@@ -341,11 +341,11 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				echo "      </td>";
 				
 				echo "      <td style='padding: 5px;'>";
-				$queryPanel = "SELECT * FROM `panels` where `research_id`=$research_id";
+				$queryPanel = "SELECT * FROM `panels` where `research_code`=$researchCode";
 				$resultPanel = mysql_query($queryPanel) or die(mysql_error());
 				while ($rowPanel = mysql_fetch_array($resultPanel)) {
-					$panel_faculty_id = $rowPanel['user_id'];
-					echo "<strong>".$rowPanel['role'] . ":</strong> ";
+					$panel_faculty_id = $rowPanel['faculty_id'];
+					echo "<strong>".$rowPanel['user_type'] . ":</strong> ";
 					$resultFaculty = mysql_query("SELECT * FROM `users` WHERE user_id='$panel_faculty_id' LIMIT 1");
 					$faculty = mysql_fetch_assoc($resultFaculty);
 					echo 			$faculty['lname'] . ', ' .$faculty['fname'] . ' ' .  $faculty['mname'];

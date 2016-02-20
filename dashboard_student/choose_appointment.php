@@ -45,7 +45,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
             $result_r = mysql_query("SELECT * FROM `researches` WHERE student_no='$student_no' LIMIT 1");
             $research = mysql_fetch_assoc($result_r);
             $faculty_id = $research['faculty_id'];
-            $research_id = $research['research_id'];
+            $research_code = $research['research_code'];
 
             //select faculty
             $result_r = mysql_query("SELECT * FROM `users` WHERE user_id='$faculty_id' LIMIT 1");
@@ -55,7 +55,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
             $mname = $faculty['mname'];
 
             //select faculty
-            $queryPanel = "SELECT * FROM `panels` WHERE research_id='$research_id'";
+            $queryPanel = "SELECT * FROM `panels` WHERE research_id='$research_code'";
             $resultPanel = mysql_query($queryPanel) or die(mysql_error());
 
         ?>
@@ -70,7 +70,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
         <h6>PANELS</h6>
         <?php
             while ($row = mysql_fetch_array($resultPanel)) {
-                $panel_id = $row['user_id'];
+                $panel_id = $row['faculty_id'];
                 $result_r = mysql_query("SELECT * FROM `users` WHERE `user_id`='$panel_id' LIMIT 1");
                 $panel = mysql_fetch_assoc($result_r);
                 ?>
@@ -78,7 +78,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                 <form action='insert_appointment.php' method='post' name='insert_appointment'>
                     <input type='hidden' name='consultation_type' value='panel'/>
                     <input type='hidden' name='faculty_id' value='<?php echo $panel_id;?>'/>
-                    <input class="btn btn-primary" type='submit' name='status' value='<?php echo $row['role'] . ': ' . $panel['lname'] . ", " . $panel['fname'] . " " . $panel['mname'];?>'/>
+                    <input class="btn btn-primary" type='submit' name='status' value='<?php echo $row['user_type'] . ': ' . $panel['lname'] . ", " . $panel['fname'] . " " . $panel['mname'];?>'/>
                 </form><br/>
         <?php
             }
