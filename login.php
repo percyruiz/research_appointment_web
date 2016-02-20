@@ -9,7 +9,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 <head>
 <meta charset="utf-8">
 <title>Login</title>
-<link rel="stylesheet" href="css/css_login.css" />
+	<link rel="stylesheet" href="../css/bootstrap/css/login.css" />
 </head>
 <body>
 <?php
@@ -39,21 +39,33 @@ Website: https://htmlcssphptutorial.wordpress.com
 			$_SESSION['username'] = $username;
 			$_SESSION['usertype'] = $usertype;
 
-			header("Location: index.php"); // Redirect user to index.php
+            if (strcasecmp($_SESSION['usertype'],"ADMIN")==0) {
+                header("Location: dashboard_admin/dashboard_admin.php"); // Redirect user to index.php
+            } else if (strcasecmp($_SESSION['usertype'],"FACULTY")==0) {
+                header("Location: dashboard_faculty/dashboard_faculty.php"); // Redirect user to index.php
+            }
          }else{
-		 	echo "<div class='form'><h3>Username/password is incorrect.</h3><br/>Click here to <a href=http://". $_SERVER['SERVER_NAME'] ."/login.php>Login</a></div>";
+		 	echo "<div><h3>Username/password is incorrect.</h3><br/>Click here to <a href=http://". $_SERVER['SERVER_NAME'] ."/login.php>Login</a></div>";
 		 }
     }else{
 ?>
-<div class="form">
-<h1>Log In</h1>
-	<form action="" method="post" name="login">
-		<input type="text" name="username" placeholder="Username" required />
-		<input type="password" name="password" placeholder="Password" required />
-		<input name="submit" type="submit" value="Login" />
-	</form>
-<p>Not registered yet? <a href='/dir_users/add_user.php'>Register Here</a></p>
+
+<div class="container">
+
+    <div id="logbox">
+        <form id="signup" action="" method="post" name="login">
+            <h1>researchAppointment</h1>
+            <input type="text" class="input pass" name="username" placeholder="Username" required autofocus>
+            <input type="password" class="input pass" placeholder="Password"  name="password" required>
+            <input type="submit" value="Sign me in!" class="inputButton"/>
+            <div class="text-center"">
+                <a href="/dir_users/add_user.php" >Create an account </a>
+            </div>
+        </form>
+    </div>
+
 </div>
+
 <?php } ?>
 </body>
 </html>

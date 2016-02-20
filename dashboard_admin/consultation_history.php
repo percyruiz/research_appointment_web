@@ -22,40 +22,42 @@ include("auth.php");
 		$path .= "/db.php";
 		require($path);
 	?>
-			<p>
-				<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/index.php';?>">Home</a> |	 
-				<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/consultation_history.php';?>">Consultation History</a> |
-				<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/dashboard_admin.php';?>">Manage Faculty</a> |
-				<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/student_profiles.php';?>">Manage Student</a> |
-				<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/insert_research.php';?>">Add Research</a> |
-				<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a>
-			</p>
+			<ul class="breadcrumb">
+				<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/dashboard_admin.php';?>">Manage Faculty</a></li>
+				<li class="active"><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/consultation_history.php';?>">Consultation History</a></li>
+				<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/student_profiles.php';?>">Manage Student</a></li>
+				<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/insert_research.php';?>">Add Research</a></li>
+				<li> <a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a></li>
+			</ul>
 
 			<h4>Consultation History</h4>
 			<?php
 				$query = "SELECT * FROM `consultations` ORDER BY `consultation_id` DESC";
 				$result = mysql_query($query) or die(mysql_error());
-				echo "<table class='table' border='1' style='width:100%'>";
+				echo "<table class='table table-striped table-hover' style='width:100%'>";
+				echo "	 <thead>";
 				echo "	 <tr>";
-				echo "	 	<td align='center'>";	
+				echo "	 	<th align='center'>";
 				echo "	 		<strong>id</strong>";
-				echo "	 	</td>";
-				echo "	 	<td align='center'>";	
+				echo "	 	</th>";
+				echo "	 	<th align='center'>";
 				echo "	 		<strong>research title</strong>";
-				echo "	 	</td>";
-				echo "	 	<td align='center'>";	
+				echo "	 	</th>";
+				echo "	 	<th align='center'>";
 				echo "	 		<strong>date</strong>";
-				echo "	 	</td>";
-				echo "	 	<td align='center'>";	
+				echo "	 	</th>";
+				echo "	 	<th align='center'>";
 				echo "	 		<strong>remarks</strong>";
-				echo "	 	</td>";
-				echo "	 	<td align='center'>";	
+				echo "	 	</th>";
+				echo "	 	<th align='center'>";
 				echo "	 		<strong>status</strong>";
-				echo "	 	</td>";
-				echo "	 	<td align='center'>";	
+				echo "	 	</th>";
+				echo "	 	<th align='center'>";
 				echo "	 		<strong>sign</strong>";
-				echo "	 	</td>";
+				echo "	 	</th>";
 				echo "	 </tr>";
+				echo "	 </thead>";
+				echo "	 <tbody>";
 				while ($row = mysql_fetch_array($result)) {
 					$research_id = $row['research_id'];
 					
@@ -91,7 +93,8 @@ include("auth.php");
 
 					echo "   </tr>";
 				}
-				echo "<table>";
+				echo "</tbody>";
+				echo "</table>";
 			?>		
 		</div>
 	</body>
