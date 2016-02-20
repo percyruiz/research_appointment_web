@@ -24,9 +24,14 @@ Website: https://htmlcssphptutorial.wordpress.com
 
 	<body>
 		<div class="container">
-			<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout |</a>
-			<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/change_password_form.php';?>">Change Password</a>
-			<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_faculty/handled_researches.php';?>">View Researches Handled</a>
+
+			<ul class="breadcrumb">
+				<li class="active"><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_faculty/dashboard_faculty.php';?>">Appointments</a></li>
+				<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_faculty/handled_researches.php';?>">View Researches Handled</a></li>
+				<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/change_password_form.php';?>">Change Password</a></li>
+				<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout </a></li>
+			</ul>
+
 			<div class="container">
 				<h4>Your appointments</h4>
 				<?php $user_id = $_SESSION['userid']; ?>
@@ -71,30 +76,33 @@ Website: https://htmlcssphptutorial.wordpress.com
 				<?php
 					$query = "SELECT * FROM `appointments` WHERE faculty_id='$user_id'";
 					$result = mysql_query($query) or die(mysql_error());
-					echo "<table class='table' border='1' style='width:100%'>";
+					echo "<table class='table table-striped table-hover' style='width:100%'>";
+					echo "	 <thead>";
 					echo "	 <tr>";
-					echo "	 	<td align='center'>";	
+					echo "	 	<th>";
 					echo "	 		<strong>TITLE</strong>";
-					echo "	 	</td>";
-					echo "	 	<td align='center'>";	
+					echo "	 	</th>";
+					echo "	 	<th>";
 					echo "	 		<strong>DATE</strong>";
-					echo "	 	</td>";
-					echo "	 	<td align='center'>";	
+					echo "	 	</th>";
+					echo "	 	<th>";
 					echo "	 		<strong>START</strong>";
-					echo "	 	</td>";
-					echo "	 	<td align='center'>";	
+					echo "	 	</th>";
+					echo "	 	<th>";
 					echo "	 		<strong>END</strong>";
-					echo "	 	</td>";
-					echo "	 	<td align='center'>";	
+					echo "	 	</th>";
+					echo "	 	<th>";
 					echo "	 		<strong>DAY</strong>";
-					echo "	 	</td>";
-					echo "	 	<td align='center'>";
+					echo "	 	</th>";
+					echo "	 	<th>";
 					echo "	 		<strong>TYPE</strong>";
-					echo "	 	</td>";
-					echo "	 	<td align='center'>";	
+					echo "	 	</th>";
+					echo "	 	<th>";
 					echo "	 		<strong>ACTION</strong>";
-					echo "	 	</td>";
+					echo "	 	</th>";
 					echo "	 </tr>";
+					echo "	 </thead>";
+					echo "	 <tbody>";
 					while ($row = mysql_fetch_array($result)) {
 						
 						$research_id = $row['research_id'];
@@ -110,7 +118,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 						echo 			"<a href='research.php?id=$research_id'>" .$row_researches['research_title'] . "</a>";
 						echo "      </td>";
 
-						echo "      <td width='20%' style='padding: 5px;'>";
+						echo "      <td width='15%' style='padding: 5px;'>";
 						echo 			$row['appoint_date'];
 						echo "      </td>";
 
@@ -138,33 +146,34 @@ Website: https://htmlcssphptutorial.wordpress.com
 						echo 			$row['consultation_type'];
 						echo "      </td>";
 
-						echo "      <td width='15%' align='center'>";
+						echo "      <td width='20%' align='center'>";
 										if($row['status']=='pending'){
 											echo "	<div class='row'>
 														<div class='col-md-6'>
 															<form action='' method='post' name='dashboard_faculty'>
 															<input type='hidden' name='appointment_id' value='$appointment_id'/> 
-															<input style='color:#0000FF' type='submit' name='status' value='accept'/> 
+															<input class=\"btn btn-primary\" style='color:#0000FF' type='submit' name='status' value='accept'/>
 															</form>
 														</div> ";
 											echo "		<div class='col-md-6'>
 															<form action='resched_appointment.php' method='post' name='resched_appointment'>
 																<input type='hidden' name='appointment_id' value='$appointment_id'/> 
 																<input type='hidden' name='faculty_sched_time_id' value='$sched_time_id'/> 
-																<input style='color:#FF0000' type='submit' name='status' value='resched'/> 
+																<input class=\"btn btn-primary\" style='color:#FF0000' type='submit' name='status' value='resched'/>
 															</form>
 														</div>
 													</div>";
 										}else{
-											echo "	<form action='' method='post' name='dashboard_faculty'>
+											echo "	<form  action='' method='post' name='dashboard_faculty'>
 														<input type='hidden' name='appointment_id' value='$appointment_id'/> 
-														<input style='color:#FF0000' type='submit' name='status' value='remove'/> 
+														<input class=\"btn btn-primary\" style='color:#FF0000' type='submit' name='status' value='remove'/>
 													</form> ";
 										}
 						echo "      </td>";
 						echo "   </tr>";
 					}
-					echo "<table>";
+					echo "</tbody>";
+					echo "</table>";
 				?>
 			</div>
 		</div>

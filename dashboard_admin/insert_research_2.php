@@ -148,57 +148,57 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 		?>
 
 
-		<p>
-			<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/index.php';?>">Home</a> |	 
-			<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/consultation_history.php';?>">Consultation History</a> |
-			<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/dashboard_admin.php';?>">Manage Faculty</a> |
-			<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/student_profiles.php';?>">Manage Student</a> |			
-			<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/insert_research.php';?>">Add Research</a> |
-			<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a>
-		</p>
+		<ul class="breadcrumb">
+			<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/dashboard_admin.php';?>">Manage Faculty</a></li>
+			<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/consultation_history.php';?>">Consultation History</a></li>
+			<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/student_profiles.php';?>">Manage Student</a></li>
+			<li class="active"><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/insert_research.php';?>">Add Research</a></li>
+			<li> <a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a></li>
+		</ul>
 		<div class="row">
 			<div class="col-md-3">
 				<h4>Add Research 2</h4>
-				<form name="registration" action="" method="post">
+				<form class="form-horizontal" name="registration" action="" method="post">
 				<?php
 					echo "<input type='hidden' name='student_no' value='" .$student_num. "' readonly /> ";
+
 					echo "<input type='hidden' name='research_id1' value='" .$research_id1. "' readonly /> ";
-					echo "<input type='text' name='research_code' value='Code: " .$researchcodeT1. "' readonly /> <br/><br/>";
-					echo "<input type='text' name='researchTitle2' value='" .$researchtitleT1. "' readonly /> <br/><br/>";
-					echo "<input type='text' name='researchtypeR2' value='" .$researchtype. "' readonly /> <br/><br/>";
-					
+					echo "<input class=\"form-control\" type='text' name='research_code' value='Code: " .$researchcodeT1. "' readonly /> <br/><br/>";
+					echo "<input class=\"form-control\" type='text' name='researchTitle2' value='" .$researchtitleT1. "' readonly /> <br/><br/>";
+					echo "<input class=\"form-control\" type='text' name='researchtypeR2' value='" .$researchtype. "' readonly /> <br/><br/>";
+
 							$queryFaculty = "SELECT * FROM `users` WHERE LOWER(`user_type`)=LOWER('FACULTY')";
 							$resultFaculty = mysql_query($queryFaculty) or die(mysql_error());
 							$rows = mysql_num_rows($resultFaculty);
 
 							if($rows > 0){
-								echo "<select name='adviser'>";
+								echo "<select class=\"form-control\" name='adviser'>";
 								while ($row = mysql_fetch_array($resultFaculty)) 
 								{
 									$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
 									$facultyId = $row['user_id'];
 									echo "<option value='$facultyId'>$faculty</option><br/>";
 								}
-								echo "</select><br/><br/>";
+								echo "</select><br/>";
 							}
 
 							
-						echo "<select name = 'schoolyear'>";
+						echo "<select class=\"form-control\" name = 'schoolyear'>";
 							for ($x = 2015; $x < 2030; $x++) {
 								$temp = $x+1;
 								$value = $x." - ".$temp;
 								echo "<option value='$value'>$value</option>";
 							}
-						echo "</select><br/><br/>";
+						echo "</select><br/>";
 					?>
-					<select name="semester" required>
+					<select class="form-control" name="semester" required>
 					  <option value="firstsem">1st Sem</option>
 					  <option value="secondsem">2nd Sem</option>
 					  <option value="summer">Summer</option>
-					</select> <br/><br/>
+					</select> <br/>
 			</div>
 			<div class="col-md-9">
-				<br/><br/><br/>
+				<br/>
 				<strong>Lead Panel</strong>
 				<?php
 				//select panel 1
@@ -207,14 +207,14 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				$rows = mysql_num_rows($resultLeadPanel);
 
 				if($rows > 0){
-					echo "<select name='panel1'>";
+					echo "<select class=\"form-control\" name='panel1'>";
 					while ($row = mysql_fetch_array($resultLeadPanel))
 					{
 						$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
 						$facultyId = $row['user_id'];
 						echo "<option value='$facultyId'>$faculty</option><br/>";
 					}
-					echo "</select><br/><br/>";
+					echo "</select><br/>";
 				}
 
 				echo "<strong>Panel Member</strong>";
@@ -224,14 +224,14 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				$rows = mysql_num_rows($resultMemberPanel1);
 
 				if($rows > 0){
-					echo "<select name='panel2'>";
+					echo "<select class=\"form-control\" name='panel2'>";
 					while ($row = mysql_fetch_array($resultMemberPanel1))
 					{
 						$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
 						$facultyId = $row['user_id'];
 						echo "<option value='$facultyId'>$faculty</option><br/>";
 					}
-					echo "</select><br/><br/>";
+					echo "</select><br/>";
 				}
 
 				echo "<strong>Panel Member</strong>";
@@ -241,17 +241,17 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				$rows = mysql_num_rows($resultMemberPanel2);
 
 				if($rows > 0){
-					echo "<select name='panel3'>";
+					echo "<select class=\"form-control\" name='panel3'>";
 					while ($row = mysql_fetch_array($resultMemberPanel2))
 					{
 						$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
 						$facultyId = $row['user_id'];
 						echo "<option value='$facultyId'>$faculty</option><br/>";
 					}
-					echo "</select><br/><br/>";
+					echo "</select><br/>";
 				}
 				?>
-				<input type="submit" name="submit" value="Register" />
+				<input class="btn btn-primary" type="submit" name="submit" value="Register" />
 				</form>
 			</div>
 		</div>
@@ -261,7 +261,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				<?php
 					$query = "SELECT * FROM `researches` ORDER BY `research_id` DESC";
 					$result = mysql_query($query) or die(mysql_error());
-					echo "<table class='table' border='1' style='width:100%'>";
+					echo "<table class='table table-striped table-hover' style='width:100%'>";
 				echo "   <thead>";
 				echo "	 <tr>";
 				echo "	 	<th align='center'>";
@@ -365,9 +365,9 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "      </td>";
 
 					echo "   </tr>";
-					echo "   </tbody>";
 				}
-					echo "<table>";
+				echo "   </tbody>";
+				echo "<table>";
 				?>
 		</div>
 

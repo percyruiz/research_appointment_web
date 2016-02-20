@@ -10,7 +10,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 <head>
 <meta charset="utf-8">
 <title>Registration</title>
-<link rel="stylesheet" href="../css/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" href="../css/bootstrap/css/login.css" />
 </head>
 <body>
 <?php
@@ -78,7 +78,10 @@ Website: https://htmlcssphptutorial.wordpress.com
 					WHERE research_code='$username'";
 			$resultResearches = mysql_query($queryResearches);
 			if($resultResearches){
-				echo "You are registered successfully. Click here to <a href=http://". $_SERVER['SERVER_NAME'] ."/login.php>Login</a></div>";
+				echo " <div class='alert alert-dismissible alert-info'>" .
+					"You are registered successfully. Click here to <a href=http://".
+					$_SERVER['SERVER_NAME'] ."/login.php>Login</a></div>";
+
 			}
 		}else{
 			echo mysql_error();
@@ -86,19 +89,20 @@ Website: https://htmlcssphptutorial.wordpress.com
 	}
 	?>
 	<div class="form container">
-	<h3>Registration</h3>
-		<form name="registration" action="" method="post">
-			<input type="text" name="username" placeholder="Username/Research Code" required /><br/><br/>
-			<input type="password" name="password" placeholder="Password" required /><br/><br/>
-
-			<input type="text" name="fname" placeholder="First Name" required /><br/><br/>
-			<input type="text" name="mname" placeholder="Middle Name" required /><br/><br/>
-			<input type="text" name="lname" placeholder="Last Name" required /><br/><br/>
-			<input type="number" name="studentnum" placeholder="Student Number" min="0" max="99999999999" required /><br/><br/>
-			<input type="email" name="email" placeholder="Email" required /><br/><br/>
-			<input type="text" name="contact" placeholder="Contact Number" required /><br/><br/>
-			<input type="submit" name="submit" value="Register" /><br/><br/>
-		</form>
+		<div id="logbox">
+			<form name="registration" action="" method="post" id="signup">
+				<h1>create an account</h1>
+				<input class="input pass" type="text" name="username" placeholder="Username/Research Code" required />
+				<input class="input pass" type="password" name="password" placeholder="Password" required />
+				<input class="input pass" type="text" name="fname" placeholder="First Name" required />
+				<input class="input pass" type="text" name="mname" placeholder="Middle Name" required />
+				<input class="input pass" type="text" name="lname" placeholder="Last Name" required />
+				<input class="input pass" type="number" name="studentnum" placeholder="Student Number" min="0" max="99999999999" required />
+				<input class="input pass" type="email" name="email" placeholder="Email" required />
+				<input class="input pass" type="text" name="contact" placeholder="Contact Number" required />
+				<input class="inputButton" type="submit" name="submit" value="Register" />
+			</form>
+		</div>
 	</div>
 </body>
 </html>

@@ -17,6 +17,16 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 <body>
 
 <div class="container">
+
+	<ul class="breadcrumb">
+		<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_student/view_research.php';?>">Research</a></li>
+		<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_student/choose_appointment.php';?>">Appointments</a></li>
+		<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_student/insert_members.php';?>">Add Members</a></li>
+		<li class="active"><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_student/view_members.php';?>">View Members</a></li>
+		<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/change_password_form.php';?>">Change Password</a></li>
+		<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a></li>
+	</ul>
+
 <?php
 	// require('db.php');
 	//access from root folder
@@ -39,13 +49,16 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 		}else{
 
 			if($resultMembers){
-				echo "<div class='form'><h4>HERE ARE THE MEMBERS.</h4><br/>";
-				echo "<table class='table' border='1' style='width:100%'>";
+				echo "<strong>HERE ARE THE MEMBERS.</strong>";
+				echo "<table class='table table-striped table-hover table-nonfluid'>";
+				echo "	 <thead>";
 				echo "   <tr>";
-				echo "      <td align='center'>";   
+				echo "      <th>";
 				echo "          <strong>Name</strong>";
-				echo "      </td>";
+				echo "      </th>";
 				echo "   </tr>";
+				echo "	 </thead>";
+				echo "	 <tbody>";
 				while ($row = mysql_fetch_array($resultMembers)) 
 				{
 					echo "   <tr>";
@@ -54,11 +67,11 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "      </td>";
 					echo "   </tr>";
 				}
-				
-				echo "<table>";
-				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/dashboard_student.php'>Back</a></div>";
-				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/insert_members.php'>Add another member</a></div>";
-				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/edit_delete_members.php'>Edit or Delete Member</a></div>";
+
+				echo "</tbody>";
+				echo "</table>";
+				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/insert_members.php'>Add another member</a>";
+				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/edit_delete_members.php'>Edit or Delete Member</a>";
 			}else{
 				echo mysql_error();
 			}

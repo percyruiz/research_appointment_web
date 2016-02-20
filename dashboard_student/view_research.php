@@ -17,6 +17,15 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 <body>
 
 <div class="container">
+    <ul class="breadcrumb">
+        <li class="active"><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_student/view_research.php';?>">Research</a></li>
+        <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_student/choose_appointment.php';?>">Appointments</a></li>
+        <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_student/insert_members.php';?>">Add Members</a></li>
+        <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_student/view_members.php';?>">View Members</a></li>
+        <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/change_password_form.php';?>">Change Password</a></li>
+        <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a></li>
+    </ul>
+
 <?php
 	// require('db.php');
 	//access from root folder
@@ -44,33 +53,36 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 
         if($result){
             echo "<div class='form'><h4>HERE ARE THE RESULTS.</h4><br/>";
-            echo "<table class='table' border='1' style='width:100%'>";
+            echo "<table class='table table-striped table-hover' style='width:100%'>";
+            echo "	 <thead>";
             echo "   <tr>";
-            echo "      <td align='center'>";   
+            echo "      <th>";
             echo "          <strong>Title</strong>";
-            echo "      </td>";
-            echo "      <td align='center'>";   
+            echo "      </th>";
+            echo "      <th>";
             echo "          <strong>Research Type</strong>";
-            echo "      </td>";
-            echo "      <td align='center'>";   
+            echo "      </th>";
+            echo "      <th>";
             echo "          <strong>Percentage</strong>";
-            echo "      </td>";
+            echo "      </th>";
             echo "      <td align='center'>";   
             echo "          <strong>SY</strong>";
             echo "      </td>";
-            echo "      <td align='center'>";   
+            echo "      <th>";
             echo "          <strong>Sem Type</strong>";
-            echo "      </td>";
-            echo "      <td align='center'>";   
+            echo "      </th>";
+            echo "      <th>";
             echo "          <strong>Adviser</strong>";
-            echo "      </td>";
-            echo "      <td align='center'>";   
+            echo "      </th>";
+            echo "      <th>";
             echo "          <strong>Student No</strong>";
-            echo "      </td>";
-			echo "      <td align='center'>";   
+            echo "      </th>";
+			echo "      <th>";
             echo "          <strong>Panels</strong>";
-            echo "      </td>";
+            echo "      </th>";
             echo "   </tr>";
+            echo "	 </thead>";
+            echo "	 <tbody>";
             while ($row = mysql_fetch_array($result)) 
             {
                 echo "   <tr>";
@@ -129,18 +141,8 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				echo "      </td>";
 				echo "   </tr>";
 			}
-            
+            echo "</tbody>";
             echo "</table>";
-			
-			/*
-			if($rows == 0){
-				echo "<br/>No Research Researh.<a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/insert_research.php'><br/>Add Research.</a></div>";
-			}else{
-				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/update_research.php'>Edit Research</a></div>";
-				echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/delete_research.php'>Delete Research</a></div>";
-			}
-			*/
-            echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/dashboard_student.php'>Back</a></div>";
         }else{
         	echo mysql_error();
         }

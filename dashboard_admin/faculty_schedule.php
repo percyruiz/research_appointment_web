@@ -15,12 +15,13 @@ include("auth.php");
 	<body>
 
 	<div class="container">
-	<p>
-		<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/dashboard_admin.php';?>">Home</a> |	 
-		<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a>
-	</p>
-	<h4>Manage Users </h4>
 
+	<ul class="breadcrumb">
+		<li class="active"><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/dashboard_admin.php';?>">Back</a></li>
+		<li> <a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a></li>
+	</ul>
+
+	<h4>Manage Users </h4>
 
 	<?php
 	// require('db.php');
@@ -58,11 +59,11 @@ include("auth.php");
 			<div class="row">
 				<div class="col-md-3">
 					<div class="form container">
-					<h5>add schedule</h5>
-						<form name="add_schedule" action="" method="post">
-							<input type="time" name="time_start" placeholder="Start Time" required/> <br/><br/>
-							<input type="time" name="time_end" placeholder="End Time" required/> <br/><br/>
-							<select name="day">
+					<strong>add schedule</strong>
+						<form class="form-horizontal" name="add_schedule" action="" method="post">
+							<input class="form-control" type="time" name="time_start" placeholder="Start Time" required/> <br/>
+							<input class="form-control" type="time" name="time_end" placeholder="End Time" required/> <br/>
+							<select class="form-control" name="day">
 							  <option value="Monday">Monday</option>
 							  <option value="Tuesday">Tuesday</option>
 							  <option value="Wednesday">Wednesday</option>
@@ -71,27 +72,30 @@ include("auth.php");
 							  <option value="Saturday">Saturday</option>
 							  <option value="Sunday">Sunday</option>
 							</select><br/><br/>
-							<input type="submit" name="submit" value="Add" /><br/><br/>
+							<input class="btn btn-primary" type="submit" name="submit" value="Add" /><br/><br/>
 						</form>
 					</div>
 					</div>
 					<div class="col-md-9">
-					<h5><?php echo  $faculty['fname'] . '\'s schedule'; ?></h5>
+					<strong><?php echo  $faculty['fname'] . '\'s schedule'; ?></strong>
 					<?php
 						$query = "SELECT * FROM `faculty_sched_time` WHERE user_id=$user_id";
 						$result = mysql_query($query) or die(mysql_error());
-						echo "<table class='table' border='1' style='width:100%'>";
+						echo "<table class='table table-striped table-hover' style='width:100%'>";
+						echo "	 <thead>";
 						echo "	 <tr>";
-						echo "	 	<td align='center'>";	
+						echo "	 	<td>";
 						echo "	 		<strong>day</strong>";
 						echo "	 	</td>";
-						echo "	 	<td align='center'>";	
+						echo "	 	<td>";
 						echo "	 		<strong>start time</strong>";
 						echo "	 	</td>";
-						echo "	 	<td align='center'>";	
+						echo "	 	<td>";
 						echo "	 		<strong>end time</strong>";
 						echo "	 	</td>";
 						echo "	 </tr>";
+						echo "	 </thead>";
+						echo "	 <tbody>";
 						while ($row = mysql_fetch_array($result)) {
 							echo "   <tr>";
 							echo "      <td style='padding: 5px;'>";
@@ -116,7 +120,8 @@ include("auth.php");
 
 							echo "   </tr>";
 						}
-						echo "<table>";
+						echo "</tbody>";
+						echo "</table>";
 					?>		 	
 				</div>
 			</div>

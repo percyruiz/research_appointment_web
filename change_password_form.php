@@ -9,17 +9,23 @@ Website: https://htmlcssphptutorial.wordpress.com
 <head>
 <meta charset="utf-8">
 <title>Change Password</title>
-<link rel="stylesheet" href="css/css_login.css" />
+	<link rel="stylesheet" href="../css/bootstrap/css/bootstrap.css" />
 </head>
-<body>
-<div class="form">
-<h1>Change Password</h1>
-	<form action="change_password.php" method="post" name="ChangePass">
-		<input type="password" name="oldpassword" placeholder="Old Password" required />
-		<input type="password" name="newpassword" placeholder="New Password" required />
-		<input type="password" name="confirmpassword" placeholder="New Password" required />
-		<input name="submit" type="submit" value="Change Password" />
-	</form>
-</div>
+	<body>
+	<div class="container">
+		<ul class="breadcrumb">
+			<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout </a></li>
+		</ul>
+
+		<div class="form">
+		<h1>Change Password</h1>
+			<form class="form-horizontal" action="change_password.php" method="post" name="ChangePass">
+				<input class="form-control" type="password" name="oldpassword" placeholder="Old Password" required /><br/>
+				<input class="form-control" type="password" name="newpassword" placeholder="New Password" required /><br/>
+				<input class="form-control" type="password" name="confirmpassword" placeholder="New Password" required /><br/>
+				<input class="btn btn-primary" name="submit" type="submit" value="Change Password" />
+			</form>
+		</div>
+	</div>
 </body>
 </html>

@@ -24,10 +24,11 @@ Website: https://htmlcssphptutorial.wordpress.com
 
 	<body>
 		<div class="container">
-			<p>
-				<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_faculty/dashboard_faculty.php';?>">Back</a> |
-				<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a>
-			</p>
+
+			<ul class="breadcrumb">
+				<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/dashboard_admin.php';?>">Back</a></li>
+				<li class="active"> <a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a></li>
+			</ul>
 		
 			<?php $user_id = $_SESSION['userid']; ?>
 			<?php 
@@ -80,7 +81,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 						$query = "UPDATE `appointments` SET `appoint_date`='$resched_date', `sched_time_id`='$faculty_sched_time_id', `remarks`='$resched_remark' WHERE appointment_id=$resched_appointment_id";
 						$result = mysql_query($query) or die(mysql_error());
 						if($result){
-							echo "Update Succesful!";
+							echo "<div class=\"alert alert-info\">Update Succesful!</div>";
 							
 							$querySelectAppointment = mysql_query("SELECT * FROM `appointments` WHERE appointment_id='$resched_appointment_id' LIMIT 1");
 							$resultSelectAppointment = mysql_fetch_assoc($querySelectAppointment);
@@ -110,11 +111,11 @@ Website: https://htmlcssphptutorial.wordpress.com
 			
 			<div class="form">
                 <h4>Reschedule Appointment</h4>
-                <form name="resched" action="" method="post">
-                    <input value="<?php echo $resched_date?>" type="date" placeholder="YYYY-MM-DD" name="resched_date" data-date-split-input="true" required/> <br/><br/>
+                <form class="form-horizontal" name="resched" action="" method="post">
+                    <input class="form-control" value="<?php echo $resched_date?>" type="date" placeholder="YYYY-MM-DD" name="resched_date" data-date-split-input="true" required/> <br/>
 					<input type='hidden' name='resched_appointment_id' value='<?php echo "$resched_appointment_id"; ?>'/>
 					<input type='hidden' name='faculty_id' value='<?php echo "$faculty_id"; ?>'/>
-                    <select name="resched_time">
+                    <select class="form-control" name="resched_time">
                         <?php
                             $query_sched_time = "SELECT * FROM `faculty_sched_time` WHERE user_id=$faculty_id";
                             $result_sched_time = mysql_query($query_sched_time) or die(mysql_error());
@@ -138,10 +139,10 @@ Website: https://htmlcssphptutorial.wordpress.com
                             	}
                             }
                         ?>
-                    </select><br/><br/>
+                    </select><br/>
 					<textarea name='remarks' rows="4" cols="30"><?php echo substr($resched_remark, 14, strlen($resched_remark)-1);?></textarea>
 					<br/><br/>
-                    <input type="submit" name="submit" value="Update" />
+                    <input class="btn btn-primary" type="submit" name="submit" value="Update" />
                 </form>
             </div>
 		</div>

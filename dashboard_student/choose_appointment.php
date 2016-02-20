@@ -17,10 +17,14 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 <body>
 
     <div class="container">
-        <p>
-            <a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_student/dashboard_student.php';?>">Home</a> |
-            <a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a>
-        </p>
+        <ul class="breadcrumb">
+            <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_student/view_research.php';?>">Research</a></li>
+            <li class="active"><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_student/choose_appointment.php';?>">Appointments</a></li>
+            <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_student/insert_members.php';?>">Add Members</a></li>
+            <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_student/view_members.php';?>">View Members</a></li>
+            <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/change_password_form.php';?>">Change Password</a></li>
+            <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a></li>
+        </ul>
         <?php
             $path = $_SERVER['DOCUMENT_ROOT'];
             $path .= "/db.php";
@@ -60,7 +64,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
         <form action='insert_appointment.php' method='post' name='insert_appointment'>
             <input type='hidden' name='consultation_type' value='advisee'/>
             <input type='hidden' name='faculty_id' value='<?php echo $faculty_id;?>'/>
-            <input type='submit' name='status' value='<?php echo $lname . ", " . $fname . " " . $mname;?>'/>
+            <input class="btn btn-primary" type='submit' name='status' value='<?php echo $lname . ", " . $fname . " " . $mname;?>'/>
         </form><br/>
 
         <h6>PANELS</h6>
@@ -74,7 +78,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                 <form action='insert_appointment.php' method='post' name='insert_appointment'>
                     <input type='hidden' name='consultation_type' value='panel'/>
                     <input type='hidden' name='faculty_id' value='<?php echo $panel_id;?>'/>
-                    <input type='submit' name='status' value='<?php echo $row['role'] . ': ' . $panel['lname'] . ", " . $panel['fname'] . " " . $panel['mname'];?>'/>
+                    <input class="btn btn-primary" type='submit' name='status' value='<?php echo $row['role'] . ': ' . $panel['lname'] . ", " . $panel['fname'] . " " . $panel['mname'];?>'/>
                 </form><br/>
         <?php
             }

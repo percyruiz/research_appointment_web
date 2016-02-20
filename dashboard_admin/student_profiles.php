@@ -28,31 +28,34 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 		?>
 
 
-		<p>
-			<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/index.php';?>">Home</a> |	 
-			<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/consultation_history.php';?>">Consultation History</a> |
-			<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/dashboard_admin.php';?>">Manage Faculty</a> |
-			<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/student_profiles.php';?>">Manage Student</a> |			
-			<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/insert_research.php';?>">Add Research</a> |
-			<a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a>
-		</p>
+		<ul class="breadcrumb">
+			<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/dashboard_admin.php';?>">Manage Faculty</a></li>
+			<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/consultation_history.php';?>">Consultation History</a></li>
+			<li class="active"><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/student_profiles.php';?>">Manage Student</a></li>
+			<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/insert_research.php';?>">Add Research</a></li>
+			<li> <a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a></li>
+		</ul>
+
 		<div class="row">
 			<div class="col-md-9">
 				<h4>Student Profiles</h4>
 				<?php
 					$query = "SELECT * FROM `users` WHERE LOWER(`user_type`) = LOWER('STUDENT')";
 					$result = mysql_query($query) or die(mysql_error());
-					echo "<table class='table' border='1' style='width:100%'>";
+					echo "<table class='table table-striped table-hover' style='width:100%'>";
+					echo "	 <thead>";
 					echo "	 <tr>";
-					echo "	 	<td align='center'>";	
+					echo "	 	<th align='center'>";
 					echo "	 		<strong>Name</strong>";
-					echo "	 	</td>";
-					echo "	 	<td align='center'>";	
-					echo "	 		<strong>Username</strong>";
-					echo "	 	</td>";
-					echo "	 	<td align='center'>";	
+					echo "	 	</th>";
+					echo "	 	<th align='center'>";
+					echo "	 		<strong>Username/Research Code</strong>";
+					echo "	 	</th>";
+					echo "	 	<th align='center'>";
 					echo "	 		<strong>Password</strong>";
-					echo "	 	</td>";
+					echo "	 	</th>";
+					echo "	 </thead>";
+					echo "	 <tbody>";
 					while ($row = mysql_fetch_array($result)) {
 						echo "   <tr>";
 
@@ -72,7 +75,8 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 
 						echo "   </tr>";
 					}
-					echo "<table>";
+					echo "</tbody>";
+					echo "</table>";
 				?>
 			</div>
 		</div>
