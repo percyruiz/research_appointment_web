@@ -163,7 +163,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				<?php
 					echo "<input type='hidden' name='student_no' value='" .$student_num. "' readonly /> ";
 					echo "<input type='hidden' name='research_id1' value='" .$research_id1. "' readonly /> ";
-					echo "<input type='text' name='research_code' value='" .$researchcodeT1. "' readonly /> <br/><br/>";
+					echo "<input type='text' name='research_code' value='Code: " .$researchcodeT1. "' readonly /> <br/><br/>";
 					echo "<input type='text' name='researchTitle2' value='" .$researchtitleT1. "' readonly /> <br/><br/>";
 					echo "<input type='text' name='researchtypeR2' value='" .$researchtype. "' readonly /> <br/><br/>";
 					
