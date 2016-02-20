@@ -161,11 +161,12 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				<form class="form-horizontal" name="registration" action="" method="post">
 				<?php
 					echo "<input type='hidden' name='student_no' value='" .$student_num. "' readonly /> ";
-					echo "<inputtype='hidden' name='research_id1' value='" .$research_id1. "' readonly /> ";
-					echo "<input class=\"form-control\" type='text' name='research_code' value='" .$researchcodeT1. "' readonly /> <br/>";
-					echo "<input class=\"form-control\" type='text' name='researchTitle2' value='" .$researchtitleT1. "' readonly /> <br/>";
-					echo "<input class=\"form-control\" type='text' name='researchtypeR2' value='" .$researchtype. "' readonly /> <br/>";
-					
+
+					echo "<input type='hidden' name='research_id1' value='" .$research_id1. "' readonly /> ";
+					echo "<input class=\"form-control\" type='text' name='research_code' value='Code: " .$researchcodeT1. "' readonly /> <br/><br/>";
+					echo "<input class=\"form-control\" type='text' name='researchTitle2' value='" .$researchtitleT1. "' readonly /> <br/><br/>";
+					echo "<input class=\"form-control\" type='text' name='researchtypeR2' value='" .$researchtype. "' readonly /> <br/><br/>";
+
 							$queryFaculty = "SELECT * FROM `users` WHERE LOWER(`user_type`)=LOWER('FACULTY')";
 							$resultFaculty = mysql_query($queryFaculty) or die(mysql_error());
 							$rows = mysql_num_rows($resultFaculty);
