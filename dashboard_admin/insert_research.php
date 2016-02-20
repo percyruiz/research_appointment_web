@@ -33,7 +33,16 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				$schoolyear = $_POST['schoolyear'];
 				$semester = $_POST['semester'];
 				$facultyId = $_POST['adviser'];
-				$researchCode = $_POST['research_code'];
+
+				$researchIdQuery = "SELECT * FROM researches ORDER BY `research_id` DESC LIMIT 1";
+				$researchIdResult = mysql_query($researchIdQuery) or die(mysql_error());
+				while($researchIdRow = mysql_fetch_assoc($researchIdResult)) {
+					$researchIdCode = $researchIdRow['research_id'] + 1;
+				}
+
+				//$researchId= mysql_insert_id();
+				$schoolyearForRcode = preg_replace("/[^A-Za-z0-9]/", "", $schoolyear);
+				$researchCode = $schoolyearForRcode ."". $researchIdCode;
 				$panel1 = $_POST['panel1'];
 				$panel2 = $_POST['panel2'];
 				$panel3 = $_POST['panel3'];
@@ -148,7 +157,6 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 			<div class="col-md-3">
 				<h4>Add Research</h4>
 				<form name="registration" action="" method="post">
-					<input type="text" name="research_code" placeholder="Research Code" required /> <br/><br/>
 					<input type="text" name="research" placeholder="Research Title" required /> <br/><br/>
 					<select name="researchtype">
 						<option value="Thesis 1">Thesis 1</option>
