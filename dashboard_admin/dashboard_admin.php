@@ -11,6 +11,14 @@ include("auth.php");
 	<meta charset="utf-8">
 	<title>Dashboard Admin</title>
 		<link rel="stylesheet" href="../css/bootstrap/css/bootstrap.css" />
+		<link rel="stylesheet" href="../css/bootstrap/css/jquery.dynatable.css" />
+		<script src="../js/jquery-1.12.0.min.js"></script>
+		<script src="../js/jquery.dynatable.js"></script>
+		<script>
+			$( document ).ready(function() {
+				$('.table').dynatable();
+			});
+		</script>
 	</head>
 	<body>
 
@@ -120,7 +128,7 @@ include("auth.php");
 					</div>
 				</div>
 					<div class="col-md-9">
-					<strong>Faculties Table</strong>
+					<strong>Faculties Table</strong><br/>
 					<?php
 						$query = "SELECT * FROM `users` WHERE LOWER(`user_type`)=LOWER('FACULTY')";
 						$result = mysql_query($query) or die(mysql_error());
@@ -199,5 +207,8 @@ include("auth.php");
 			</div>
 			
 		</div>
+
+
+
 	</body>
 </html>
