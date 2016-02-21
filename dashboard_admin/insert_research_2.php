@@ -104,7 +104,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 						'$schoolyear', 
 						'$semester', 
 						'$facultyId',
-						'$researchcodeT1',
+						'$researchCode',
 						'$student_num',
 						'1')";
 				$resultInsert = mysql_query($queryInsert);
@@ -170,7 +170,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "<input type='hidden' name='student_no' value='" .$student_num. "' readonly /> ";
 
 					echo "<input type='hidden' name='research_id1' value='" .$research_id1. "' readonly /> ";
-					echo "<input class=\"form-control\" type='text' name='research_code' value='Code: " .$researchcodeT1. "' readonly /> <br/><br/>";
+					echo "Code: <input class=\"form-control\" type='text' name='research_code' value='" .$researchcodeT1. "' readonly /> <br/><br/>";
 					echo "<input class=\"form-control\" type='text' name='researchTitle2' value='" .$researchtitleT1. "' readonly /> <br/><br/>";
 					echo "<input class=\"form-control\" type='text' name='researchtypeR2' value='" .$researchtype. "' readonly /> <br/><br/>";
 
