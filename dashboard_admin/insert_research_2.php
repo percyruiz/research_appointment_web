@@ -102,25 +102,23 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 
 					$result = mysql_query($queryPanels) or die(mysql_error());
 
-					$panels = array
-					(
-						array($panel1,"LEAD PANEL"),
-						array($panel2,"MEMBER PANEL"),
-						array($panel3,"MEMBER PANEL")
-					);
+					$panel_id_array = array($panel1,$panel2,$panel3);
+					$panel_type_array = array("LEAD PANEL","MEMBER PANEL","MEMBER PANEL");
 
 					$col=0;
 					$row=0;
-                    while ($rowResult = mysql_fetch_array($result)){
+					$i = 0;
+					while ($rowResult = mysql_fetch_array($result)){
 						$panelId = $rowResult['panel_id'];
-						$queryUpdatePanel1 = "UPDATE `panels` SET `faculty_id` = $panels[$row][$col], `user_type`=$panels[$row][$col++] WHERE panel_id=$panelId";
+						$queryUpdatePanel1 = "UPDATE `panels` SET `faculty_id` = '$panel_id_array[$i]', `user_type`='$panel_type_array[$i]' WHERE panel_id=$panelId";
 						echo mysql_error();
 						$resultUpdate = mysql_query($queryUpdatePanel1);
 						if($resultUpdate){
 							$row++;
 							$col=0;
+							$i++;
 						}
-                    }
+					}
 
 					echo "Add Success";
 					header("Location: http://". $_SERVER['SERVER_NAME'] ."/dashboard_admin/insert_research.php");
