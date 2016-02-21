@@ -144,7 +144,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 						'$facultyId')";
 					$resultInsertStudent = mysql_query($queryInsertStudent);
 					echo mysql_error();
-					echo "add successful!";
+					echo "<div class=\"alert alert-info\">add successful!</div>";
 				}else{
 					echo mysql_error();
 				}
@@ -373,9 +373,9 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "			<input type='hidden' name='researchtypeR1' value='" .$row['research_type']. "'/>";
 					echo "			<input type='hidden' name='student_no' value='" .$row['student_no']. "'/>";
 					if($row['research_type']=="Thesis 1"){
-						echo "			<input style='color:#0000FF' type='submit' name='register' value='Register as Thesis 2'/>";
+						echo "			<input class=\"form-control\" style='color:#0000FF' type='submit' name='register' value='Register as Thesis 2'/>";
 					}else if ($row['research_type']=="Capstone 1"){
-						echo "			<input style='color:#0000FF' type='submit' name='register' value='Register as Capstone 2'/>";
+						echo "			<input class=\"form-control\" style='color:#0000FF' type='submit' name='register' value='Register as Capstone 2'/>";
 					}
 					echo "		</form>";
 					echo "		</div>";

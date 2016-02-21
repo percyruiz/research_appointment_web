@@ -56,9 +56,9 @@ include("auth.php"); //include auth.php file on all secure pages ?>
         $rowsNotAvail = mysql_num_rows($resultNotAvail);
 
         if($day != $day_calendar){
-            echo "Date selected is not ". $faculty_sched_time['day'];
+            echo "<div class=\"alert alert-danger\">Date selected is not ". $faculty_sched_time['day'] . "</div>";
         }else if($rowsNotAvail > 0){
-            echo "Date and time schedule already registered";
+            echo "<div class=\"alert alert-danger\">Date and time schedule already registered</div>";
         }else{
             $appointmentdate = stripslashes($appointmentdate);
             $appointmentdate = mysql_real_escape_string($appointmentdate);
@@ -79,7 +79,8 @@ include("auth.php"); //include auth.php file on all secure pages ?>
             
             while ($row = mysql_fetch_array($resultResearchId)) 
             {
-              $researchId = $row['research_id'];
+                $researchId = $row['research_id'];
+                $researchCode = $row['research_code'];
             }   
 
             $queryInsert = "INSERT into `appointments` (
@@ -88,14 +89,16 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                     appoint_date, 
                     status,
                     sched_time_id,
-                    consultation_type
+                    consultation_type,
+                    research_code
                     ) VALUES (
                     '$researchId',
                     '$faculty_id',
                     '$appointmentdate', 
                     'pending',
                     '$faculty_sched_time_id',
-                    '$consultation_type')";
+                    '$consultation_type',
+                    '$researchCode')";
             $resultInsert = mysql_query($queryInsert);
             if($resultInsert){
 				$insertConsultation = "INSERT into `consultations` (
@@ -107,7 +110,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 								'$researchId',
 								'pending/requested')";
 				$insertConsultation = mysql_query($insertConsultation);
-                echo 'add success';
+                echo '<div class="alert alert-info">Added Successfully!</div>';
             }else{
                 echo mysql_error();
             }
