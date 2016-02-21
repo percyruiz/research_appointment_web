@@ -124,14 +124,14 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                 echo            $row['student_no'];
                 echo "      </td>";
 				echo "      <td align='center'>";
+
+                $research_code = $row['research_code'];
 				
-				$researchId = $row['research_id'];
-				
-				$queryPanel = "SELECT * FROM `panels` where `research_id`=$researchId";
+				$queryPanel = "SELECT * FROM `panels` where `research_code`=$research_code";
 				$resultPanel = mysql_query($queryPanel) or die(mysql_error());
 				while ($rowPanel = mysql_fetch_array($resultPanel)) {
-					$panel_faculty_id = $rowPanel['user_id'];
-					echo "<strong>".$rowPanel['role'] . ":</strong> ";
+					$panel_faculty_id = $rowPanel['faculty_id'];
+					echo "<strong>".$rowPanel['user_type'] . ":</strong> ";
 					$resultFaculty = mysql_query("SELECT * FROM `users` WHERE user_id='$panel_faculty_id' LIMIT 1");
 					$faculty = mysql_fetch_assoc($resultFaculty);
 					echo 			$faculty['lname'] . ', ' .$faculty['fname'] . ' ' .  $faculty['mname'];
