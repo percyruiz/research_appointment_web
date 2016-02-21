@@ -98,20 +98,28 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				
 				if($resultUpdateResearch1){
 
-					$queryUpdatePanel1 = "UPDATE `panels` SET `faculty_id` = $panel1, `user_type`='LEAD PANEL' WHERE research_code=$researchCode";
-					echo mysql_error();
+					$queryPanels = "SELECT * FROM `panels` WHERE research_code=$researchCode";
 
-					$resultUpdate = mysql_query($queryUpdatePanel1);
+					$result = mysql_query($queryPanels) or die(mysql_error());
 
-					$queryUpdatePanel2 = "UPDATE `panels` SET `faculty_id` = $panel2, `user_type`='MEMBER PANEL' WHERE research_code=$researchCode";
-					echo mysql_error();
+					$panels = array
+					(
+						array($panel1,"LEAD PANEL"),
+						array($panel2,"MEMBER PANEL"),
+						array($panel3,"MEMBER PANEL")
+					);
 
-					$resultUpdate = mysql_query($queryUpdatePanel2);
-
-					$queryUpdatePanel3 = "UPDATE `panels` SET `faculty_id` = $panel3, `user_type`='MEMBER PANEL' WHERE research_code=$researchCode";
-					echo mysql_error();
-
-					$resultUpdate = mysql_query($queryUpdatePanel3);
+					$col=0;
+					$row=0;
+                    while ($rowResult = mysql_fetch_array($result)){
+						$queryUpdatePanel1 = "UPDATE `panels` SET `faculty_id` = $panels[$col][$row], `user_type`=$panels[$col][$row++] WHERE research_code=$researchCode";
+						echo mysql_error();
+						$resultUpdate = mysql_query($queryUpdatePanel1);
+						if($resultUpdate){
+							$col++;
+							$row=0;
+						}
+                    }
 
 					echo "Add Success";
 					header("Location: http://". $_SERVER['SERVER_NAME'] ."/dashboard_admin/insert_research.php");
