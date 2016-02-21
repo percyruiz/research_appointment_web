@@ -113,12 +113,12 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					$row=0;
                     while ($rowResult = mysql_fetch_array($result)){
 						$panelId = $rowResult['panel_id'];
-						$queryUpdatePanel1 = "UPDATE `panels` SET `faculty_id` = $panels[$col][$row], `user_type`=$panels[$col][$row++] WHERE panel_id=$panelId";
+						$queryUpdatePanel1 = "UPDATE `panels` SET `faculty_id` = $panels[$row][$col], `user_type`=$panels[$row][$col++] WHERE panel_id=$panelId";
 						echo mysql_error();
 						$resultUpdate = mysql_query($queryUpdatePanel1);
 						if($resultUpdate){
-							$col++;
-							$row=0;
+							$row++;
+							$col=0;
 						}
                     }
 
