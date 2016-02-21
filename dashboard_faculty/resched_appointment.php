@@ -87,7 +87,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 							$resultSelectAppointment = mysql_fetch_assoc($querySelectAppointment);
 							$research_id = $resultSelectAppointment['research_id'];
 							
-							$querySelectFaculty = mysql_query("SELECT * FROM `users` WHERE user_id='$faculty_id' LIMIT 1");
+							$querySelectFaculty = mysql_query("SELECT * FROM `users` WHERE faculty_id='$faculty_id' LIMIT 1");
 							$resultSelectFaculty = mysql_fetch_assoc($querySelectFaculty);
 							$sign = $resultSelectFaculty['lname'] . ", " . $resultSelectFaculty['fname'] . " " . $resultSelectFaculty['mname'];
 							
@@ -117,7 +117,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 					<input type='hidden' name='faculty_id' value='<?php echo "$faculty_id"; ?>'/>
                     <select class="form-control" name="resched_time">
                         <?php
-                            $query_sched_time = "SELECT * FROM `faculty_sched_time` WHERE faculty_id=$faculty_id";
+                            $query_sched_time = "SELECT * FROM `faculty_sched_time` WHERE user_id=$faculty_id";
                             $result_sched_time = mysql_query($query_sched_time) or die(mysql_error());
                             while ($row_sched_time = mysql_fetch_array($result_sched_time)) {
                             	$timeStart = $row_sched_time['start_time'];

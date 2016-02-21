@@ -105,7 +105,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				
 				$facultyId = $row['faculty_id'];
 				
-				$queryFaculty = "SELECT * FROM `users` WHERE user_id='$facultyId'";
+				$queryFaculty = "SELECT * FROM `users` WHERE faculty_id='$facultyId'";
 				$resultFaculty = mysql_query($queryFaculty) or die(mysql_error());
 				$rows = mysql_num_rows($resultFaculty);
 
@@ -132,7 +132,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				while ($rowPanel = mysql_fetch_array($resultPanel)) {
 					$panel_faculty_id = $rowPanel['faculty_id'];
 					echo "<strong>".$rowPanel['user_type'] . ":</strong> ";
-					$resultFaculty = mysql_query("SELECT * FROM `users` WHERE user_id='$panel_faculty_id' LIMIT 1");
+					$resultFaculty = mysql_query("SELECT * FROM `users` WHERE faculty_id='$panel_faculty_id' LIMIT 1");
 					$faculty = mysql_fetch_assoc($resultFaculty);
 					echo 			$faculty['lname'] . ', ' .$faculty['fname'] . ' ' .  $faculty['mname'];
 					echo "<br/>";

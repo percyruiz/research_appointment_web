@@ -42,7 +42,12 @@ Website: https://htmlcssphptutorial.wordpress.com
 
 			<div class="container">
 				<h4>Your appointments</h4>
-				<?php $user_id = $_SESSION['userid']; ?>
+				<?php
+					$user_id = $_SESSION['userid'];
+					$querySelectFaculty = mysql_query("SELECT * FROM `users` WHERE user_id='$user_id' LIMIT 1");
+					$resultSelectFaculty = mysql_fetch_assoc($querySelectFaculty);
+					$faculty_id = $resultSelectFaculty['faculty_id'];
+				?>
 				<?php 
 					if(isset($_POST['status'])){ 
 						if($_POST['status'] == 'accept'){
@@ -61,7 +66,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 						$research_id = $resultSelectAppointment['research_id'];
 						$faculty_id = $resultSelectAppointment['faculty_id'];
 						
-						$querySelectFaculty = mysql_query("SELECT * FROM `users` WHERE user_id='$faculty_id' LIMIT 1");
+						$querySelectFaculty = mysql_query("SELECT * FROM `users` WHERE faculty_id='$faculty_id' LIMIT 1");
 						$resultSelectFaculty = mysql_fetch_assoc($querySelectFaculty);
 						$sign = $resultSelectFaculty['lname'] . ", " . $resultSelectFaculty['fname'] . " " . $resultSelectFaculty['mname'];
 						
@@ -82,7 +87,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 				?>
 
 				<?php
-					$query = "SELECT * FROM `appointments` WHERE faculty_id='$user_id' ORDER BY appointment_id DESC";
+					$query = "SELECT * FROM `appointments` WHERE faculty_id='$faculty_id' ORDER BY appointment_id DESC";
 					$result = mysql_query($query) or die(mysql_error());
 					echo "<table class='table table-striped table-hover' style='width:100%'>";
 					echo "	 <thead>";
@@ -113,17 +118,17 @@ Website: https://htmlcssphptutorial.wordpress.com
 					echo "	 <tbody>";
 					while ($row = mysql_fetch_array($result)) {
 						
-						$research_id = $row['research_id'];
+						$research_code = $row['research_code'];
 
 						$sched_time_id = $row['sched_time_id'];
 						$result_faculty_sched_time = mysql_query("SELECT * FROM `faculty_sched_time` WHERE id='$sched_time_id' LIMIT 1");
 						$faculty_sched_time = mysql_fetch_assoc($result_faculty_sched_time);
-						$result_r = mysql_query("SELECT * FROM `researches` WHERE research_id='$research_id' LIMIT 1");
+						$result_r = mysql_query("SELECT * FROM `researches` WHERE research_code='$research_code' LIMIT 1");
 						$row_researches = mysql_fetch_assoc($result_r);
 						$appointment_id = $row['appointment_id'];
 						echo "   <tr>";
 						echo "      <td width='30%' style='padding: 5px;'>";
-						echo 			"<a href='research.php?id=$research_id'>" .$row_researches['research_title'] . "</a>";
+						echo 			"<a href='research.php?id=$research_code'>" .$row_researches['research_title'] . "</a>";
 						echo "      </td>";
 
 						echo "      <td width='15%' style='padding: 5px;'>";
@@ -151,7 +156,13 @@ Website: https://htmlcssphptutorial.wordpress.com
 						echo "      </td>";
 
 						echo "      <td width='5%' style='padding: 5px;'>";
-						echo 			$row['consultation_type'];
+						$queryPanel = mysql_query("SELECT * FROM `panels` WHERE research_code='$research_code' AND faculty_id='$faculty_id' LIMIT 1");
+						$resultQueryPanel = mysql_fetch_assoc($queryPanel);
+						if($resultQueryPanel){
+							echo 			"panel";
+						}else{
+							echo 			"advisee";
+						}
 						echo "      </td>";
 
 						echo "      <td width='20%' align='center'>";
