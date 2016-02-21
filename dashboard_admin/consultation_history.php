@@ -96,6 +96,10 @@ include("auth.php");
 					echo "      </td>";
 
 					echo "      <td style='padding: 5px;'>";
+					echo 			$row['remarks'];
+					echo "      </td>";
+
+					echo "      <td style='padding: 5px;'>";
 					echo 			$row['status'];
 					echo "      </td>";
 					echo "   </tr>";
