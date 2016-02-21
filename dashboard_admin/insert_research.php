@@ -36,6 +36,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 
 				$researchIdQuery = "SELECT * FROM researches ORDER BY `research_id` DESC LIMIT 1";
 				$researchIdResult = mysql_query($researchIdQuery) or die(mysql_error());
+				$researchIdCode = 1;
 				while($researchIdRow = mysql_fetch_assoc($researchIdResult)) {
 					$researchIdCode = $researchIdRow['research_id'] + 1;
 				}
