@@ -346,6 +346,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "      </td>";
 
 					echo "      <td style='padding: 5px;'>";
+					$researchCode = $row['research_code'];
 					$queryPanel = "SELECT * FROM `panels` where `research_code`=$researchCode";
 					$resultPanel = mysql_query($queryPanel) or die(mysql_error());
 					while ($rowPanel = mysql_fetch_array($resultPanel)) {
