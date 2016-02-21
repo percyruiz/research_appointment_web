@@ -88,64 +88,37 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					{
 						$student_no = $row['student_no'];  
 					}
-				
-				$queryInsert = "INSERT into `researches` (
-						research_title, 
-						research_type, 
-						school_year, 
-						sem_type,
-						faculty_id, 
-						research_code,
-						student_no,
-						on_going
-						) VALUES (
-						'$researchTitle2', 
-						'$researchtypeR2',
-						'$schoolyear', 
-						'$semester', 
-						'$facultyId',
-						'$researchCode',
-						'$student_num',
-						'1')";
-				$resultInsert = mysql_query($queryInsert);
-				$research_id = mysql_insert_id();
-				
-				$queryUpdateResearch1 = "UPDATE `researches` SET `on_going`= 0 WHERE research_id=$research_id1";
+
+				$queryUpdateResearch1 = "UPDATE `researches` SET `research_type`='$researchtypeR2', `school_year`='$schoolyear',
+					`sem_type`='$semester', `faculty_id`='$facultyId', `percentage`='0'  WHERE research_code='$researchCode'";
 				echo mysql_error();
 				$resultUpdateResearch1 = mysql_query($queryUpdateResearch1);
+
+
 				
-				if($resultInsert){
+				if($resultUpdateResearch1){
 
-					$queryInsert = "INSERT into `panels` (
-						research_id,
-						user_id,
-						role
-						) VALUES (
-						'$research_id',
-						'$panel1',
-						'LEAD PANEL')";
-					$resultInsert = mysql_query($queryInsert);
+					$queryPanels = "SELECT * FROM `panels` WHERE research_code=$researchCode";
 
-					$queryInsert = "INSERT into `panels` (
-						research_id,
-						user_id,
-						role
-						) VALUES (
-						'$research_id',
-						'$panel2',
-						'MEMBER PANEL')";
-					$resultInsert = mysql_query($queryInsert);
+					$result = mysql_query($queryPanels) or die(mysql_error());
 
-					$queryInsert = "INSERT into `panels` (
-						research_id,
-						user_id,
-						role
-						) VALUES (
-						'$research_id',
-						'$panel3',
-						'MEMBER PANEL')";
-					$resultInsert = mysql_query($queryInsert);
+					$panel_id_array = array($panel1,$panel2,$panel3);
+					$panel_type_array = array("LEAD PANEL","MEMBER PANEL","MEMBER PANEL");
 
+					$col=0;
+					$row=0;
+					$i = 0;
+					while ($rowResult = mysql_fetch_array($result)){
+						$panelId = $rowResult['panel_id'];
+						$queryUpdatePanel1 = "UPDATE `panels` SET `faculty_id` = '$panel_id_array[$i]', `user_type`='$panel_type_array[$i]' WHERE panel_id=$panelId";
+						echo mysql_error();
+						$resultUpdate = mysql_query($queryUpdatePanel1);
+						if($resultUpdate){
+							$row++;
+							$col=0;
+							$i++;
+						}
+					}
 
 					echo "Add Success";
 					header("Location: http://". $_SERVER['SERVER_NAME'] ."/dashboard_admin/insert_research.php");
@@ -171,7 +144,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "<input type='hidden' name='student_no' value='" .$student_num. "' readonly /> ";
 
 					echo "<input type='hidden' name='research_id1' value='" .$research_id1. "' readonly /> ";
-					echo "<input class=\"form-control\" type='text' name='research_code' value='Code: " .$researchcodeT1. "' readonly /> <br/><br/>";
+					echo "Code: <input class=\"form-control\" type='text' name='research_code' value='" .$researchcodeT1. "' readonly /> <br/><br/>";
 					echo "<input class=\"form-control\" type='text' name='researchTitle2' value='" .$researchtitleT1. "' readonly /> <br/><br/>";
 					echo "<input class=\"form-control\" type='text' name='researchtypeR2' value='" .$researchtype. "' readonly /> <br/><br/>";
 
@@ -302,9 +275,6 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				echo "	 	<th align='center'>";
 				echo "	 		<strong>student no</strong>";
 				echo "	 	</th>";
-				echo "	 	<th align='center'>";
-				echo "	 		<strong>on going</strong>";
-				echo "	 	</th>";
 				echo "	 </tr>";
 				echo "   </thead>";
 				echo "   <tbody>";
@@ -347,11 +317,12 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "      </td>";
 
 					echo "      <td style='padding: 5px;'>";
-					$queryPanel = "SELECT * FROM `panels` where `research_id`=$research_id";
+					$researchCode = $row['research_code'];
+					$queryPanel = "SELECT * FROM `panels` where `research_code`=$researchCode";
 					$resultPanel = mysql_query($queryPanel) or die(mysql_error());
 					while ($rowPanel = mysql_fetch_array($resultPanel)) {
-						$panel_faculty_id = $rowPanel['user_id'];
-						echo "<strong>".$rowPanel['role'] . ":</strong> ";
+						$panel_faculty_id = $rowPanel['faculty_id'];
+						echo "<strong>".$rowPanel['user_type'] . ":</strong> ";
 						$resultFaculty = mysql_query("SELECT * FROM `users` WHERE user_id='$panel_faculty_id' LIMIT 1");
 						$faculty = mysql_fetch_assoc($resultFaculty);
 						echo 			$faculty['lname'] . ', ' .$faculty['fname'] . ' ' .  $faculty['mname'];
@@ -362,14 +333,6 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 
 					echo "      <td style='padding: 5px;'>";
 					echo 			$row['student_no'];
-					echo "      </td>";
-
-					echo "      <td style='padding: 5px;'>";
-					if($row['on_going']==1){
-						echo 	"YES";
-					}else{
-						echo 	"NO";
-					}
 					echo "      </td>";
 
 					echo "   </tr>";

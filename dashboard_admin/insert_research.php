@@ -44,6 +44,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 
 				$researchIdQuery = "SELECT * FROM researches ORDER BY `research_id` DESC LIMIT 1";
 				$researchIdResult = mysql_query($researchIdQuery) or die(mysql_error());
+				$researchIdCode = 1;
 				while($researchIdRow = mysql_fetch_assoc($researchIdResult)) {
 					$researchIdCode = $researchIdRow['research_id'] + 1;
 				}
@@ -87,46 +88,44 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 						school_year, 
 						sem_type,
 						faculty_id, 
-						research_code,
-						on_going
+						research_code
 						) VALUES (
 						'$research', 
 						'$researchtype', 
 						'$schoolyear', 
 						'$semester', 
 						'$facultyId',
-						'$researchCode',
-						'1')";
+						'$researchCode')";
 				$resultInsert = mysql_query($queryInsert);
 				$research_id = mysql_insert_id();
 				if($resultInsert){
 					
 					$queryInsert = "INSERT into `panels` (
-						research_id, 
-						user_id,
-						role						
+						research_code,
+						faculty_id,
+						user_type
 						) VALUES (
-						'$research_id', 
-						'$panel1', 
+						'$researchCode',
+						'$panel1',
 						'LEAD PANEL')";
 					$resultInsert = mysql_query($queryInsert);
 					
 					$queryInsert = "INSERT into `panels` (
-						research_id, 
-						user_id,
-						role						
+						research_code,
+						faculty_id,
+						user_type
 						) VALUES (
-						'$research_id', 
-						'$panel2', 
+						'$researchCode',
+						'$panel2',
 						'MEMBER PANEL')";
 					$resultInsert = mysql_query($queryInsert);
 					
 					$queryInsert = "INSERT into `panels` (
-						research_id, 
-						user_id,
-						role						
+						research_code,
+						faculty_id,
+						user_type
 						) VALUES (
-						'$research_id', 
+						'$researchCode',
 						'$panel3', 
 						'MEMBER PANEL')";
 					$resultInsert = mysql_query($queryInsert);
@@ -302,9 +301,6 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 			echo "	 		<strong>student no</strong>";
 			echo "	 	</th>";
 			echo "	 	<th align='center'>";	
-			echo "	 		<strong>on going</strong>";
-			echo "	 	</th>";
-			echo "	 	<th align='center'>";	
 			echo "	 		<strong>action</strong>";
 			echo "	 	</th>";
 			echo "	 </tr>";
@@ -349,11 +345,12 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				echo "      </td>";
 				
 				echo "      <td style='padding: 5px;'>";
-				$queryPanel = "SELECT * FROM `panels` where `research_id`=$research_id";
+				$researchCode = $row['research_code'];
+				$queryPanel = "SELECT * FROM `panels` where `research_code`=$researchCode";
 				$resultPanel = mysql_query($queryPanel) or die(mysql_error());
 				while ($rowPanel = mysql_fetch_array($resultPanel)) {
-					$panel_faculty_id = $rowPanel['user_id'];
-					echo "<strong>".$rowPanel['role'] . ":</strong> ";
+					$panel_faculty_id = $rowPanel['faculty_id'];
+					echo "<strong>".$rowPanel['user_type'] . ":</strong> ";
 					$resultFaculty = mysql_query("SELECT * FROM `users` WHERE user_id='$panel_faculty_id' LIMIT 1");
 					$faculty = mysql_fetch_assoc($resultFaculty);
 					echo 			$faculty['lname'] . ', ' .$faculty['fname'] . ' ' .  $faculty['mname'];
@@ -367,15 +364,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				echo "      </td>";
 				
 				echo "      <td style='padding: 5px;'>";
-				if($row['on_going']==1){
-					echo 	"YES";
-				}else{
-					echo 	"NO";
-				}
-				echo "      </td>";
-				
-				echo "      <td style='padding: 5px;'>";
-				if($row['percentage']==100 && $row['on_going']==1 && ($row['research_type']!="Thesis 2" || $row['research_type']!="Capstone 2")){
+				if($row['percentage']==100 && ($row['research_type']!="Thesis 2" || $row['research_type']!="Capstone 2")){
 					echo "		<div class='col-md-6'>";
 					echo "		<form action='insert_research_2.php'  method='post' name='researchForm'>";
 					echo "			<input type='hidden' name='research_id1' value='" .$row['research_id']. "'/>";
@@ -385,7 +374,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "			<input type='hidden' name='student_no' value='" .$row['student_no']. "'/>";
 					if($row['research_type']=="Thesis 1"){
 						echo "			<input style='color:#0000FF' type='submit' name='register' value='Register as Thesis 2'/>";
-					}else{
+					}else if ($row['research_type']=="Capstone 1"){
 						echo "			<input style='color:#0000FF' type='submit' name='register' value='Register as Capstone 2'/>";
 					}
 					echo "		</form>";
