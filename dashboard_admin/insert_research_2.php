@@ -89,8 +89,8 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 						$student_no = $row['student_no'];  
 					}
 				
-				$queryUpdateResearch1 = "UPDATE `researches` SET `research_type` = $researchtypeR2, `school_year`=$schoolyear
-					`sem_type`=$semester, `faculty_id` = $facultyId  WHERE research_id=$research_id1";
+				$queryUpdateResearch1 = "UPDATE `researches` SET `research_type` = '$researchtypeR2', `school_year`='$schoolyear'
+					`sem_type`='$semester', `faculty_id` = '$facultyId', `percentage` = 0  WHERE research_code='$researchCode'";
 				echo mysql_error();
 				$resultUpdateResearch1 = mysql_query($queryUpdateResearch1);
 
