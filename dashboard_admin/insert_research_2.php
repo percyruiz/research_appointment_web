@@ -110,41 +110,29 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				$resultInsert = mysql_query($queryInsert);
 				$research_id = mysql_insert_id();
 				
-				$queryUpdateResearch1 = "UPDATE `researches` SET `on_going`= 0 WHERE research_id=$research_id1";
+				$queryUpdateResearch1 = "UPDATE `researches` SET `research_type` = $researchtypeR2, `school_year`=$schoolyear
+					`sem_type`=$semester, `faculty_id` = $facultyId  WHERE research_id=$research_id1";
 				echo mysql_error();
 				$resultUpdateResearch1 = mysql_query($queryUpdateResearch1);
+
+
 				
-				if($resultInsert){
+				if($resultUpdateResearch1){
 
-					$queryInsert = "INSERT into `panels` (
-						research_code,
-						faculty_id,
-						user_type
-						) VALUES (
-						'$researchCode',
-						'$panel1',
-						'LEAD PANEL')";
-					$resultInsert = mysql_query($queryInsert);
+					$queryUpdatePanel1 = "UPDATE `panels` SET `faculty_id` = $panel1, `user_type`='LEAD PANEL' WHERE research_code=$researchCode";
+					echo mysql_error();
 
-					$queryInsert = "INSERT into `panels` (
-						research_code,
-						faculty_id,
-						user_type
-						) VALUES (
-						'$researchCode',
-						'$panel2',
-						'MEMBER PANEL')";
-					$resultInsert = mysql_query($queryInsert);
+					$resultUpdate = mysql_query($queryUpdatePanel1);
 
-					$queryInsert = "INSERT into `panels` (
-						research_code,
-						faculty_id,
-						user_type
-						) VALUES (
-						'$researchCode',
-						'$panel3',
-						'MEMBER PANEL')";
-					$resultInsert = mysql_query($queryInsert);
+					$queryUpdatePanel2 = "UPDATE `panels` SET `faculty_id` = $panel2, `user_type`='MEMBER PANEL' WHERE research_code=$researchCode";
+					echo mysql_error();
+
+					$resultUpdate = mysql_query($queryUpdatePanel2);
+
+					$queryUpdatePanel3 = "UPDATE `panels` SET `faculty_id` = $panel3, `user_type`='MEMBER PANEL' WHERE research_code=$researchCode";
+					echo mysql_error();
+
+					$resultUpdate = mysql_query($queryUpdatePanel3);
 
 					echo "Add Success";
 					header("Location: http://". $_SERVER['SERVER_NAME'] ."/dashboard_admin/insert_research.php");
