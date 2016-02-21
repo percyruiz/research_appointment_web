@@ -88,16 +88,14 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 						school_year, 
 						sem_type,
 						faculty_id, 
-						research_code,
-						on_going
+						research_code
 						) VALUES (
 						'$research', 
 						'$researchtype', 
 						'$schoolyear', 
 						'$semester', 
 						'$facultyId',
-						'$researchCode',
-						'1')";
+						'$researchCode')";
 				$resultInsert = mysql_query($queryInsert);
 				$research_id = mysql_insert_id();
 				if($resultInsert){
@@ -303,9 +301,6 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 			echo "	 		<strong>student no</strong>";
 			echo "	 	</th>";
 			echo "	 	<th align='center'>";	
-			echo "	 		<strong>on going</strong>";
-			echo "	 	</th>";
-			echo "	 	<th align='center'>";	
 			echo "	 		<strong>action</strong>";
 			echo "	 	</th>";
 			echo "	 </tr>";
@@ -369,15 +364,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				echo "      </td>";
 				
 				echo "      <td style='padding: 5px;'>";
-				if($row['on_going']==1){
-					echo 	"YES";
-				}else{
-					echo 	"NO";
-				}
-				echo "      </td>";
-				
-				echo "      <td style='padding: 5px;'>";
-				if($row['percentage']==100 && $row['on_going']==1 && ($row['research_type']!="Thesis 2" || $row['research_type']!="Capstone 2")){
+				if($row['percentage']==100 && ($row['research_type']!="Thesis 2" || $row['research_type']!="Capstone 2")){
 					echo "		<div class='col-md-6'>";
 					echo "		<form action='insert_research_2.php'  method='post' name='researchForm'>";
 					echo "			<input type='hidden' name='research_id1' value='" .$row['research_id']. "'/>";

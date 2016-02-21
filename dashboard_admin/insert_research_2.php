@@ -89,27 +89,6 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 						$student_no = $row['student_no'];  
 					}
 				
-				$queryInsert = "INSERT into `researches` (
-						research_title, 
-						research_type, 
-						school_year, 
-						sem_type,
-						faculty_id, 
-						research_code,
-						student_no,
-						on_going
-						) VALUES (
-						'$researchTitle2', 
-						'$researchtypeR2',
-						'$schoolyear', 
-						'$semester', 
-						'$facultyId',
-						'$researchCode',
-						'$student_num',
-						'1')";
-				$resultInsert = mysql_query($queryInsert);
-				$research_id = mysql_insert_id();
-				
 				$queryUpdateResearch1 = "UPDATE `researches` SET `research_type` = $researchtypeR2, `school_year`=$schoolyear
 					`sem_type`=$semester, `faculty_id` = $facultyId  WHERE research_id=$research_id1";
 				echo mysql_error();
@@ -289,9 +268,6 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				echo "	 	<th align='center'>";
 				echo "	 		<strong>student no</strong>";
 				echo "	 	</th>";
-				echo "	 	<th align='center'>";
-				echo "	 		<strong>on going</strong>";
-				echo "	 	</th>";
 				echo "	 </tr>";
 				echo "   </thead>";
 				echo "   <tbody>";
@@ -350,14 +326,6 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 
 					echo "      <td style='padding: 5px;'>";
 					echo 			$row['student_no'];
-					echo "      </td>";
-
-					echo "      <td style='padding: 5px;'>";
-					if($row['on_going']==1){
-						echo 	"YES";
-					}else{
-						echo 	"NO";
-					}
 					echo "      </td>";
 
 					echo "   </tr>";
