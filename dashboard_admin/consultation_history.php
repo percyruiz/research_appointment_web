@@ -40,28 +40,28 @@ include("auth.php");
 
 			<h4>Consultation History</h4>
 			<?php
-				$query = "SELECT * FROM `consultations` ORDER BY `consultation_id` DESC";
+				$query = "SELECT * FROM `appointments` ORDER BY `appointment_id` DESC";
 				$result = mysql_query($query) or die(mysql_error());
 				echo "<table class='table table-striped table-hover' style='width:100%'>";
 				echo "	 <thead>";
 				echo "	 <tr>";
 				echo "	 	<th align='center'>";
-				echo "	 		<strong>id</strong>";
+				echo "	 		<strong>ID</strong>";
 				echo "	 	</th>";
 				echo "	 	<th align='center'>";
-				echo "	 		<strong>research title</strong>";
+				echo "	 		<strong>RESEARCH TITLE</strong>";
 				echo "	 	</th>";
 				echo "	 	<th align='center'>";
-				echo "	 		<strong>date</strong>";
+				echo "	 		<strong>FACULTY</strong>";
 				echo "	 	</th>";
 				echo "	 	<th align='center'>";
-				echo "	 		<strong>remarks</strong>";
+				echo "	 		<strong>DATE</strong>";
 				echo "	 	</th>";
 				echo "	 	<th align='center'>";
-				echo "	 		<strong>status</strong>";
+				echo "	 		<strong>REMARKS</strong>";
 				echo "	 	</th>";
 				echo "	 	<th align='center'>";
-				echo "	 		<strong>sign</strong>";
+				echo "	 		<strong>STATUS</strong>";
 				echo "	 	</th>";
 				echo "	 </tr>";
 				echo "	 </thead>";
@@ -76,7 +76,7 @@ include("auth.php");
 						
 					echo "   <tr>";
 					echo "      <td style='padding: 5px;'>";
-					echo 			$row['consultation_id'];
+					echo 			$row['appointment_id'];
 					echo "      </td>";
 
 					echo "      <td style='padding: 5px;'>";
@@ -84,7 +84,15 @@ include("auth.php");
 					echo "      </td>";
 
 					echo "      <td style='padding: 5px;'>";
-					echo 			$row['date'];
+					$faculty = $row['faculty_id'];
+					$resultSelectFaculty = mysql_query("SELECT * FROM `users` WHERE faculty_id='$faculty' LIMIT 1");
+					$rowFaculty= mysql_fetch_assoc($resultSelectFaculty);
+
+					echo 			$rowFaculty['lname'] .", ". $rowFaculty['fname']. " ". $rowFaculty['mname'] ;
+					echo "      </td>";
+
+					echo "      <td style='padding: 5px;'>";
+					echo 			$row['appoint_date'];
 					echo "      </td>";
 
 					echo "      <td style='padding: 5px;'>";
@@ -94,11 +102,6 @@ include("auth.php");
 					echo "      <td style='padding: 5px;'>";
 					echo 			$row['status'];
 					echo "      </td>";
-
-					echo "      <td style='padding: 5px;'>";
-					echo 			$row['sign'];
-					echo "      </td>";
-
 					echo "   </tr>";
 				}
 				echo "</tbody>";
