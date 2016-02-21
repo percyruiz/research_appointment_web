@@ -44,8 +44,8 @@ include("auth.php"); //include auth.php file on all secure pages ?>
     	$rows = mysql_num_rows($resultMembers);
     	
 		if($rows == 0){
-			echo "No Members yet.<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/insert_members.php'>Add Members</a></div>";
-			echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/dashboard_student.php'>Back</a></div>";
+			echo "No Members yet.<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/insert_members.php'>Add Members</a>";
+			echo "<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/view_research.php'>Back</a></div>";
 		}else{
 
 			if($resultMembers){

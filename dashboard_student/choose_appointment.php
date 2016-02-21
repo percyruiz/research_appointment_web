@@ -71,7 +71,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
         <?php
             while ($row = mysql_fetch_array($resultPanel)) {
                 $panel_id = $row['faculty_id'];
-                $result_r = mysql_query("SELECT * FROM `users` WHERE `user_id`='$panel_id' LIMIT 1");
+                $result_r = mysql_query("SELECT * FROM `users` WHERE `faculty_id`='$panel_id' LIMIT 1");
                 $panel = mysql_fetch_assoc($result_r);
                 ?>
 

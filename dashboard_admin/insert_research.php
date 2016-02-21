@@ -134,14 +134,12 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 						user_type, 
 						research_code,
 						username,
-						research_id,
-						faculty_id
+						research_id
 						) VALUES (
 						'STUDENT', 
 						'$researchCode',
 						'$researchCode',
-						'$research_id',
-						'$facultyId')";
+						'$research_id')";
 					$resultInsertStudent = mysql_query($queryInsertStudent);
 					echo mysql_error();
 					echo "<div class=\"alert alert-info\">add successful!</div>";

@@ -32,9 +32,9 @@ include("auth.php");
    
     // If form submitted, insert values into the database.
     if (isset($_GET['faculty'])){
-        $facultyId = $_GET['faculty'];
+        $faculty_id = $_GET['faculty'];
 		
-        $result_r = mysql_query("SELECT * FROM `users` WHERE faculty_id='$facultyId' LIMIT 1");
+        $result_r = mysql_query("SELECT * FROM `users` WHERE faculty_id='$faculty_id' LIMIT 1");
 		$faculty = mysql_fetch_assoc($result_r);
 	}
 

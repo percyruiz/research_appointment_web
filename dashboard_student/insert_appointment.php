@@ -31,7 +31,6 @@ include("auth.php"); //include auth.php file on all secure pages ?>
     $userid = $_SESSION['userid'];
 
     if(isset($_POST['faculty_id'])){
-        $consultation_type = $_POST['consultation_type'];
         $faculty_id = $_POST['faculty_id'];
     }
 
@@ -89,7 +88,6 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                     appoint_date, 
                     status,
                     sched_time_id,
-                    consultation_type,
                     research_code
                     ) VALUES (
                     '$researchId',
@@ -97,7 +95,6 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                     '$appointmentdate', 
                     'pending',
                     '$faculty_sched_time_id',
-                    '$consultation_type',
                     '$researchCode')";
             $resultInsert = mysql_query($queryInsert);
             if($resultInsert){
@@ -141,7 +138,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 
 		echo "<h4>".$researchTitle."</h4>";
 
-		$queryFacultyName = "SELECT * FROM `users` WHERE user_id='$facultyid'";
+		$queryFacultyName = "SELECT * FROM `users` WHERE faculty_id='$facultyid'";
 		$resultFacultyName = mysql_query($queryFacultyName) or die(mysql_error());
 		$rows = mysql_num_rows($resultFacultyName);
 
@@ -171,14 +168,13 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                             }
                         ?>
                     </select><br/>
-                    <input type='hidden' name='consultation_type' value='<?php echo $consultation_type?>'/>
                     <input type='hidden' name='faculty_id' value='<?php echo $faculty_id;?>'/>
                     <input class="btn btn-primary" type="submit" name="submit" value="Register" />
                 </form>
             </div>
         </div>
         <div class="col-md-9">
-            <strong><?php echo $facultyName . ' - consultations for '. $consultation_type;?></strong>
+            <strong><?php echo $facultyName . ' - consultations ';?></strong>
             <?php 
                 echo "<table class='table table-striped table-hover' style='width:100%'>";
                 echo "<thead>";
