@@ -49,7 +49,8 @@ Website: https://htmlcssphptutorial.wordpress.com
 					$result_student = mysql_query("SELECT * FROM `users` WHERE student_no='$student_no' LIMIT 1");
 					$row_student = mysql_fetch_assoc($result_student);
 
-					echo "<table class='table' border='1' style='width:50%'>";
+					echo "<table class='table table-striped table-hover' style='width:auto'>";
+					echo "	 <thead>";
 						echo "   <tr>";
 						echo "      <td style='padding: 5px;'>";
 						echo 			"<strong>Title</strong>";
@@ -97,7 +98,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 
 						echo "   <tr>";
 						echo "      <td style='padding: 5px;'>";
-						echo 			"Percentage";
+						echo 			"<strong>Percentage</strong>";
 						echo "      </td>";
 						echo "      <td style='padding: 5px;' align='center'>";
 						$percentage =			$row['percentage'];

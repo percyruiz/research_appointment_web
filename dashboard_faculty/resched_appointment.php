@@ -26,7 +26,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 		<div class="container">
 
 			<ul class="breadcrumb">
-				<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/dashboard_admin.php';?>">Back</a></li>
+				<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_faculty/dashboard_faculty.php';?>">Back</a></li>
 				<li class="active"> <a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a></li>
 			</ul>
 		
@@ -73,10 +73,10 @@ Website: https://htmlcssphptutorial.wordpress.com
 					if($day != $day_calendar){
 						echo "Date selected is not ". $faculty_sched_time['day'];
 					}else if(date("Y-m-d") > $resched_date){
-						echo "Date selected is less than date today!";
+						echo "<div class=\"alert alert-danger\">Date selected is less than date today!</div>";
 					}
 					else if($rowsNotAvail > 0){
-						echo "Date and time schedule already registered";
+						echo "<div class=\"alert alert-danger\">Date and time schedule already registered!</div>";
 					}else{
 						$query = "UPDATE `appointments` SET `appoint_date`='$resched_date', `sched_time_id`='$faculty_sched_time_id', `remarks`='$resched_remark' WHERE appointment_id=$resched_appointment_id";
 						$result = mysql_query($query) or die(mysql_error());
