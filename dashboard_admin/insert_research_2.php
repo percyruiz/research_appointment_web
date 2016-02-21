@@ -104,7 +104,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 						'$schoolyear', 
 						'$semester', 
 						'$facultyId',
-						'$researchCode',
+						'$researchcodeT1',
 						'$student_num',
 						'1')";
 				$resultInsert = mysql_query($queryInsert);
