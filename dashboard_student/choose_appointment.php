@@ -55,7 +55,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
             $mname = $faculty['mname'];
 
             //select faculty
-            $queryPanel = "SELECT * FROM `panels` WHERE research_id='$research_code'";
+            $queryPanel = "SELECT * FROM `panels` WHERE research_code='$research_code'";
             $resultPanel = mysql_query($queryPanel) or die(mysql_error());
 
         ?>
