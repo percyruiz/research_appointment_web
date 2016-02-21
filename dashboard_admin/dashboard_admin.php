@@ -34,6 +34,7 @@ include("auth.php");
     if (isset($_POST['username'])){
         $username = $_POST['username'];
         $password = $_POST['password'];
+		$facultyId = $_POST['facultyId'];
         $fname = $_POST['fname'];
         $mname = $_POST['mname'];
         $lname = $_POST['lname'];
@@ -46,7 +47,10 @@ include("auth.php");
 
 		$password = stripslashes($password);
 		$password = mysql_real_escape_string($password);
-		
+
+		$facultyId = stripslashes($facultyId);
+		$facultyId = mysql_real_escape_string($facultyId);
+
 		$fname = stripslashes($fname);
 		$fname = mysql_real_escape_string($fname);
 		$mname = stripslashes($mname);
@@ -72,7 +76,8 @@ include("auth.php");
 		
 			$query = "INSERT into `users` (
 					username, 
-					password, 
+					password,
+					faculty_id,
 					user_type, 
 					fname, 
 					mname, 
@@ -81,7 +86,8 @@ include("auth.php");
 					contact
 					) VALUES (
 					'$username', 
-					'".md5($password)."', 
+					'".md5($password)."',
+					'$facultyId',
 					'$user_type', 
 					'$fname', 
 					'$mname', 
@@ -91,8 +97,10 @@ include("auth.php");
 			$result = mysql_query($query);
 			$user_id = mysql_insert_id();
 			if($result){
+				/*
 				$queryUpdate = "UPDATE `users` set `faculty_id`=$user_id where `user_id`=$user_id";
 				mysql_query($queryUpdate);
+				*/
 				echo "<div class='alert alert-info'> add success! </div>";
 			}else{
 				echo mysql_error();
@@ -117,7 +125,7 @@ include("auth.php");
 						<form class="form-horizontal" name="registration" action="" method="post">
 							<input class="form-control" type="text" name="username" placeholder="Username" required /><br/>
 							<input class="form-control" type="password" name="password" placeholder="Password" required /><br/>
-
+							<input class="form-control" type="text" name="facultyId" placeholder="Faculty ID" required /><br/>
 							<input class="form-control" type="text" name="fname" placeholder="First Name" required /><br/>
 							<input class="form-control" type="text" name="mname" placeholder="Middle Name" required /><br/>
 							<input class="form-control" type="text" name="lname" placeholder="Last Name" required /><br/>
@@ -140,6 +148,9 @@ include("auth.php");
 						echo "	 	</th>";
 						echo "	 	<th>";
 						echo "	 		<strong>user name</strong>";
+						echo "	 	</th>";
+						echo "	 	<th>";
+						echo "	 		<strong>faculty id</strong>";
 						echo "	 	</th>";
 						echo "	 	<td>";
 						echo "	 		<strong>first name</strong>";
@@ -173,6 +184,10 @@ include("auth.php");
 							echo "      </td>";
 
 							echo "      <td style='padding: 5px;'>";
+							echo 			$row['faculty_id'];
+							echo "      </td>";
+
+							echo "      <td style='padding: 5px;'>";
 							echo 			$row['fname'];
 							echo "      </td>";
 
@@ -194,7 +209,7 @@ include("auth.php");
 
 							echo "      <td style='padding: 5px;'>";
 							if(strcasecmp($row['user_type'],'FACULTY')==0){
-								echo "<a href='http://" . $_SERVER['SERVER_NAME'] ."/dashboard_admin/faculty_schedule.php?faculty=". $row['user_id'] ."'>schedule</a>";
+								echo "<a href='http://" . $_SERVER['SERVER_NAME'] ."/dashboard_admin/faculty_schedule.php?faculty=". $row['faculty_id'] ."'>schedule</a>";
 							}
 							echo "      </td>";
 

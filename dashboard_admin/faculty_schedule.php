@@ -32,9 +32,9 @@ include("auth.php");
    
     // If form submitted, insert values into the database.
     if (isset($_GET['faculty'])){
-        $user_id = $_GET['faculty'];
+        $facultyId = $_GET['faculty'];
 		
-        $result_r = mysql_query("SELECT * FROM `users` WHERE user_id='$user_id' LIMIT 1");
+        $result_r = mysql_query("SELECT * FROM `users` WHERE faculty_id='$facultyId' LIMIT 1");
 		$faculty = mysql_fetch_assoc($result_r);
 	}
 
@@ -42,7 +42,7 @@ include("auth.php");
         $time_start = $_POST['time_start'];
         $time_end = $_POST['time_end'];
         $day = $_POST['day'];
-		$faculty_id = $faculty['user_id'];
+		$faculty_id = $faculty['faculty_id'];
 
 		$query = "INSERT INTO `faculty_sched_time`(`id`, `user_id`, `start_time`, `end_time`, `day`) 
 		VALUES (NULL,$faculty_id,'$time_start','$time_end','$day')";
@@ -79,7 +79,7 @@ include("auth.php");
 					<div class="col-md-9">
 					<strong><?php echo  $faculty['fname'] . '\'s schedule'; ?></strong>
 					<?php
-						$query = "SELECT * FROM `faculty_sched_time` WHERE user_id=$user_id";
+						$query = "SELECT * FROM `faculty_sched_time` WHERE user_id=$faculty_id";
 						$result = mysql_query($query) or die(mysql_error());
 						echo "<table class='table table-striped table-hover' style='width:100%'>";
 						echo "	 <thead>";
