@@ -48,7 +48,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
             $research_code = $research['research_code'];
 
             //select faculty
-            $result_r = mysql_query("SELECT * FROM `users` WHERE user_id='$faculty_id' LIMIT 1");
+            $result_r = mysql_query("SELECT * FROM `users` WHERE faculty_id='$faculty_id' LIMIT 1");
             $faculty = mysql_fetch_assoc($result_r);
             $fname = $faculty['fname'];
             $lname = $faculty['lname'];

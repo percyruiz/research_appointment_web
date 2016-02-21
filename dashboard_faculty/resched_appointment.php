@@ -87,7 +87,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 							$resultSelectAppointment = mysql_fetch_assoc($querySelectAppointment);
 							$research_id = $resultSelectAppointment['research_id'];
 							
-							$querySelectFaculty = mysql_query("SELECT * FROM `users` WHERE user_id='$faculty_id' LIMIT 1");
+							$querySelectFaculty = mysql_query("SELECT * FROM `users` WHERE faculty_id='$faculty_id' LIMIT 1");
 							$resultSelectFaculty = mysql_fetch_assoc($querySelectFaculty);
 							$sign = $resultSelectFaculty['lname'] . ", " . $resultSelectFaculty['fname'] . " " . $resultSelectFaculty['mname'];
 							
