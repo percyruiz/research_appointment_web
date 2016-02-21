@@ -374,7 +374,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "			<input type='hidden' name='student_no' value='" .$row['student_no']. "'/>";
 					if($row['research_type']=="Thesis 1"){
 						echo "			<input style='color:#0000FF' type='submit' name='register' value='Register as Thesis 2'/>";
-					}else if ($row['research_type']=="Thesis 2"){
+					}else if ($row['research_type']=="Capstone 1"){
 						echo "			<input style='color:#0000FF' type='submit' name='register' value='Register as Capstone 2'/>";
 					}
 					echo "		</form>";
