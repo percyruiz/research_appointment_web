@@ -82,7 +82,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 				?>
 
 				<?php
-					$query = "SELECT * FROM `appointments` WHERE faculty_id='$user_id'";
+					$query = "SELECT * FROM `appointments` WHERE faculty_id='$user_id' ORDER BY appointment_id DESC";
 					$result = mysql_query($query) or die(mysql_error());
 					echo "<table class='table table-striped table-hover' style='width:100%'>";
 					echo "	 <thead>";
