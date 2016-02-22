@@ -34,83 +34,77 @@ include("auth.php"); //include auth.php file on all secure pages ?>
         $faculty_id = $_POST['faculty_id'];
     }
 
-    if (isset($_POST['appointmentdate'])){
+    if (isset($_POST['time'])){
 
-        $appointmentdate = $_POST['appointmentdate'];
-        $sched_id = $_POST['time'];
-        $result_faculty_sched_time = mysql_query("SELECT * FROM `faculty_sched_time` WHERE id='$sched_id' LIMIT 1");
-        $faculty_sched_time = mysql_fetch_assoc($result_faculty_sched_time);
-        $faculty_sched_time_id = $faculty_sched_time['id'];
+        $sched_time_id = $_POST['time'];
 
-        $datePieces = explode("-", $appointmentdate);
-        $year = $datePieces[0];
-        $month =  $datePieces[1];
-        $day = $faculty_sched_time['day'];
-
-        $timestamp = strtotime($appointmentdate);
-        $day_calendar = date('l', $timestamp);
-
-        $queryNotAvail = "SELECT * FROM `appointments` WHERE appoint_date='$appointmentdate' AND sched_time_id='$faculty_sched_time_id'";
+        $queryNotAvail = "SELECT * FROM `appointments` WHERE sched_time_id='$sched_time_id'";
         $resultNotAvail = mysql_query($queryNotAvail) or die(mysql_error());
         $rowsNotAvail = mysql_num_rows($resultNotAvail);
 
-        if($day != $day_calendar){
-            echo "<div class=\"alert alert-danger\">Date selected is not ". $faculty_sched_time['day'] . "</div>";
-        }else if($rowsNotAvail > 0){
-            echo "<div class=\"alert alert-danger\">Date and time schedule already registered</div>";
-        }else{
-            $appointmentdate = stripslashes($appointmentdate);
-            $appointmentdate = mysql_real_escape_string($appointmentdate);
-
+        if(!$rowsNotAvail > 0){
             $userid = $_SESSION['userid'];
 
             $queryStudentNum = "SELECT * FROM `users` WHERE user_id='$userid'";
             $resultStudentNum = mysql_query($queryStudentNum) or die(mysql_error());
             $rows = mysql_num_rows($resultStudentNum);
-                
-			while ($row = mysql_fetch_array($resultStudentNum)) {
-				$student_no = $row['student_no'];  
-			}
+
+            while ($row = mysql_fetch_array($resultStudentNum)) {
+                $student_no = $row['student_no'];
+            }
 
             $queryResearchId = "SELECT * FROM `researches` WHERE student_no='$student_no'";
             $resultResearchId = mysql_query($queryResearchId) or die(mysql_error());
             $rows = mysql_num_rows($resultResearchId);
-            
-            while ($row = mysql_fetch_array($resultResearchId)) 
+
+            while ($row = mysql_fetch_array($resultResearchId))
             {
-                $researchId = $row['research_id'];
                 $researchCode = $row['research_code'];
-            }   
+            }
+
+            $query_sched_time = "SELECT *
+                                FROM `sched_time`
+                                INNER JOIN `sched_date`
+                                ON sched_time.date_id=sched_date.date_id
+                                WHERE sched_time.time_id='$sched_time_id'";
+            $result_sched_time = mysql_query($query_sched_time) or die(mysql_error());
+
+            while ($row = mysql_fetch_array($result_sched_time))
+            {
+                $schedule_day = $row['schedule_day'];
+                $schedule_month = $row['schedule_month'];
+                $schedule_year = $row['schedule_year'];
+                $appoint_date = $schedule_month . " " . $schedule_day . " " . $schedule_year;
+                $day = $row['day'];
+                $schedule_time_fr = $row['schedule_time_fr'];
+                $schedule_time_to = $row['schedule_time_to'];
+            }
 
             $queryInsert = "INSERT into `appointments` (
-                    research_id,
+                    appoint_date,
+                    appoint_time_fr,
+                    appoint_time_to,
                     faculty_id,
-                    appoint_date, 
                     status,
                     sched_time_id,
                     research_code
                     ) VALUES (
-                    '$researchId',
+                    '$appoint_date',
+                    '$schedule_time_fr',
+                    '$schedule_time_to',
                     '$faculty_id',
-                    '$appointmentdate', 
                     'pending',
-                    '$faculty_sched_time_id',
+                    '$sched_time_id',
                     '$researchCode')";
             $resultInsert = mysql_query($queryInsert);
-            if($resultInsert){
-				$insertConsultation = "INSERT into `consultations` (
-								date,
-								research_id,
-								status
-								) VALUES (
-								'$appointmentdate',
-								'$researchId',
-								'pending/requested')";
-				$insertConsultation = mysql_query($insertConsultation);
-                echo '<div class="alert alert-info">Added Successfully!</div>';
-            }else{
-                echo mysql_error();
-            }
+
+            $queryInsert = "UPDATE `sched_time` SET `is_taken`='yes' WHERE time_id='$sched_time_id'";
+            $resultInsert = mysql_query($queryInsert);
+
+
+            echo '<div class="alert alert-info">Added Successfully!</div>';
+        }else{
+            echo "<div class=\"alert alert-danger\">Date and time schedule already registered</div>";
         }
     }
 
@@ -131,7 +125,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 		//echo "No Research added.<br/><a href='http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/insert_research.php'>Add Research.</a></div>";
 	}else{
 		while ($row = mysql_fetch_array($resultResearchId)) {
-			$researchId = $row['research_id'];
+			$researchCode = $row['research_code'];
 			$researchTitle = $row['research_title'];
 			$facultyid = $faculty_id;
 		}
@@ -147,33 +141,52 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 		}
 
 
-		$queryAppointment = "SELECT * FROM `appointments` WHERE `research_id`='$researchId' AND `faculty_id`='$faculty_id' ORDER BY `appointment_id` DESC";
+		$queryAppointment = "SELECT * FROM `appointments` WHERE `research_code`='$researchCode' AND `faculty_id`='$faculty_id' ORDER BY `appointment_id` DESC";
 		$resultAppointment = mysql_query($queryAppointment) or die(mysql_error());
 		$rows = mysql_num_rows($resultAppointment);
     
     ?>
 
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="form">
                 <h4>Add Appointment</h4>
                 <form class="form-horizontal" name="registration" action="" method="post">
-                    <input class="form-control" type="date" placeholder="YYYY-MM-DD" name="appointmentdate" data-date-split-input="true" required/> <br/>
                     <select class="form-control" name="time">
-                        <?php
-                            $query_sched_time = "SELECT * FROM `faculty_sched_time` WHERE user_id=$facultyid";
+                    <?php
+                            $query_sched_time = "SELECT *
+                                FROM `sched_time`
+                                INNER JOIN `sched_date`
+                                ON sched_time.date_id=sched_date.date_id
+                                WHERE faculty_id='$faculty_id'";
                             $result_sched_time = mysql_query($query_sched_time) or die(mysql_error());
                             while ($row_sched_time = mysql_fetch_array($result_sched_time)) {
-                                echo "<option value='". $row_sched_time['id'] ."'>". $row_sched_time['start_time'] . "-" . $row_sched_time['end_time'] . " @ " . $row_sched_time['day'] ."</option>";
+
+                                $timeStart = $row_sched_time['schedule_time_fr'];
+                                $queryTimeStart = "SELECT TIME_FORMAT('$timeStart', '%h:%i:%s %p')";
+                                $resultTimeStart = mysql_query($queryTimeStart) or die(mysql_error());
+                                $rowTimeStart = mysql_fetch_row($resultTimeStart);
+
+                                $timeEnd = $row_sched_time['schedule_time_to'];
+                                $queryTimeEnd = "SELECT TIME_FORMAT('$timeEnd', '%h:%i:%s %p')";
+                                $resultTimeEnd = mysql_query($queryTimeEnd) or die(mysql_error());
+                                $rowTimeEnd = mysql_fetch_row($resultTimeEnd);
+
+                                echo "<option value='". $row_sched_time['time_id'] ."'>". $rowTimeStart[0] .
+                                    " - " . $rowTimeEnd[0] . " @ " . $row_sched_time['schedule_month'] .
+                                    " ". $row_sched_time['schedule_day'] .
+                                    " ". $row_sched_time['schedule_year'] .
+                                    " ". $row_sched_time['day'] . "</option>";
                             }
-                        ?>
+                    ?>
+
                     </select><br/>
                     <input type='hidden' name='faculty_id' value='<?php echo $faculty_id;?>'/>
                     <input class="btn btn-primary" type="submit" name="submit" value="Register" />
                 </form>
             </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-8">
             <strong><?php echo $facultyName . ' - consultations ';?></strong>
             <?php 
                 echo "<table class='table table-striped table-hover' style='width:100%'>";
@@ -181,9 +194,6 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                 echo "   <tr>";
                 echo "      <th align='center'>";
                 echo "          <strong>Date</strong>";
-                echo "      </th>";
-                echo "      <th align='center'>";
-                echo "          <strong>Day</strong>";
                 echo "      </th>";
                 echo "      <th align='center'>";
                 echo "          <strong>Start Time</strong>";
@@ -206,17 +216,14 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                 echo "<tbody>";
                 while ($row = mysql_fetch_array($resultAppointment)) 
                 {
-                    
-                    $sched_time_id = $row['sched_time_id'];
-                    $result_faculty_sched_time = mysql_query("SELECT * FROM `faculty_sched_time` WHERE id='$sched_time_id' LIMIT 1");
-                    $faculty_sched_time = mysql_fetch_assoc($result_faculty_sched_time);
+
 					
-					$timeStart = $faculty_sched_time['start_time'];
+					$timeStart = $row['appoint_time_fr'];
 					$queryTimeStart = "SELECT TIME_FORMAT('$timeStart', '%h:%i:%s %p')";
 					$resultTimeStart = mysql_query($queryTimeStart) or die(mysql_error());
 					$rowStartTime = mysql_fetch_row($resultTimeStart);
 					
-					$timeEnd = $faculty_sched_time['end_time'];
+					$timeEnd = $row['appoint_time_to'];
 					$queryTimeEnd = "SELECT TIME_FORMAT('$timeEnd', '%h:%i:%s %p')";
 					$resultTimeEnd = mysql_query($queryTimeEnd) or die(mysql_error());
 					$rowEndTime = mysql_fetch_row($resultTimeEnd);
@@ -224,9 +231,6 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                     echo "   <tr>";
                     echo "      <td>";
                     echo            $row['appoint_date'];
-                    echo "      </td>";
-                    echo "      <td>";
-                    echo            $faculty_sched_time['day'];
                     echo "      </td>";
                     echo "      <td>";
                     echo            $rowStartTime[0];

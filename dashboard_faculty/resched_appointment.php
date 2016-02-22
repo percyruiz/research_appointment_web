@@ -34,9 +34,8 @@ Website: https://htmlcssphptutorial.wordpress.com
 			<?php 
 				if(isset($_POST['appointment_id'])){ 
 					$resched_appointment_id = $_POST['appointment_id'];
-					$faculty_sched_time_id = $_POST['faculty_sched_time_id'];
 					
-					$result_appointment = mysql_query("SELECT * FROM `appointments` WHERE appointment_id='$resched_appointment_id' and sched_time_id='$faculty_sched_time_id' LIMIT 1");
+					$result_appointment = mysql_query("SELECT * FROM `appointments` WHERE appointment_id='$resched_appointment_id' LIMIT 1");
 					$row_appointment = mysql_fetch_assoc($result_appointment);
 					$faculty_id = $row_appointment['faculty_id'];
 					
@@ -46,8 +45,16 @@ Website: https://htmlcssphptutorial.wordpress.com
 				}
 			?>
 			<?php 
-				if(isset($_POST['resched_appointment_id'])){ 
+				if(isset($_POST['resched_appointment_id'])){
 					$resched_appointment_id = $_POST['resched_appointment_id'];
+					$faculty_id = $_POST['faculty_id'];
+					$resched_time = $_POST['time'];
+					$resched_remark = $_POST['remarks'];
+					$resched_remark = "RESCHEDULED - " . $resched_remark;
+
+
+
+					/*$resched_appointment_id = $_POST['resched_appointment_id'];
 					$resched_time = $_POST['resched_time'];
 					$resched_date = $_POST['resched_date'];
 					$faculty_id = $_POST['faculty_id'];
@@ -105,41 +112,44 @@ Website: https://htmlcssphptutorial.wordpress.com
 								'$resched_remark')";
 							$insertConsultation = mysql_query($insertConsultation);
 						}
-					}
+					}*/
 				}
 			?>
 			
 			<div class="form">
                 <h4>Reschedule Appointment</h4>
                 <form class="form-horizontal" name="resched" action="" method="post">
-                    <input class="form-control" value="<?php echo $resched_date?>" type="date" placeholder="YYYY-MM-DD" name="resched_date" data-date-split-input="true" required/> <br/>
 					<input type='hidden' name='resched_appointment_id' value='<?php echo "$resched_appointment_id"; ?>'/>
 					<input type='hidden' name='faculty_id' value='<?php echo "$faculty_id"; ?>'/>
-                    <select class="form-control" name="resched_time">
-                        <?php
-                            $query_sched_time = "SELECT * FROM `faculty_sched_time` WHERE user_id=$faculty_id";
-                            $result_sched_time = mysql_query($query_sched_time) or die(mysql_error());
-                            while ($row_sched_time = mysql_fetch_array($result_sched_time)) {
-                            	$timeStart = $row_sched_time['start_time'];
-								$queryTimeStart = "SELECT TIME_FORMAT('$timeStart', '%h:%i:%s %p')";
-								$resultTimeStart = mysql_query($queryTimeStart) or die(mysql_error());
-								$rowStartTime = mysql_fetch_row($resultTimeStart);
-								
-								$timeEnd = $row_sched_time['end_time'];
-								$queryTimeEnd = "SELECT TIME_FORMAT('$timeEnd', '%h:%i:%s %p')";
-								$resultTimeEnd = mysql_query($queryTimeEnd) or die(mysql_error());
-								$rowEndTime = mysql_fetch_row($resultTimeEnd);
-								
-								if($row_sched_time['id'] == $resched_time){
-                            		echo "<option selected value='". $row_sched_time['id'] ."'>". $rowStartTime[0] . "-" . 
-                            		$rowEndTime[0] . " @ " . $row_sched_time['day'] ."</option>";
-                            	}else{
-                                	echo "<option value='". $row_sched_time['id'] ."'>". $rowStartTime[0] . "-" . 
-                                	$rowEndTime[0] . " @ " . $row_sched_time['day'] ."</option>";
-                            	}
-                            }
-                        ?>
-                    </select><br/>
+					<select class="form-control" name="time">
+						<?php
+						$query_sched_time = "SELECT *
+                                FROM `sched_time`
+                                INNER JOIN `sched_date`
+                                ON sched_time.date_id=sched_date.date_id
+                                WHERE faculty_id='$faculty_id'";
+						$result_sched_time = mysql_query($query_sched_time) or die(mysql_error());
+						while ($row_sched_time = mysql_fetch_array($result_sched_time)) {
+
+							$timeStart = $row_sched_time['schedule_time_fr'];
+							$queryTimeStart = "SELECT TIME_FORMAT('$timeStart', '%h:%i:%s %p')";
+							$resultTimeStart = mysql_query($queryTimeStart) or die(mysql_error());
+							$rowTimeStart = mysql_fetch_row($resultTimeStart);
+
+							$timeEnd = $row_sched_time['schedule_time_to'];
+							$queryTimeEnd = "SELECT TIME_FORMAT('$timeEnd', '%h:%i:%s %p')";
+							$resultTimeEnd = mysql_query($queryTimeEnd) or die(mysql_error());
+							$rowTimeEnd = mysql_fetch_row($resultTimeEnd);
+
+							echo "<option value='". $row_sched_time['time_id'] ."'>". $rowTimeStart[0] .
+								" - " . $rowTimeEnd[0] . " @ " . $row_sched_time['schedule_month'] .
+								" ". $row_sched_time['schedule_day'] .
+								" ". $row_sched_time['schedule_year'] .
+								" ". $row_sched_time['day'] . "</option>";
+						}
+						?>
+
+					</select><br/>
 					<textarea name='remarks' rows="4" cols="30"><?php echo substr($resched_remark, 14, strlen($resched_remark)-1);?></textarea>
 					<br/><br/>
                     <input class="btn btn-primary" type="submit" name="submit" value="Update" />
