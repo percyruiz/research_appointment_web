@@ -44,7 +44,11 @@ include("auth.php"); //include auth.php file on all secure pages
 		<h4>Your Advisory Research</h4>
 		<?php $user_id = $_SESSION['userid'];
 
-		$query = "SELECT * FROM `researches` WHERE faculty_id='$user_id' ORDER BY `research_title` ASC ";
+		$result_user = mysql_query("SELECT * FROM `users` WHERE user_id='$user_id' LIMIT 1");
+		$row_user = mysql_fetch_assoc($result_user);
+		$faculty_id = $row_user['faculty_id'];
+
+		$query = "SELECT * FROM `researches` WHERE faculty_id='$faculty_id' ORDER BY `research_title` ASC ";
 		$result = mysql_query($query) or die(mysql_error());
 		echo "<table class='table table-striped table-hover' style='width:100%'>";
 		echo "	 <thead>";

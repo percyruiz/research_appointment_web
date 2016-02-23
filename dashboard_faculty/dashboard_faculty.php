@@ -69,20 +69,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 						$querySelectFaculty = mysql_query("SELECT * FROM `users` WHERE faculty_id='$faculty_id' LIMIT 1");
 						$resultSelectFaculty = mysql_fetch_assoc($querySelectFaculty);
 						$sign = $resultSelectFaculty['lname'] . ", " . $resultSelectFaculty['fname'] . " " . $resultSelectFaculty['mname'];
-						
-						if($result){
-							$insertConsultation = "INSERT into `consultations` (
-											date,
-											research_id,
-											status,
-											sign
-											) VALUES (
-											'$date',
-											'$research_id',
-											'$status',
-											'$sign')";
-							$insertConsultation = mysql_query($insertConsultation);
-						}
+
 					}
 				?>
 

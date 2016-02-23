@@ -42,7 +42,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
         $resultNotAvail = mysql_query($queryNotAvail) or die(mysql_error());
         $rowsNotAvail = mysql_num_rows($resultNotAvail);
 
-        if(!$rowsNotAvail > 0){
+        if($rowsNotAvail == 0){
             $userid = $_SESSION['userid'];
 
             $queryStudentNum = "SELECT * FROM `users` WHERE user_id='$userid'";
@@ -98,8 +98,8 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                     '$researchCode')";
             $resultInsert = mysql_query($queryInsert);
 
-            $queryInsert = "UPDATE `sched_time` SET `is_taken`='yes' WHERE time_id='$sched_time_id'";
-            $resultInsert = mysql_query($queryInsert);
+            $queryUpdate = "UPDATE `sched_time` SET `is_taken`='yes' WHERE time_id='$sched_time_id'";
+            $resultUpdate = mysql_query($queryUpdate);
 
 
             echo '<div class="alert alert-info">Added Successfully!</div>';
@@ -148,7 +148,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
     ?>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="form">
                 <h4>Add Appointment</h4>
                 <form class="form-horizontal" name="registration" action="" method="post">
@@ -186,7 +186,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                 </form>
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
             <strong><?php echo $facultyName . ' - consultations ';?></strong>
             <?php 
                 echo "<table class='table table-striped table-hover' style='width:100%'>";
