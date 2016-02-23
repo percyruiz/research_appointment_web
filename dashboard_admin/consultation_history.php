@@ -57,6 +57,11 @@ include("auth.php");
 				echo "	 	<th align='center'>";
 				echo "	 		<strong>DATE</strong>";
 				echo "	 	</th>";
+				echo "      <th align='center'>";
+				echo "          <strong>START TIME</strong>";
+				echo "      </th>";
+				echo "      <th align='center'>";
+				echo "          <strong>END TIME</strong>";
 				echo "	 	<th align='center'>";
 				echo "	 		<strong>REMARKS</strong>";
 				echo "	 	</th>";
@@ -67,9 +72,9 @@ include("auth.php");
 				echo "	 </thead>";
 				echo "	 <tbody>";
 				while ($row = mysql_fetch_array($result)) {
-					$research_id = $row['research_id'];
+					$research_code = $row['research_code'];
 					
-					$querySelectResearch = mysql_query("SELECT * FROM `researches` WHERE research_id='$research_id' LIMIT 1");
+					$querySelectResearch = mysql_query("SELECT * FROM `researches` WHERE research_code='$research_code' LIMIT 1");
 					$resultSelectResearch = mysql_fetch_assoc($querySelectResearch);
 					$research_name = $resultSelectResearch['research_title'];
 					$faculty_id = $resultSelectResearch['faculty_id'];
@@ -93,6 +98,23 @@ include("auth.php");
 
 					echo "      <td style='padding: 5px;'>";
 					echo 			$row['appoint_date'];
+					echo "      </td>";
+
+					$timeStart = $row['appoint_time_fr'];
+					$queryTimeStart = "SELECT TIME_FORMAT('$timeStart', '%h:%i:%s %p')";
+					$resultTimeStart = mysql_query($queryTimeStart) or die(mysql_error());
+					$rowStartTime = mysql_fetch_row($resultTimeStart);
+
+					$timeEnd = $row['appoint_time_to'];
+					$queryTimeEnd = "SELECT TIME_FORMAT('$timeEnd', '%h:%i:%s %p')";
+					$resultTimeEnd = mysql_query($queryTimeEnd) or die(mysql_error());
+					$rowEndTime = mysql_fetch_row($resultTimeEnd);
+
+					echo "      <td>";
+					echo            $rowStartTime[0];
+					echo "      </td>";
+					echo "      <td>";
+					echo            $rowEndTime[0];
 					echo "      </td>";
 
 					echo "      <td style='padding: 5px;'>";

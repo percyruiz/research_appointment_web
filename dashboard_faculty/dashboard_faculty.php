@@ -69,20 +69,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 						$querySelectFaculty = mysql_query("SELECT * FROM `users` WHERE faculty_id='$faculty_id' LIMIT 1");
 						$resultSelectFaculty = mysql_fetch_assoc($querySelectFaculty);
 						$sign = $resultSelectFaculty['lname'] . ", " . $resultSelectFaculty['fname'] . " " . $resultSelectFaculty['mname'];
-						
-						if($result){
-							$insertConsultation = "INSERT into `consultations` (
-											date,
-											research_id,
-											status,
-											sign
-											) VALUES (
-											'$date',
-											'$research_id',
-											'$status',
-											'$sign')";
-							$insertConsultation = mysql_query($insertConsultation);
-						}
+
 					}
 				?>
 
@@ -105,9 +92,6 @@ Website: https://htmlcssphptutorial.wordpress.com
 					echo "	 		<strong>END</strong>";
 					echo "	 	</th>";
 					echo "	 	<th>";
-					echo "	 		<strong>DAY</strong>";
-					echo "	 	</th>";
-					echo "	 	<th>";
 					echo "	 		<strong>TYPE</strong>";
 					echo "	 	</th>";
 					echo "	 	<th>";
@@ -120,9 +104,6 @@ Website: https://htmlcssphptutorial.wordpress.com
 						
 						$research_code = $row['research_code'];
 
-						$sched_time_id = $row['sched_time_id'];
-						$result_faculty_sched_time = mysql_query("SELECT * FROM `faculty_sched_time` WHERE id='$sched_time_id' LIMIT 1");
-						$faculty_sched_time = mysql_fetch_assoc($result_faculty_sched_time);
 						$result_r = mysql_query("SELECT * FROM `researches` WHERE research_code='$research_code' LIMIT 1");
 						$row_researches = mysql_fetch_assoc($result_r);
 						$appointment_id = $row['appointment_id'];
@@ -136,7 +117,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 						echo "      </td>";
 
 						echo "      <td width='10%' style='padding: 5px;'>";
-						$timeStart=$faculty_sched_time['start_time'];
+						$timeStart=$row['appoint_time_fr'];
 						$queryTimeStart = "SELECT TIME_FORMAT('$timeStart', '%h:%i:%s %p')";
 						$resultTimeStart = mysql_query($queryTimeStart) or die(mysql_error());
 						$rowStartTime = mysql_fetch_row($resultTimeStart);
@@ -144,15 +125,11 @@ Website: https://htmlcssphptutorial.wordpress.com
 						echo "      </td>";
 
 						echo "      <td width='10%' style='padding: 5px;'>";
-						$timeEnd = $faculty_sched_time['end_time'];
+						$timeEnd = $row['appoint_time_to'];
 						$queryTimeEnd = "SELECT TIME_FORMAT('$timeEnd', '%h:%i:%s %p')";
 						$resultTimeEnd = mysql_query($queryTimeEnd) or die(mysql_error());
 						$rowEndTime = mysql_fetch_row($resultTimeEnd);
 						echo 		$rowEndTime[0];
-						echo "      </td>";
-
-						echo "      <td width='10%' style='padding: 5px;'>";
-						echo 			$faculty_sched_time['day'];
 						echo "      </td>";
 
 						echo "      <td width='5%' style='padding: 5px;'>";
@@ -176,8 +153,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 														</div> ";
 											echo "		<div class='col-md-6'>
 															<form action='resched_appointment.php' method='post' name='resched_appointment'>
-																<input type='hidden' name='appointment_id' value='$appointment_id'/> 
-																<input type='hidden' name='faculty_sched_time_id' value='$sched_time_id'/> 
+																<input type='hidden' name='appointment_id' value='$appointment_id'/>
 																<input class=\"btn btn-primary\" style='color:#FF0000' type='submit' name='status' value='resched'/>
 															</form>
 														</div>
