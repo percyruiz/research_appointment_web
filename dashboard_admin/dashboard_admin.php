@@ -29,6 +29,8 @@ include("auth.php");
 	$path = $_SERVER['DOCUMENT_ROOT'];
 	$path .= "/db.php";
 	require($path);
+
+
    
     // If form submitted, insert values into the database.
     if (isset($_POST['username'])){
@@ -217,7 +219,7 @@ include("auth.php");
 						}
 						echo "</tbody>";
 						echo "</table>";
-					?>		 	
+					?>
 				</div>
 			</div>
 			

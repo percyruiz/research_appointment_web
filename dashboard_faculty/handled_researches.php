@@ -50,51 +50,57 @@ include("auth.php"); //include auth.php file on all secure pages
 
 		$query = "SELECT * FROM `researches` WHERE faculty_id='$faculty_id' ORDER BY `research_title` ASC ";
 		$result = mysql_query($query) or die(mysql_error());
-		echo "<table class='table table-striped table-hover' style='width:100%'>";
-		echo "	 <thead>";
-		echo "	 <tr>";
-		echo "	 	<th>";
-		echo "	 		<strong>TITLE</strong>";
-		echo "	 	</th>";
-		echo "	 	<th>";
-		echo "	 		<strong>RESEARCH TYPE</strong>";
-		echo "	 	</th>";
-		echo "	 	<th>";
-		echo "	 		<strong>SCHOOL YEAR/SEM</strong>";
-		echo "	 	</th>";
-		echo "	 	<th>";
-		echo "	 		<strong>GROUP LEADER</strong>";
-		echo "	 	</th>";
-		echo "	 </tr>";
-		echo "	 </thead>";
-		echo "	 <tbody>";
+		$to_pdf = '';
+		$to_pdf = $to_pdf . "<table class='table table-striped table-hover' style='width:100%'>";
+		$to_pdf = $to_pdf . "	 <thead>";
+		$to_pdf = $to_pdf . "	 <tr>";
+		$to_pdf = $to_pdf . "	 	<th>";
+		$to_pdf = $to_pdf . "	 		<strong>TITLE</strong>";
+		$to_pdf = $to_pdf . "	 	</th>";
+		$to_pdf = $to_pdf . "	 	<th>";
+		$to_pdf = $to_pdf . "	 		<strong>RESEARCH TYPE</strong>";
+		$to_pdf = $to_pdf . "	 	</th>";
+		$to_pdf = $to_pdf . "	 	<th>";
+		$to_pdf = $to_pdf . "	 		<strong>SCHOOL YEAR/SEM</strong>";
+		$to_pdf = $to_pdf . "	 	</th>";
+		$to_pdf = $to_pdf . "	 	<th>";
+		$to_pdf = $to_pdf . "	 		<strong>GROUP LEADER</strong>";
+		$to_pdf = $to_pdf . "	 	</th>";
+		$to_pdf = $to_pdf . "	 </tr>";
+		$to_pdf = $to_pdf . "	 </thead>";
+		$to_pdf = $to_pdf . "	 <tbody>";
 		while ($row = mysql_fetch_array($result)) {
 
 			$research_id = $row['research_id'];
-			echo "   <tr>";
-			echo "      <td width='30%' style='padding: 5px;'>";
-			echo 			"<a href='research.php?id=$research_id'>" .$row['research_title'] . "</a>";
-			echo "      </td>";
+			$to_pdf = $to_pdf . "   <tr>";
+			$to_pdf = $to_pdf . "      <td width='30%' style='padding: 5px;'>";
+			$to_pdf = $to_pdf . 			"<a href='research.php?id=$research_id'>" .$row['research_title'] . "</a>";
+			$to_pdf = $to_pdf . "      </td>";
 
-			echo "      <td width='20%' style='padding: 5px;'>";
-			echo 			$row['research_type'];
-			echo "      </td>";
+			$to_pdf = $to_pdf . "      <td width='20%' style='padding: 5px;'>";
+			$to_pdf = $to_pdf . 			$row['research_type'];
+			$to_pdf = $to_pdf . "      </td>";
 
-			echo "      <td width='10%' style='padding: 5px;'>";
-			echo 			$row['school_year'] . "/<br/>" .$row['sem_type'];
-			echo "      </td>";
+			$to_pdf = $to_pdf . "      <td width='10%' style='padding: 5px;'>";
+			$to_pdf = $to_pdf . 			$row['school_year'] . "/<br/>" .$row['sem_type'];
+			$to_pdf = $to_pdf . "      </td>";
 
-			echo "      <td width='5%' style='padding: 5px;'>";
+			$to_pdf = $to_pdf . "      <td width='5%' style='padding: 5px;'>";
 			$student_no = $row['student_no'];
 			$result_student = mysql_query("SELECT * FROM `users` WHERE student_no='$student_no' LIMIT 1");
 			$row_student = mysql_fetch_assoc($result_student);
-			echo 			$row_student['lname']. ", ". $row_student['fname'] . " " . $row_student['mname'];
-			echo "      </td>";
-			echo "   </tr>";
+			$to_pdf = $to_pdf . 			$row_student['lname']. ", ". $row_student['fname'] . " " . $row_student['mname'];
+			$to_pdf = $to_pdf . "      </td>";
+			$to_pdf = $to_pdf . "   </tr>";
 		}
-		echo "</tbody>";
-		echo "</table>";
+		$to_pdf = $to_pdf . "</tbody>";
+		$to_pdf = $to_pdf . "</table>";
+		echo $to_pdf;
 		?>
+		<form class="form-horizontal" name="to_pdf" action="../to_pdf.php" method="post">
+			<input type="hidden" name="to_pdf" value="<?php echo '<br/><br/>Consultation History <br/><br/>' . $to_pdf?>"/>
+			<input class="btn btn-primary" type="submit" name="submit" value="Generate PDF" /><br/><br/>
+		</form>
 	</div>
 </div>
 </body>

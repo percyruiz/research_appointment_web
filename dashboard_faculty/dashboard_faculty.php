@@ -100,6 +100,29 @@ Website: https://htmlcssphptutorial.wordpress.com
 					echo "	 </tr>";
 					echo "	 </thead>";
 					echo "	 <tbody>";
+
+					$to_pdf = '';
+					$to_pdf = $to_pdf . "<table class='table table-striped table-hover' style='width:100%'>";
+					$to_pdf = $to_pdf . "	 <thead>";
+					$to_pdf = $to_pdf . "	 <tr>";
+					$to_pdf = $to_pdf . "	 	<th>";
+					$to_pdf = $to_pdf . "	 		<strong>TITLE</strong>";
+					$to_pdf = $to_pdf . "	 	</th>";
+					$to_pdf = $to_pdf . "	 	<th>";
+					$to_pdf = $to_pdf . "	 		<strong>DATE</strong>";
+					$to_pdf = $to_pdf . "	 	</th>";
+					$to_pdf = $to_pdf . "	 	<th>";
+					$to_pdf = $to_pdf . "	 		<strong>START</strong>";
+					$to_pdf = $to_pdf . "	 	</th>";
+					$to_pdf = $to_pdf . "	 	<th>";
+					$to_pdf = $to_pdf . "	 		<strong>END</strong>";
+					$to_pdf = $to_pdf . "	 	</th>";
+					$to_pdf = $to_pdf . "	 	<th>";
+					$to_pdf = $to_pdf . "	 		<strong>TYPE</strong>";
+					$to_pdf = $to_pdf . "	 	</th>";
+					$to_pdf = $to_pdf . "	 </tr>";
+					$to_pdf = $to_pdf . "	 </thead>";
+					$to_pdf = $to_pdf . "	 <tbody>";
 					while ($row = mysql_fetch_array($result)) {
 						
 						$research_code = $row['research_code'];
@@ -108,39 +131,56 @@ Website: https://htmlcssphptutorial.wordpress.com
 						$row_researches = mysql_fetch_assoc($result_r);
 						$appointment_id = $row['appointment_id'];
 						echo "   <tr>";
+						$to_pdf = $to_pdf . "   <tr>";
 						echo "      <td width='30%' style='padding: 5px;'>";
 						echo 			"<a href='research.php?id=$research_code'>" .$row_researches['research_title'] . "</a>";
 						echo "      </td>";
+						$to_pdf = $to_pdf . "      <td width='30%' style='padding: 5px;'>";
+						$to_pdf = $to_pdf . 			$row_researches['research_title'];
+						$to_pdf = $to_pdf . "      </td>";
 
 						echo "      <td width='15%' style='padding: 5px;'>";
 						echo 			$row['appoint_date'];
 						echo "      </td>";
+						$to_pdf = $to_pdf . "      <td width='15%' style='padding: 5px;'>";
+						$to_pdf = $to_pdf . 			$row['appoint_date'];
+						$to_pdf = $to_pdf . "      </td>";
 
 						echo "      <td width='10%' style='padding: 5px;'>";
+						$to_pdf = $to_pdf . "      <td width='10%' style='padding: 5px;'>";
 						$timeStart=$row['appoint_time_fr'];
 						$queryTimeStart = "SELECT TIME_FORMAT('$timeStart', '%h:%i:%s %p')";
 						$resultTimeStart = mysql_query($queryTimeStart) or die(mysql_error());
 						$rowStartTime = mysql_fetch_row($resultTimeStart);
 						echo 		$rowStartTime[0];
 						echo "      </td>";
+						$to_pdf = $to_pdf . 		$rowStartTime[0];
+						$to_pdf = $to_pdf . "      </td>";
 
 						echo "      <td width='10%' style='padding: 5px;'>";
+						$to_pdf = $to_pdf . "      <td width='10%' style='padding: 5px;'>";
 						$timeEnd = $row['appoint_time_to'];
 						$queryTimeEnd = "SELECT TIME_FORMAT('$timeEnd', '%h:%i:%s %p')";
 						$resultTimeEnd = mysql_query($queryTimeEnd) or die(mysql_error());
 						$rowEndTime = mysql_fetch_row($resultTimeEnd);
 						echo 		$rowEndTime[0];
 						echo "      </td>";
+						$to_pdf = $to_pdf . 		$rowEndTime[0];
+						$to_pdf = $to_pdf . "      </td>";
 
 						echo "      <td width='5%' style='padding: 5px;'>";
+						$to_pdf = $to_pdf . "      <td width='5%' style='padding: 5px;'>";
 						$queryPanel = mysql_query("SELECT * FROM `panels` WHERE research_code='$research_code' AND faculty_id='$faculty_id' LIMIT 1");
 						$resultQueryPanel = mysql_fetch_assoc($queryPanel);
 						if($resultQueryPanel){
 							echo 			"panel";
+							$to_pdf = $to_pdf . 			"panel";
 						}else{
 							echo 			"advisee";
+							$to_pdf = $to_pdf . 			"advisee";
 						}
 						echo "      </td>";
+						$to_pdf = $to_pdf . "      </td>";
 
 						echo "      <td width='20%' align='center'>";
 										if($row['status']=='pending'){
@@ -166,10 +206,18 @@ Website: https://htmlcssphptutorial.wordpress.com
 										}
 						echo "      </td>";
 						echo "   </tr>";
+						$to_pdf = $to_pdf . "      </td>";
+						$to_pdf = $to_pdf . "   </tr>";
 					}
 					echo "</tbody>";
 					echo "</table>";
+					$to_pdf = $to_pdf . "</tbody>";
+					$to_pdf = $to_pdf . "</table>";
 				?>
+				<form class="form-horizontal" name="to_pdf" action="../to_pdf.php" method="post">
+					<input type="hidden" name="to_pdf" value="<?php echo '<br/><br/>Appointments <br/><br/>' . $to_pdf?>"/>
+					<input class="btn btn-primary" type="submit" name="submit" value="Generate PDF" /><br/><br/>
+				</form>
 			</div>
 		</div>
 	</body>
