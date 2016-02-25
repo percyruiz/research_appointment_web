@@ -126,6 +126,9 @@ Website: https://htmlcssphptutorial.wordpress.com
 					$to_pdf = $to_pdf . "	 </tr>";
 					$to_pdf = $to_pdf . "	 </thead>";
 					$to_pdf = $to_pdf . "	 <tbody>";
+                    $to_pdf = $to_pdf .	 	"<th>";
+                    $to_pdf = $to_pdf .	 		"<strong>DATE REQUEST FILED</strong>";
+                    $to_pdf = $to_pdf .	 	"</th>";
 					while ($row = mysql_fetch_array($result)) {
 						
 						$research_code = $row['research_code'];
@@ -188,6 +191,10 @@ Website: https://htmlcssphptutorial.wordpress.com
 						echo "      <td width='15%' style='padding: 5px;'>";
 						echo 			$row['timestamp'];
 						echo "      </td>";
+
+                        $to_pdf = $to_pdf . "      <td width='15%' style='padding: 5px;'>";
+                        $to_pdf = $to_pdf . 			$row['timestamp'];
+                        $to_pdf = $to_pdf . "      </td>";
 
 						echo "      <td width='20%' align='center'>";
 										if($row['status']=='pending'){
