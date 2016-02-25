@@ -73,6 +73,39 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 
 				$userid = $_SESSION['userid'];
 
+				$queryUserPanel1 = "SELECT * FROM `users` WHERE faculty_id='$panel1'";
+				$resultUserPanel1 = mysql_query($queryUserPanel1) or die(mysql_error());
+				$rowsPanel = mysql_num_rows($resultUserPanel1);
+
+				if($rowsPanel > 0){
+					while ($row = mysql_fetch_array($resultUserPanel1))
+					{
+						$panelName1 = $row['fname']." ".$row['mname']." ".$row['lname'];
+					}
+				}
+
+				$queryUserPanel2 = "SELECT * FROM `users` WHERE faculty_id='$panel2'";
+				$resultUserPanel2 = mysql_query($queryUserPanel2) or die(mysql_error());
+				$rowsPanel = mysql_num_rows($resultUserPanel2);
+
+				if($rowsPanel > 0){
+					while ($row = mysql_fetch_array($resultUserPanel2))
+					{
+						$panelName2 = $row['fname']." ".$row['mname']." ".$row['lname'];
+					}
+				}
+
+				$queryUserPanel3 = "SELECT * FROM `users` WHERE faculty_id='$panel3'";
+				$resultUserPanel3 = mysql_query($queryUserPanel3) or die(mysql_error());
+				$rowsPanel = mysql_num_rows($resultUserPanel3);
+
+				if($rowsPanel > 0){
+					while ($row = mysql_fetch_array($resultUserPanel3))
+				{
+					$panelName3 = $row['fname']." ".$row['mname']." ".$row['lname'];
+				}
+			}
+
 				$queryStudentNum = "SELECT * FROM `users` WHERE user_id='$userid'";
 				$resultStudentNum = mysql_query($queryStudentNum) or die(mysql_error());
 					$rows = mysql_num_rows($resultStudentNum);
@@ -103,31 +136,37 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					$queryInsert = "INSERT into `panels` (
 						research_code,
 						faculty_id,
-						user_type
+						user_type,
+						panel_name
 						) VALUES (
 						'$researchCode',
 						'$panel1',
-						'LEAD PANEL')";
+						'LEAD PANEL',
+						'$panelName1')";
 					$resultInsert = mysql_query($queryInsert);
 					
 					$queryInsert = "INSERT into `panels` (
 						research_code,
 						faculty_id,
-						user_type
+						user_type,
+						panel_name
 						) VALUES (
 						'$researchCode',
 						'$panel2',
-						'MEMBER PANEL')";
+						'MEMBER PANEL',
+						'$panelName2')";
 					$resultInsert = mysql_query($queryInsert);
 					
 					$queryInsert = "INSERT into `panels` (
 						research_code,
 						faculty_id,
-						user_type
+						user_type,
+						panel_name
 						) VALUES (
 						'$researchCode',
 						'$panel3', 
-						'MEMBER PANEL')";
+						'MEMBER PANEL',
+						'$panelName3')";
 					$resultInsert = mysql_query($queryInsert);
 					
 					$queryInsertStudent = "INSERT into `users` (
@@ -178,8 +217,8 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 								while ($row = mysql_fetch_array($resultFaculty)) 
 								{
 									$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
-									$facultyId = $row['faculty_id'];
-									echo "<option value='$facultyId'>$faculty</option><br/>";
+									$facultyIdAdviser = $row['faculty_id'];
+									echo "<option value='$facultyIdAdviser'>$faculty</option><br/>";
 								}
 								echo "</select><br/>";
 							}
@@ -254,9 +293,24 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 								echo "</select><br/>";
 							}
 					?>
-					<input class="btn btn-primary" type="submit" name="submit" value="Register" />
+					<input class="btn btn-primary" type="submit" name="submit" value="Register" onclick="return validate();"/>
+
 
 				</form>
+				<script type="text/javascript">
+					function validate() {
+						var adviserName = document.forms["registration"]["adviser"].value;
+						var lead = document.forms["registration"]["panel1"].value;
+						var panel2 = document.forms["registration"]["panel2"].value;
+						var panel3 = document.forms["registration"]["panel3"].value;
+
+						if(lead == panel2 || lead == panel3 || panel2 == panel3 || adviserName == lead || adviserName == panel2 || adviserName == panel3){
+							alert("Adviser and Panels should be distinct");
+							return false;
+						}
+						return true;
+					}
+				</script>
 			</div>
 		</div>
 		

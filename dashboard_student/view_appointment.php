@@ -65,24 +65,26 @@ include("auth.php"); //include auth.php file on all secure pages ?>
         
 			while ($row = mysql_fetch_array($resultResearchId)) 
 			{
-			  $researchId = $row['research_id']; 
-			  $facultyId = $row['faculty_id']; 
+				$research_code = $row['research_code'];
+				$facultyId = $row['faculty_id'];
 			}   
 
 			$queryInsert = "INSERT into `appointments` (
-					research_id,
+					research_code,
 					faculty_id,
 					appoint_date, 
 					appoint_time_fr, 
 					appoint_time_to, 
-					status
+					status,
+					timestamp
 					) VALUES (
-					'$researchId',
+					'$research_code',
 					'$facultyId',
 					'$appointmentdate', 
 					'$appointmentstart', 
 					'$appointmentend', 
-					'pending')";
+					'pending',
+					now())";
 			$resultInsert = mysql_query($queryInsert);
 			if($resultInsert){
 				header("Location: http://". $_SERVER['SERVER_NAME'] ."/dashboard_student/view_appointment.php");

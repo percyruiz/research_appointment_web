@@ -87,7 +87,8 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                     faculty_id,
                     status,
                     sched_time_id,
-                    research_code
+                    research_code,
+                    timestamp
                     ) VALUES (
                     '$appoint_date',
                     '$schedule_time_fr',
@@ -95,7 +96,8 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                     '$faculty_id',
                     'pending',
                     '$sched_time_id',
-                    '$researchCode')";
+                    '$researchCode',
+                    now())";
             $resultInsert = mysql_query($queryInsert);
 
             $queryUpdate = "UPDATE `sched_time` SET `is_taken`='yes' WHERE time_id='$sched_time_id'";
