@@ -39,10 +39,6 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 			$student_num = $_POST['student_no'];
 			$research_id1 = $_POST['research_id1'];
 
-			$panelName1 = $_POST['panelName1'];
-			$panelName2 = $_POST['panelName2'];
-			$panelName3 = $_POST['panelName3'];
-
 			$researchtypeT1 = "Thesis 1";
 
 			if($researchtypeR1 == $researchtypeT1){
@@ -81,6 +77,39 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 
 				$facultyId = stripslashes($facultyId);
 				$facultyId = mysql_real_escape_string($facultyId);
+
+				$queryUserPanel1 = "SELECT * FROM `users` WHERE faculty_id='$panel1'";
+				$resultUserPanel1 = mysql_query($queryUserPanel1) or die(mysql_error());
+				$rowsPanel = mysql_num_rows($resultUserPanel1);
+
+				if($rowsPanel > 0){
+					while ($row = mysql_fetch_array($resultUserPanel1))
+					{
+						$panelName1 = $row['fname']." ".$row['mname']." ".$row['lname'];
+					}
+				}
+
+				$queryUserPanel2 = "SELECT * FROM `users` WHERE faculty_id='$panel2'";
+				$resultUserPanel2 = mysql_query($queryUserPanel2) or die(mysql_error());
+				$rowsPanel = mysql_num_rows($resultUserPanel2);
+
+				if($rowsPanel > 0){
+					while ($row = mysql_fetch_array($resultUserPanel2))
+					{
+						$panelName2 = $row['fname']." ".$row['mname']." ".$row['lname'];
+					}
+				}
+
+				$queryUserPanel3 = "SELECT * FROM `users` WHERE faculty_id='$panel3'";
+				$resultUserPanel3 = mysql_query($queryUserPanel3) or die(mysql_error());
+				$rowsPanel = mysql_num_rows($resultUserPanel3);
+
+				if($rowsPanel > 0){
+					while ($row = mysql_fetch_array($resultUserPanel3))
+					{
+						$panelName3 = $row['fname']." ".$row['mname']." ".$row['lname'];
+					}
+				}
 
 				$queryStudentNum = "SELECT * FROM `users` WHERE user_id='$userid'";
 				$resultStudentNum = mysql_query($queryStudentNum) or die(mysql_error());
@@ -195,11 +224,10 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "<select class=\"form-control\" name='panel1'>";
 					while ($row = mysql_fetch_array($resultLeadPanel))
 					{
-						$facultyPanel1 = $row['fname']." ".$row['mname']." ".$row['lname'];
+						$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
 						$facultyId = $row['faculty_id'];
-						echo "<option value='$facultyId'>$facultyPanel1</option><br/>";
+						echo "<option value='$facultyId'>$faculty</option><br/>";
 					}
-					echo "<input type = 'hidden' name = 'panelName2' value='$facultyPanel1'>";
 					echo "</select><br/>";
 				}
 
@@ -213,11 +241,10 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "<select class=\"form-control\" name='panel2'>";
 					while ($row = mysql_fetch_array($resultMemberPanel1))
 					{
-						$facultyPanel2 = $row['fname']." ".$row['mname']." ".$row['lname'];
+						$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
 						$facultyId = $row['faculty_id'];
-						echo "<option value='$facultyId'>$facultyPanel2</option><br/>";
+						echo "<option value='$facultyId'>$faculty</option><br/>";
 					}
-					echo "<input type = 'hidden' name = 'panelName2' value='$facultyPanel2'>";
 					echo "</select><br/>";
 				}
 
@@ -231,11 +258,10 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "<select class=\"form-control\" name='panel3'>";
 					while ($row = mysql_fetch_array($resultMemberPanel2))
 					{
-						$facultyPanel3 = $row['fname']." ".$row['mname']." ".$row['lname'];
+						$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
 						$facultyId = $row['faculty_id'];
-						echo "<option value='$facultyId'>$facultyPanel3</option><br/>";
+						echo "<option value='$facultyId'>$faculty</option><br/>";
 					}
-					echo "<input type = 'hidden' name = 'panelName3' value='$facultyPanel3'>";
 					echo "</select><br/>";
 				}
 				?>
