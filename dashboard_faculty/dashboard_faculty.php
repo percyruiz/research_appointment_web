@@ -95,6 +95,9 @@ Website: https://htmlcssphptutorial.wordpress.com
 					echo "	 		<strong>TYPE</strong>";
 					echo "	 	</th>";
 					echo "	 	<th>";
+					echo "	 		<strong>DATE REQUEST FILED</strong>";
+					echo "	 	</th>";
+					echo "	 	<th>";
 					echo "	 		<strong>ACTION</strong>";
 					echo "	 	</th>";
 					echo "	 </tr>";
@@ -142,14 +145,38 @@ Website: https://htmlcssphptutorial.wordpress.com
 						}
 						echo "      </td>";
 
+						echo "      <td width='15%' style='padding: 5px;'>";
+						echo 			$row['timestamp'];
+						echo "      </td>";
+
 						echo "      <td width='20%' align='center'>";
 										if($row['status']=='pending'){
 											echo "	<div class='row'>
 														<div class='col-md-6'>
-															<form action='' method='post' name='dashboard_faculty'>
-															<input type='hidden' name='appointment_id' value='$appointment_id'/> 
-															<input class=\"btn btn-primary\" style='color:#0000FF' type='submit' name='status' value='accept'/>
-															</form>
+															<form action='' method='post' name='dashboard_faculty'>";
+															date_default_timezone_set("Asia/Singapore");
+															$d=strtotime($row['appoint_date']);
+															echo date("his"). "</br>";
+
+															$timeStartExp=$row['appoint_time_fr'];
+															$queryTimeStartExp = "SELECT TIME_FORMAT('$timeStartExp', '%T')";
+
+															$resultTimeStartExp = mysql_query($queryTimeStartExp) or die(mysql_error());
+															$rowStartTimeExp = mysql_fetch_row($resultTimeStartExp);
+															$timeStartToCompare = preg_replace("/[^A-Za-z0-9]/", "", $rowStartTimeExp[0]);
+
+															$requestedDateTime = date("Ymd", $d). "" .$timeStartToCompare;
+															$rightNow = date("Ymd"). "" .date("his");
+
+															if($requestedDateTime > $rightNow){
+																echo "<input type = 'hidden' name = 'appointment_id' value = '$appointment_id' />
+																<input class=\"btn btn-primary\" style='color:#0000FF' type='submit' name='status' value='accepted'/>";
+															}
+															else {
+																echo "Requested Date already past";
+															}
+
+											echo "				</form>
 														</div> ";
 											echo "		<div class='col-md-6'>
 															<form action='resched_appointment.php' method='post' name='resched_appointment'>

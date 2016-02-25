@@ -41,6 +41,9 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				$schoolyear = $_POST['schoolyear'];
 				$semester = $_POST['semester'];
 				$facultyId = $_POST['adviser'];
+				$panelName1 = $_POST['panelName1'];
+				$panelName2 = $_POST['panelName2'];
+				$panelName3 = $_POST['panelName3'];
 
 				$researchIdQuery = "SELECT * FROM researches ORDER BY `research_id` DESC LIMIT 1";
 				$researchIdResult = mysql_query($researchIdQuery) or die(mysql_error());
@@ -103,31 +106,37 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					$queryInsert = "INSERT into `panels` (
 						research_code,
 						faculty_id,
-						user_type
+						user_type,
+						panel_name
 						) VALUES (
 						'$researchCode',
 						'$panel1',
-						'LEAD PANEL')";
+						'LEAD PANEL',
+						'$panelName1')";
 					$resultInsert = mysql_query($queryInsert);
 					
 					$queryInsert = "INSERT into `panels` (
 						research_code,
 						faculty_id,
-						user_type
+						user_type,
+						panel_name
 						) VALUES (
 						'$researchCode',
 						'$panel2',
-						'MEMBER PANEL')";
+						'MEMBER PANEL',
+						'$panelName2')";
 					$resultInsert = mysql_query($queryInsert);
 					
 					$queryInsert = "INSERT into `panels` (
 						research_code,
 						faculty_id,
-						user_type
+						user_type,
+						panel_name
 						) VALUES (
 						'$researchCode',
 						'$panel3', 
-						'MEMBER PANEL')";
+						'MEMBER PANEL',
+						'$panelName3')";
 					$resultInsert = mysql_query($queryInsert);
 					
 					$queryInsertStudent = "INSERT into `users` (
@@ -178,8 +187,8 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 								while ($row = mysql_fetch_array($resultFaculty)) 
 								{
 									$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
-									$facultyId = $row['faculty_id'];
-									echo "<option value='$facultyId'>$faculty</option><br/>";
+									$facultyIdAdviser = $row['faculty_id'];
+									echo "<option value='$facultyIdAdviser'>$faculty</option><br/>";
 								}
 								echo "</select><br/>";
 							}
@@ -214,10 +223,22 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 								while ($row = mysql_fetch_array($resultLeadPanel)) 
 								{
 									$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
-									$facultyId = $row['faculty_id'];
-									echo "<option value='$facultyId'>$faculty</option><br/>";
+									$facultyIdLead = $row['faculty_id'];
+									echo "<option value='$facultyIdLead'>$faculty</option><br/>";
 								}
 								echo "</select><br/>";
+
+								$queryUserPanel1 = "SELECT * FROM `users` WHERE faculty_id='$facultyIdLead'";
+								$resultUserPanel1 = mysql_query($queryUserPanel1) or die(mysql_error());
+								$rowsPanel = mysql_num_rows($resultUserPanel1);
+
+								if($rowsPanel > 0){
+									while ($row = mysql_fetch_array($resultUserPanel1))
+									{
+										$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
+										echo "<input type = 'hidden' name = 'panelName1' value='$faculty'>";
+									}
+								}
 							}
 							
 							echo "<strong>Panel Member</strong>";
@@ -231,10 +252,23 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 								while ($row = mysql_fetch_array($resultMemberPanel1)) 
 								{
 									$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
-									$facultyId = $row['faculty_id'];
-									echo "<option value='$facultyId'>$faculty</option><br/>";
+									$facultyIdPanel2 = $row['faculty_id'];
+									echo "<option value='$facultyIdPanel2'>$faculty</option><br/>";
 								}
+
 								echo "</select><br/>";
+
+								$queryUserPanel2 = "SELECT * FROM `users` WHERE faculty_id='$facultyIdPanel2'";
+								$resultUserPanel2 = mysql_query($queryUserPanel2 ) or die(mysql_error());
+								$rowsPanel = mysql_num_rows($resultUserPanel2);
+
+								if($rowsPanel > 0){
+									while ($row = mysql_fetch_array($resultUserPanel2))
+									{
+										$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
+										echo "<input type = 'hidden' name = 'panelName2' value='$faculty'>";
+									}
+								}
 							}
 							
 							echo "<strong>Panel Member</strong>";
@@ -248,15 +282,43 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 								while ($row = mysql_fetch_array($resultMemberPanel2)) 
 								{
 									$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
-									$facultyId = $row['faculty_id'];
-									echo "<option value='$facultyId'>$faculty</option><br/>";
+									$facultyIdPanel3 = $row['faculty_id'];
+									echo "<option value='$facultyIdPanel3'>$faculty</option><br/>";
 								}
+								echo "<input type = 'hidden' name = 'panelName3' value='$faculty'>";
 								echo "</select><br/>";
+
+								$queryUserPanel3 = "SELECT * FROM `users` WHERE faculty_id='$facultyIdPanel3'";
+								$resultUserPanel3 = mysql_query($queryUserPanel3) or die(mysql_error());
+								$rowsPanel = mysql_num_rows($resultUserPanel3);
+
+								if($rowsPanel > 0){
+									while ($row = mysql_fetch_array($resultUserPanel3))
+									{
+										$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
+										echo "<input type = 'hidden' name = 'panelName3' value='$faculty'>";
+									}
+								}
 							}
 					?>
-					<input class="btn btn-primary" type="submit" name="submit" value="Register" />
+					<input class="btn btn-primary" type="submit" name="submit" value="Register" onclick="return validate();"/>
+
 
 				</form>
+				<script type="text/javascript">
+					function validate() {
+						var adviserName = document.forms["registration"]["adviser"].value;
+						var lead = document.forms["registration"]["panel1"].value;
+						var panel2 = document.forms["registration"]["panel2"].value;
+						var panel3 = document.forms["registration"]["panel3"].value;
+
+						if(lead == panel2 || lead == panel3 || panel2 == panel3 || adviserName == lead || adviserName == panel2 || adviserName == panel3){
+							alert("Adviser and Panels should be distinct");
+							return false;
+						}
+						return true;
+					}
+				</script>
 			</div>
 		</div>
 		

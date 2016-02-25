@@ -39,6 +39,10 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 			$student_num = $_POST['student_no'];
 			$research_id1 = $_POST['research_id1'];
 
+			$panelName1 = $_POST['panelName1'];
+			$panelName2 = $_POST['panelName2'];
+			$panelName3 = $_POST['panelName3'];
+
 			$researchtypeT1 = "Thesis 1";
 
 			if($researchtypeR1 == $researchtypeT1){
@@ -102,13 +106,14 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 
 					$panel_id_array = array($panel1,$panel2,$panel3);
 					$panel_type_array = array("LEAD PANEL","MEMBER PANEL","MEMBER PANEL");
+					$panelName_type_array = array($panelName1,$panelName2,$panelName3);
 
 					$col=0;
 					$row=0;
 					$i = 0;
 					while ($rowResult = mysql_fetch_array($result)){
 						$panelId = $rowResult['panel_id'];
-						$queryUpdatePanel1 = "UPDATE `panels` SET `faculty_id` = '$panel_id_array[$i]', `user_type`='$panel_type_array[$i]' WHERE panel_id=$panelId";
+						$queryUpdatePanel1 = "UPDATE `panels` SET `faculty_id` = '$panel_id_array[$i]', `user_type`='$panel_type_array[$i]', `panel_name`='$panelName_type_array[$i]' WHERE panel_id=$panelId";
 						echo mysql_error();
 						$resultUpdate = mysql_query($queryUpdatePanel1);
 						if($resultUpdate){
@@ -190,10 +195,11 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "<select class=\"form-control\" name='panel1'>";
 					while ($row = mysql_fetch_array($resultLeadPanel))
 					{
-						$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
+						$facultyPanel1 = $row['fname']." ".$row['mname']." ".$row['lname'];
 						$facultyId = $row['faculty_id'];
-						echo "<option value='$facultyId'>$faculty</option><br/>";
+						echo "<option value='$facultyId'>$facultyPanel1</option><br/>";
 					}
+					echo "<input type = 'hidden' name = 'panelName2' value='$facultyPanel1'>";
 					echo "</select><br/>";
 				}
 
@@ -207,10 +213,11 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "<select class=\"form-control\" name='panel2'>";
 					while ($row = mysql_fetch_array($resultMemberPanel1))
 					{
-						$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
+						$facultyPanel2 = $row['fname']." ".$row['mname']." ".$row['lname'];
 						$facultyId = $row['faculty_id'];
-						echo "<option value='$facultyId'>$faculty</option><br/>";
+						echo "<option value='$facultyId'>$facultyPanel2</option><br/>";
 					}
+					echo "<input type = 'hidden' name = 'panelName2' value='$facultyPanel2'>";
 					echo "</select><br/>";
 				}
 
@@ -224,15 +231,32 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "<select class=\"form-control\" name='panel3'>";
 					while ($row = mysql_fetch_array($resultMemberPanel2))
 					{
-						$faculty = $row['fname']." ".$row['mname']." ".$row['lname'];
+						$facultyPanel3 = $row['fname']." ".$row['mname']." ".$row['lname'];
 						$facultyId = $row['faculty_id'];
-						echo "<option value='$facultyId'>$faculty</option><br/>";
+						echo "<option value='$facultyId'>$facultyPanel3</option><br/>";
 					}
+					echo "<input type = 'hidden' name = 'panelName3' value='$facultyPanel3'>";
 					echo "</select><br/>";
 				}
 				?>
-				<input class="btn btn-primary" type="submit" name="submit" value="Register" />
+				<input class="btn btn-primary" type="submit" name="submit" value="Register" onclick="return validate()";/>
 				</form>
+
+				<script type="text/javascript">
+					function validate() {
+						var adviserName = document.forms["registration"]["adviser"].value;
+						var lead = document.forms["registration"]["panel1"].value;
+						var panel2 = document.forms["registration"]["panel2"].value;
+						var panel3 = document.forms["registration"]["panel3"].value;
+
+						if(lead == panel2 || lead == panel3 || panel2 == panel3 || adviserName == lead || adviserName == panel2 || adviserName == panel3){
+							alert("Adviser and Panels should be distinct");
+							return false;
+						}
+						return true;
+					}
+				</script>
+
 			</div>
 		</div>
 
