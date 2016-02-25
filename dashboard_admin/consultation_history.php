@@ -42,35 +42,36 @@ include("auth.php");
 			<?php
 				$query = "SELECT * FROM `appointments` ORDER BY `appointment_id` DESC";
 				$result = mysql_query($query) or die(mysql_error());
-				echo "<table class='table table-striped table-hover' style='width:100%'>";
-				echo "	 <thead>";
-				echo "	 <tr>";
-				echo "	 	<th align='center'>";
-				echo "	 		<strong>ID</strong>";
-				echo "	 	</th>";
-				echo "	 	<th align='center'>";
-				echo "	 		<strong>RESEARCH TITLE</strong>";
-				echo "	 	</th>";
-				echo "	 	<th align='center'>";
-				echo "	 		<strong>FACULTY</strong>";
-				echo "	 	</th>";
-				echo "	 	<th align='center'>";
-				echo "	 		<strong>DATE</strong>";
-				echo "	 	</th>";
-				echo "      <th align='center'>";
-				echo "          <strong>START TIME</strong>";
-				echo "      </th>";
-				echo "      <th align='center'>";
-				echo "          <strong>END TIME</strong>";
-				echo "	 	<th align='center'>";
-				echo "	 		<strong>REMARKS</strong>";
-				echo "	 	</th>";
-				echo "	 	<th align='center'>";
-				echo "	 		<strong>STATUS</strong>";
-				echo "	 	</th>";
-				echo "	 </tr>";
-				echo "	 </thead>";
-				echo "	 <tbody>";
+				$to_pdf = "";
+				$to_pdf = $to_pdf . "<table class='table table-striped table-hover' style='width:100%'>";
+				$to_pdf = $to_pdf . "	 <thead>";
+				$to_pdf = $to_pdf . "	 <tr>";
+				$to_pdf = $to_pdf . "	 	<th align='center'>";
+				$to_pdf = $to_pdf . "	 		<strong>ID</strong>";
+				$to_pdf = $to_pdf . "	 	</th>";
+				$to_pdf = $to_pdf . "	 	<th align='center'>";
+				$to_pdf = $to_pdf . "	 		<strong>RESEARCH TITLE</strong>";
+				$to_pdf = $to_pdf . "	 	</th>";
+				$to_pdf = $to_pdf . "	 	<th align='center'>";
+				$to_pdf = $to_pdf . "	 		<strong>FACULTY</strong>";
+				$to_pdf = $to_pdf . "	 	</th>";
+				$to_pdf = $to_pdf . "	 	<th align='center'>";
+				$to_pdf = $to_pdf . "	 		<strong>DATE</strong>";
+				$to_pdf = $to_pdf . "	 	</th>";
+				$to_pdf = $to_pdf . "      <th align='center'>";
+				$to_pdf = $to_pdf . "          <strong>START TIME</strong>";
+				$to_pdf = $to_pdf . "      </th>";
+				$to_pdf = $to_pdf . "      <th align='center'>";
+				$to_pdf = $to_pdf . "          <strong>END TIME</strong>";
+				$to_pdf = $to_pdf . "	 	<th align='center'>";
+				$to_pdf = $to_pdf . "	 		<strong>REMARKS</strong>";
+				$to_pdf = $to_pdf . "	 	</th>";
+				$to_pdf = $to_pdf . "	 	<th align='center'>";
+				$to_pdf = $to_pdf . "	 		<strong>STATUS</strong>";
+				$to_pdf = $to_pdf . "	 	</th>";
+				$to_pdf = $to_pdf . "	 </tr>";
+				$to_pdf = $to_pdf . "	 </thead>";
+				$to_pdf = $to_pdf . "	 <tbody>";
 				while ($row = mysql_fetch_array($result)) {
 					$research_code = $row['research_code'];
 					
@@ -78,27 +79,27 @@ include("auth.php");
 					$resultSelectResearch = mysql_fetch_assoc($querySelectResearch);
 					$research_name = $resultSelectResearch['research_title'];
 					$faculty_id = $resultSelectResearch['faculty_id'];
-						
-					echo "   <tr>";
-					echo "      <td style='padding: 5px;'>";
-					echo 			$row['appointment_id'];
-					echo "      </td>";
 
-					echo "      <td style='padding: 5px;'>";
-					echo 			$research_name;
-					echo "      </td>";
+					$to_pdf = $to_pdf . "   <tr>";
+					$to_pdf = $to_pdf . "      <td style='padding: 5px;'>";
+					$to_pdf = $to_pdf . 			$row['appointment_id'];
+					$to_pdf = $to_pdf . "      </td>";
 
-					echo "      <td style='padding: 5px;'>";
+					$to_pdf = $to_pdf . "      <td style='padding: 5px;'>";
+					$to_pdf = $to_pdf . 			$research_name;
+					$to_pdf = $to_pdf . "      </td>";
+
+					$to_pdf = $to_pdf . "      <td style='padding: 5px;'>";
 					$faculty = $row['faculty_id'];
 					$resultSelectFaculty = mysql_query("SELECT * FROM `users` WHERE faculty_id='$faculty' LIMIT 1");
 					$rowFaculty= mysql_fetch_assoc($resultSelectFaculty);
 
-					echo 			$rowFaculty['lname'] .", ". $rowFaculty['fname']. " ". $rowFaculty['mname'] ;
-					echo "      </td>";
+					$to_pdf = $to_pdf . 			$rowFaculty['lname'] .", ". $rowFaculty['fname']. " ". $rowFaculty['mname'] ;
+					$to_pdf = $to_pdf . "      </td>";
 
-					echo "      <td style='padding: 5px;'>";
-					echo 			$row['appoint_date'];
-					echo "      </td>";
+					$to_pdf = $to_pdf . "      <td style='padding: 5px;'>";
+					$to_pdf = $to_pdf . 			$row['appoint_date'];
+					$to_pdf = $to_pdf . "      </td>";
 
 					$timeStart = $row['appoint_time_fr'];
 					$queryTimeStart = "SELECT TIME_FORMAT('$timeStart', '%h:%i:%s %p')";
@@ -110,25 +111,31 @@ include("auth.php");
 					$resultTimeEnd = mysql_query($queryTimeEnd) or die(mysql_error());
 					$rowEndTime = mysql_fetch_row($resultTimeEnd);
 
-					echo "      <td>";
-					echo            $rowStartTime[0];
-					echo "      </td>";
-					echo "      <td>";
-					echo            $rowEndTime[0];
-					echo "      </td>";
+					$to_pdf = $to_pdf . "      <td>";
+					$to_pdf = $to_pdf .            $rowStartTime[0];
+					$to_pdf = $to_pdf . "      </td>";
+					$to_pdf = $to_pdf . "      <td>";
+					$to_pdf = $to_pdf .            $rowEndTime[0];
+					$to_pdf = $to_pdf . "      </td>";
 
-					echo "      <td style='padding: 5px;'>";
-					echo 			$row['remarks'];
-					echo "      </td>";
+					$to_pdf = $to_pdf . "      <td style='padding: 5px;'>";
+					$to_pdf = $to_pdf . 			$row['remarks'];
+					$to_pdf = $to_pdf . "      </td>";
 
-					echo "      <td style='padding: 5px;'>";
-					echo 			$row['status'];
-					echo "      </td>";
-					echo "   </tr>";
+					$to_pdf = $to_pdf . "      <td style='padding: 5px;'>";
+					$to_pdf = $to_pdf . 			$row['status'];
+					$to_pdf = $to_pdf . "      </td>";
+					$to_pdf = $to_pdf . "   </tr>";
 				}
-				echo "</tbody>";
-				echo "</table>";
-			?>		
+				$to_pdf = $to_pdf . "</tbody>";
+				$to_pdf = $to_pdf . "</table>";
+
+				echo $to_pdf;
+			?>
+			<form class="form-horizontal" name="to_pdf" action="../to_pdf.php" method="post">
+				<input type="hidden" name="to_pdf" value="<?php echo '<br/><br/>Consultation History <br/><br/>' . $to_pdf?>"/>
+				<input class="btn btn-primary" type="submit" name="submit" value="Generate PDF" /><br/><br/>
+			</form>
 		</div>
 	</body>
 </html>

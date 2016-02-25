@@ -327,45 +327,84 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 		<?php
 			$query = "SELECT * FROM `researches` ORDER BY `research_id` DESC";
 			$result = mysql_query($query) or die(mysql_error());
+			$to_pdf = "";
 			echo "<table class='table table-striped table-hover' style='width:100%'>";
 			echo "   <thead>";
 			echo "	 <tr>";
-			echo "	 	<th align='center'>";	
+			echo "	 	<th align='center'>";
 			echo "	 		<strong>id</strong>";
 			echo "	 	</th>";
-			echo "	 	<th align='center'>";	
+			echo "	 	<th align='center'>";
 			echo "	 		<strong>research code</strong>";
 			echo "	 	</th>";
-			echo "	 	<th align='center'>";	
+			echo "	 	<th align='center'>";
 			echo "	 		<strong>research title</strong>";
 			echo "	 	</th>";
-			echo "	 	<th align='center'>";	
+			echo "	 	<th align='center'>";
 			echo "	 		<strong>research type</strong>";
 			echo "	 	</th>";
-			echo "	 	<th align='center'>";	
+			echo "	 	<th align='center'>";
 			echo "	 		<strong>percentage</strong>";
 			echo "	 	</th>";
-			echo "	 	<th align='center'>";	
+			echo "	 	<th align='center'>";
 			echo "	 		<strong>school year</strong>";
 			echo "	 	</th>";
-			echo "	 	<th align='center'>";	
+			echo "	 	<th align='center'>";
 			echo "	 		<strong>sem type</strong>";
 			echo "	 	</th>";
-			echo "	 	<th align='center'>";	
+			echo "	 	<th align='center'>";
 			echo "	 		<strong>faculty</strong>";
 			echo "	 	</th>";
 			echo "	 	<th align='center'>";
 			echo "	 		<strong>panels</strong>";
 			echo "	 	</th>";
-			echo "	 	<th align='center'>";	
+			echo "	 	<th align='center'>";
 			echo "	 		<strong>student no</strong>";
 			echo "	 	</th>";
-			echo "	 	<th align='center'>";	
+			echo "	 	<th align='center'>";
 			echo "	 		<strong>action</strong>";
 			echo "	 	</th>";
 			echo "	 </tr>";
 			echo "   </thead>";
 			echo "   <tbody>";
+
+			$to_pdf = $to_pdf . "<table class='table table-striped table-hover' style='width:100%'>";
+			$to_pdf = $to_pdf . "   <thead>";
+			$to_pdf = $to_pdf . "	 <tr>";
+			$to_pdf = $to_pdf . "	 	<th align='center'>";
+			$to_pdf = $to_pdf . "	 		<strong>id</strong>";
+			$to_pdf = $to_pdf . "	 	</th>";
+			$to_pdf = $to_pdf . "	 	<th align='center'>";
+			$to_pdf = $to_pdf . "	 		<strong>research code</strong>";
+			$to_pdf = $to_pdf . "	 	</th>";
+			$to_pdf = $to_pdf . "	 	<th align='center'>";
+			$to_pdf = $to_pdf . "	 		<strong>research title</strong>";
+			$to_pdf = $to_pdf . "	 	</th>";
+			$to_pdf = $to_pdf . "	 	<th align='center'>";
+			$to_pdf = $to_pdf . "	 		<strong>research type</strong>";
+			$to_pdf = $to_pdf . "	 	</th>";
+			$to_pdf = $to_pdf . "	 	<th align='center'>";
+			$to_pdf = $to_pdf . "	 		<strong>percentage</strong>";
+			$to_pdf = $to_pdf . "	 	</th>";
+			$to_pdf = $to_pdf . "	 	<th align='center'>";
+			$to_pdf = $to_pdf . "	 		<strong>school year</strong>";
+			$to_pdf = $to_pdf . "	 	</th>";
+			$to_pdf = $to_pdf . "	 	<th align='center'>";
+			$to_pdf = $to_pdf . "	 		<strong>sem type</strong>";
+			$to_pdf = $to_pdf . "	 	</th>";
+			$to_pdf = $to_pdf . "	 	<th align='center'>";
+			$to_pdf = $to_pdf . "	 		<strong>faculty</strong>";
+			$to_pdf = $to_pdf . "	 	</th>";
+			$to_pdf = $to_pdf . "	 	<th align='center'>";
+			$to_pdf = $to_pdf . "	 		<strong>panels</strong>";
+			$to_pdf = $to_pdf . "	 	</th>";
+			$to_pdf = $to_pdf . "	 	<th align='center'>";
+			$to_pdf = $to_pdf . "	 		<strong>student no</strong>";
+			$to_pdf = $to_pdf . "	 	</th>";
+			$to_pdf = $to_pdf . "	 </tr>";
+			$to_pdf = $to_pdf . "   </thead>";
+			$to_pdf = $to_pdf . "   <tbody>";
+
 			while ($row = mysql_fetch_array($result)) {
 				echo "   <tr>";
 				echo "      <td style='padding: 5px;'>";
@@ -396,6 +435,35 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				echo "      <td style='padding: 5px;'>";
 				echo 			$row['sem_type'];
 				echo "      </td>";
+
+				$to_pdf = $to_pdf . "   <tr>";
+				$to_pdf = $to_pdf . "      <td style='padding: 5px;'>";
+				$to_pdf = $to_pdf . 			$row['research_id'];
+				$to_pdf = $to_pdf . "      </td>";
+
+				$to_pdf = $to_pdf . "      <td style='padding: 5px;'>";
+				$to_pdf = $to_pdf . 			$row['research_code'];
+				$to_pdf = $to_pdf . "      </td>";
+
+				$to_pdf = $to_pdf . "      <td style='padding: 5px;'>";
+				$to_pdf = $to_pdf . 			$row['research_title'];
+				$to_pdf = $to_pdf . "      </td>";
+
+				$to_pdf = $to_pdf . "      <td style='padding: 5px;'>";
+				$to_pdf = $to_pdf . 			$row['research_type'];
+				$to_pdf = $to_pdf . "      </td>";
+
+				$to_pdf = $to_pdf . "      <td style='padding: 5px;'>";
+				$to_pdf = $to_pdf . 			$row['percentage'];
+				$to_pdf = $to_pdf . "      </td>";
+
+				$to_pdf = $to_pdf . "      <td style='padding: 5px;'>";
+				$to_pdf = $to_pdf . 			$row['school_year'];
+				$to_pdf = $to_pdf . "      </td>";
+
+				$to_pdf = $to_pdf . "      <td style='padding: 5px;'>";
+				$to_pdf = $to_pdf . 			$row['sem_type'];
+				$to_pdf = $to_pdf . "      </td>";
 				
 				echo "      <td style='padding: 5px;'>";
 				$faculty_id = $row['faculty_id'];
@@ -403,8 +471,12 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				$faculty = mysql_fetch_assoc($resultFaculty);
 				echo 			$faculty['lname'] . ', ' .$faculty['fname'] . ' ' .  $faculty['mname'];
 				echo "      </td>";
+				$to_pdf = $to_pdf . "      <td style='padding: 5px;'>";
+				$to_pdf = $to_pdf . 			$faculty['lname'] . ', ' .$faculty['fname'] . ' ' .  $faculty['mname'];
+				$to_pdf = $to_pdf . "      </td>";
 				
 				echo "      <td style='padding: 5px;'>";
+				$to_pdf = $to_pdf . "      <td style='padding: 5px;'>";
 				$researchCode = $row['research_code'];
 				$queryPanel = "SELECT * FROM `panels` where `research_code`=$researchCode";
 				$resultPanel = mysql_query($queryPanel) or die(mysql_error());
@@ -415,13 +487,22 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					$faculty = mysql_fetch_assoc($resultFaculty);
 					echo 			$faculty['lname'] . ', ' .$faculty['fname'] . ' ' .  $faculty['mname'];
 					echo "<br>";
+
+					$to_pdf = $to_pdf . "<strong>".$rowPanel['user_type'] . ":</strong> ";
+					$to_pdf = $to_pdf . 			$faculty['lname'] . ', ' .$faculty['fname'] . ' ' .  $faculty['mname'];
+					$to_pdf = $to_pdf . "<br>";
 				}
 				
 				echo "      </td>";
+				$to_pdf = $to_pdf . "      </td>";
 				
 				echo "      <td style='padding: 5px;'>";
 				echo 			$row['student_no'];
 				echo "      </td>";
+
+				$to_pdf = $to_pdf . "      <td style='padding: 5px;'>";
+				$to_pdf = $to_pdf . 			$row['student_no'];
+				$to_pdf = $to_pdf . "      </td>";
 				
 				echo "      <td style='padding: 5px;'>";
 				if($row['percentage']==100 && ($row['research_type']!="Thesis 2" || $row['research_type']!="Capstone 2")){
@@ -441,12 +522,19 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "		</div>";
 				}
 				echo "      </td>";
-
 				echo "   </tr>";
+				$to_pdf = $to_pdf . "      </td>";
+				$to_pdf = $to_pdf . "   </tr>";
 			}
 			echo "</tbody>";
 			echo "</table>";
+			$to_pdf = $to_pdf . "</tbody>";
+			$to_pdf = $to_pdf . "</table>";
 		?>
+		<form class="form-horizontal" name="to_pdf" action="../to_pdf.php" method="post">
+			<input type="hidden" name="to_pdf" value="<?php echo '<br/><br/>Researches <br/><br/>' . $to_pdf?>"/>
+			<input class="btn btn-primary" type="submit" name="submit" value="Generate PDF" /><br/><br/>
+		</form>
 		</div>
 		
 	</div>
