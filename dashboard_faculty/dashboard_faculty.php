@@ -37,6 +37,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 			<ul class="breadcrumb">
 				<li class="active"><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_faculty/dashboard_faculty.php';?>">Appointments</a></li>
 				<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_faculty/handled_researches.php';?>">View Researches Handled</a></li>
+				<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_faculty/faculty_schedule.php';?>">Manage Schedule</a></li>
 				<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/change_password_form.php';?>">Change Password</a></li>
 				<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout </a></li>
 			</ul>
@@ -83,13 +84,12 @@ Website: https://htmlcssphptutorial.wordpress.com
 					while ($rowAllAppointments = mysql_fetch_array($resultAllAppontments)) {
 						$requestedDate = date("Ymd", strtotime($rowAllAppointments['appoint_date']));
 						if($rightNow > $requestedDate){
-							if($rowAllAppointments == 'accepted'){
+							if($rowAllAppointments['status'] == 'accepted' || $rowAllAppointments['status'] == 'rescheduled'){
 								$status = 'done';
-
 								$appointment_id = $rowAllAppointments['appointment_id'];
 								$queryUpdateAppointments = "UPDATE `appointments` SET `status`='$status' WHERE appointment_id=$appointment_id";
 								$result = mysql_query($queryUpdateAppointments) or die(mysql_error());
-							}else if ($rowAllAppointments == 'pending'){
+							}else if ($rowAllAppointments['status'] == 'pending'){
 								$status = 'expired';
 
 								$appointment_id = $rowAllAppointments['appointment_id'];
@@ -243,9 +243,6 @@ Website: https://htmlcssphptutorial.wordpress.com
 																echo "<input type = 'hidden' name = 'appointment_id' value = '$appointment_id' />
 																<input class=\"btn btn-primary\" style='color:#0000FF' type='submit' name='status' value='accepted'/>";
 															}
-															else {
-																echo "Requested Date already past";
-															}
 
 											echo "				</form>
 														</div> ";
@@ -256,6 +253,12 @@ Website: https://htmlcssphptutorial.wordpress.com
 															</form>
 														</div>
 													</div>";
+										}
+										else if($row['status']=='done') {
+											echo "Done";
+										}
+										else if($row['status']=='expired') {
+											echo "Requested Date already past";
 										}else{
 											echo "	<form  action='' method='post' name='dashboard_faculty'>
 														<input type='hidden' name='appointment_id' value='$appointment_id'/> 
