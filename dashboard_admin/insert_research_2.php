@@ -216,7 +216,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 				<strong>Lead Panel</strong>
 				<?php
 				//select panel 1
-				$queryLeadPanel = "SELECT * FROM `users` WHERE LOWER(`user_type`)=LOWER('FACULTY')";
+				$queryLeadPanel = "SELECT * FROM `users` WHERE LOWER(`user_type`)=LOWER('FACULTY') AND panel_type='lead'";
 				$resultLeadPanel = mysql_query($queryLeadPanel) or die(mysql_error());
 				$rows = mysql_num_rows($resultLeadPanel);
 
@@ -233,7 +233,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 
 				echo "<strong>Panel Member</strong>";
 				//select panel 2
-				$queryMemberPanel1 = "SELECT * FROM `users` WHERE LOWER(`user_type`)=LOWER('FACULTY')";
+				$queryMemberPanel1 = "SELECT * FROM `users` WHERE LOWER(`user_type`)=LOWER('FACULTY') AND panel_type='panel'";
 				$resultMemberPanel1 = mysql_query($queryMemberPanel1 ) or die(mysql_error());
 				$rows = mysql_num_rows($resultMemberPanel1);
 
@@ -250,7 +250,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 
 				echo "<strong>Panel Member</strong>";
 				//select panel 3
-				$queryMemberPanel2 = "SELECT * FROM `users` WHERE LOWER(`user_type`)=LOWER('FACULTY')";
+				$queryMemberPanel2 = "SELECT * FROM `users` WHERE LOWER(`user_type`)=LOWER('FACULTY') AND panel_type='panel'";
 				$resultMemberPanel2 = mysql_query($queryMemberPanel2) or die(mysql_error());
 				$rows = mysql_num_rows($resultMemberPanel2);
 
