@@ -86,7 +86,8 @@ Website: https://htmlcssphptutorial.wordpress.com
 									`sched_time_id`='$resched_time',
 									`remarks`='$resched_remark',
 									`appoint_time_fr`='$schedule_time_fr',
-									`appoint_time_to`='$schedule_time_to'
+									`appoint_time_to`='$schedule_time_to',
+									`status`='rescheduled'
 									WHERE appointment_id=$resched_appointment_id";
 						$result = mysql_query($query) or die(mysql_error());
 						if($result) {

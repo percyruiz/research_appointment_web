@@ -11,7 +11,8 @@ Website: https://htmlcssphptutorial.wordpress.com
 	$path = $_SERVER['DOCUMENT_ROOT'];
 	$path .= "/db.php";
 	require($path);
-	include("auth.php"); //include auth.php file on all secure pages 
+	include("auth.php"); //include auth.php file on all secure pages
+	date_default_timezone_set("Asia/Singapore");
 ?>
 
 <!DOCTYPE html>
@@ -50,8 +51,8 @@ Website: https://htmlcssphptutorial.wordpress.com
 				?>
 				<?php 
 					if(isset($_POST['status'])){ 
-						if($_POST['status'] == 'accept'){
-							$status = $_POST['status'];	
+						if($_POST['status'] == 'accepted'){
+							$status = $_POST['status'];
 						}else{
 							$status = "pending";
 						}
@@ -74,6 +75,30 @@ Website: https://htmlcssphptutorial.wordpress.com
 				?>
 
 				<?php
+					$queryAllAppointments = "SELECT * from `appointments`";
+					$resultAllAppontments = mysql_query($queryAllAppointments) or die(mysql_error());
+
+					$rightNow = date("Ymd");
+
+					while ($rowAllAppointments = mysql_fetch_array($resultAllAppontments)) {
+						$requestedDate = date("Ymd", strtotime($rowAllAppointments['appoint_date']));
+						if($rightNow > $requestedDate){
+							if($rowAllAppointments == 'accepted'){
+								$status = 'done';
+
+								$appointment_id = $rowAllAppointments['appointment_id'];
+								$queryUpdateAppointments = "UPDATE `appointments` SET `status`='$status' WHERE appointment_id=$appointment_id";
+								$result = mysql_query($queryUpdateAppointments) or die(mysql_error());
+							}else if ($rowAllAppointments == 'pending'){
+								$status = 'expired';
+
+								$appointment_id = $rowAllAppointments['appointment_id'];
+								$queryUpdateAppointments = "UPDATE `appointments` SET `status`='$status' WHERE appointment_id=$appointment_id";
+								$result = mysql_query($queryUpdateAppointments) or die(mysql_error());
+							}
+						}
+					}
+
 					$query = "SELECT * FROM `appointments` WHERE faculty_id='$faculty_id' ORDER BY appointment_id DESC";
 					$result = mysql_query($query) or die(mysql_error());
 					echo "<table class='table table-striped table-hover' style='width:100%'>";
@@ -201,9 +226,8 @@ Website: https://htmlcssphptutorial.wordpress.com
 											echo "	<div class='row'>
 														<div class='col-md-6'>
 															<form action='' method='post' name='dashboard_faculty'>";
-															date_default_timezone_set("Asia/Singapore");
+
 															$d=strtotime($row['appoint_date']);
-															echo date("his"). "</br>";
 
 															$timeStartExp=$row['appoint_time_fr'];
 															$queryTimeStartExp = "SELECT TIME_FORMAT('$timeStartExp', '%T')";
