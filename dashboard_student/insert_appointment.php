@@ -190,7 +190,32 @@ include("auth.php"); //include auth.php file on all secure pages ?>
         </div>
         <div class="col-md-7">
             <strong><?php echo $facultyName . ' - consultations ';?></strong>
-            <?php 
+            <?php
+
+                $queryAllAppointments = "SELECT * from `appointments`";
+                $resultAllAppontments = mysql_query($queryAllAppointments) or die(mysql_error());
+
+                $rightNow = date("Ymd");
+
+                while ($rowAllAppointments = mysql_fetch_array($resultAllAppontments)) {
+                    $requestedDate = date("Ymd", strtotime($rowAllAppointments['appoint_date']));
+                    if($rightNow > $requestedDate){
+                        if($rowAllAppointments == 'accepted'){
+                            $status = 'done';
+
+                            $appointment_id = $rowAllAppointments['appointment_id'];
+                            $queryUpdateAppointments = "UPDATE `appointments` SET `status`='$status' WHERE appointment_id=$appointment_id";
+                            $result = mysql_query($queryUpdateAppointments) or die(mysql_error());
+                        }else if ($rowAllAppointments == 'pending'){
+                            $status = 'expired';
+
+                            $appointment_id = $rowAllAppointments['appointment_id'];
+                            $queryUpdateAppointments = "UPDATE `appointments` SET `status`='$status' WHERE appointment_id=$appointment_id";
+                            $result = mysql_query($queryUpdateAppointments) or die(mysql_error());
+                        }
+                    }
+                }
+
                 echo "<table class='table table-striped table-hover' style='width:100%'>";
                 echo "<thead>";
                 echo "   <tr>";

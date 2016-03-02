@@ -42,6 +42,7 @@ include("auth.php");
         $lname = $_POST['lname'];
 		$email = $_POST['email'];
 		$contact = $_POST['contact'];
+		$panel_type = $_POST['panel_type'];
 		$user_type = "FACULTY";
 		
 		$username = stripslashes($username);
@@ -85,7 +86,8 @@ include("auth.php");
 					mname, 
 					lname, 
 					email, 
-					contact
+					contact,
+					panel_type
 					) VALUES (
 					'$username', 
 					'".md5($password)."',
@@ -95,7 +97,8 @@ include("auth.php");
 					'$mname', 
 					'$lname', 
 					'$email', 
-					'$contact')";
+					'$contact',
+					'$panel_type')";
 			$result = mysql_query($query);
 			$user_id = mysql_insert_id();
 			if($result){
@@ -133,6 +136,8 @@ include("auth.php");
 							<input class="form-control" type="text" name="lname" placeholder="Last Name" required /><br/>
 							<input class="form-control" type="email" name="email" placeholder="Email" required /><br/>
 							<input class="form-control" type="text" name="contact" placeholder="Contact Number" required /><br/>
+							<label><input type="radio" name="panel_type" value="lead"> lead panel</label><br/>
+							<label><input type="radio" name="panel_type" value="panel"> ordinary panel</label><br/>
 							<input class="btn btn-primary" type="submit" name="submit" value="Register" /><br/><br/>
 						</form>
 					</div>
