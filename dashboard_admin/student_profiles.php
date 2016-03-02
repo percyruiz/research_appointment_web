@@ -11,7 +11,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 <html>
 <head>
 <meta charset="utf-8">
-<title>Registration</title>
+<title>Manage Student</title>
 	<link rel="stylesheet" href="../css/bootstrap/css/bootstrap.css" />
 	<link rel="stylesheet" href="../css/bootstrap/css/jquery.dynatable.css" />
 	<script src="../js/jquery-1.12.0.min.js"></script>
@@ -24,29 +24,107 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 </head>
 <body>
 	<div  class="container">
+        <ul class="breadcrumb">
+            <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/dashboard_admin.php';?>">Manage Faculty</a></li>
+            <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/consultation_history.php';?>">Consultation History</a></li>
+            <li class="active"><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/student_profiles.php';?>">Manage Student</a></li>
+            <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/insert_research.php';?>">Add Research</a></li>
+            <li> <a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a></li>
+        </ul>
 
-		<?php
+        <?php
 			// require('db.php');
 			//access from root folder
 			$path = $_SERVER['DOCUMENT_ROOT'];
 			$path .= "/db.php";
 			require($path);
-			
 			$userid = $_SESSION['userid'];
 		?>
+        <?php
+            if (isset($_POST['username'])){
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+            $fname = $_POST['fname'];
+            $mname = $_POST['mname'];
+            $lname = $_POST['lname'];
+            $email = $_POST['email'];
+            $contact = $_POST['contact'];
+            $studentnum = $_POST['studentnum'];
 
+            $username = stripslashes($username);
+            $username = mysql_real_escape_string($username);
 
-		<ul class="breadcrumb">
-			<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/dashboard_admin.php';?>">Manage Faculty</a></li>
-			<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/consultation_history.php';?>">Consultation History</a></li>
-			<li class="active"><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/student_profiles.php';?>">Manage Student</a></li>
-			<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/insert_research.php';?>">Add Research</a></li>
-			<li> <a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a></li>
-		</ul>
+            $password = stripslashes($password);
+            $password = mysql_real_escape_string($password);
+
+            $usertype = "STUDENT";
+
+            $fname = stripslashes($fname);
+            $fname = mysql_real_escape_string($fname);
+            $mname = stripslashes($mname);
+            $mname = mysql_real_escape_string($mname);
+            $lname = stripslashes($lname);
+            $lname = mysql_real_escape_string($lname);
+
+            $email = stripslashes($email);
+            $email = mysql_real_escape_string($email);
+
+            $contact = stripslashes($contact);
+            $contact = mysql_real_escape_string($contact);
+
+            $studentnum = stripslashes($studentnum);
+            $studentnum = mysql_real_escape_string($studentnum);
+
+            $queryUsername = "SELECT * FROM `users` WHERE username='$username'";
+            $resultUsername = mysql_query($queryUsername);
+
+            $rows = mysql_num_rows($resultUsername);
+
+            $query = "UPDATE `users` SET
+            username='$username',
+            password='".md5($password)."',
+            user_type='$usertype',
+            fname='$fname',
+            mname='$mname',
+            lname='$lname',
+            email='$email',
+            contact='$contact',
+            student_no='$studentnum'
+            WHERE research_code='$username'";
+            $result = mysql_query($query);
+            if($result){
+                $queryResearches = "UPDATE `researches` SET
+            student_no='$studentnum'
+            WHERE research_code='$username'";
+                $resultResearches = mysql_query($queryResearches);
+                if($resultResearches){
+                    echo " <div class='alert alert-dismissible alert-info'>" . " Create Successful </div>";
+                }
+            }else{
+                echo mysql_error();
+            }
+        }
+        ?>
 
 		<div class="row">
+
+            <div class="col-md-3">
+                <h5>Add Student</h5>
+                <form name="registration" action="" method="post">
+                    <input class="form-control" type="text" name="username" placeholder="Username/Research Code" required /><br/>
+                    <input class="form-control" type="password" name="password" placeholder="Password" required /><br/>
+                    <input class="form-control" type="text" name="fname" placeholder="First Name" required /><br/>
+                    <input class="form-control" type="text" name="mname" placeholder="Middle Name" required /><br/>
+                    <input class="form-control" type="text" name="lname" placeholder="Last Name" required /><br/>
+                    <input class="form-control" type="number" name="studentnum" placeholder="Student Number" min="0" max="99999999999" required /><br/>
+                    <input class="form-control" type="email" name="email" placeholder="Email" required /><br/>
+                    <input class="form-control" type="text" name="contact" placeholder="Contact Number" required /><br/>
+                    <input class="btn btn-primary" type="submit" name="submit" value="Register" /><br/>
+                </form>
+            </div>
+
 			<div class="col-md-9">
-				<h4>Student Profiles</h4>
+				<h5>Student Profiles</h5>
 				<?php
 					$query = "SELECT * FROM `users` WHERE LOWER(`user_type`) = LOWER('STUDENT')";
 					$result = mysql_query($query) or die(mysql_error());
@@ -54,32 +132,61 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 					echo "	 <thead>";
 					echo "	 <tr>";
 					echo "	 	<th align='center'>";
-					echo "	 		<strong>Name</strong>";
-					echo "	 	</th>";
-					echo "	 	<th align='center'>";
 					echo "	 		<strong>Username/Research Code</strong>";
 					echo "	 	</th>";
 					echo "	 	<th align='center'>";
-					echo "	 		<strong>Password</strong>";
+					echo "	 		<strong>First Name</strong>";
 					echo "	 	</th>";
+					echo "	 	<th align='center'>";
+					echo "	 		<strong>Middle Name</strong>";
+					echo "	 	</th>";
+					echo "	 	<th align='center'>";
+					echo "	 		<strong>Last Name</strong>";
+					echo "	 	</th>";
+                    echo "	 	<th align='center'>";
+                    echo "	 		<strong>Email</strong>";
+                    echo "	 	</th>";
+                    echo "	 	<th align='center'>";
+                    echo "	 		<strong>Contact No</strong>";
+                    echo "	 	</th>";
+                    echo "	 	<th align='center'>";
+                    echo "	 		<strong>Action</strong>";
+                    echo "	 	</th>";
 					echo "	 </thead>";
 					echo "	 <tbody>";
 					while ($row = mysql_fetch_array($result)) {
 						echo "   <tr>";
 
 						echo "      <td style='padding: 5px;'>";
-						$user = $row['fname']." ".$row['mname']." ".$row['lname'];
-						echo 			$user;
+						echo 			$row['research_code'];
 						echo "      </td>";
 						
 						echo "      <td style='padding: 5px;'>";
-						echo 			$row['username'];
+						echo 			$row['fname'];
 						echo "      </td>";
-						
-						echo "      <td style='padding: 5px;'>";
-						$password = $row['password'];
-						echo 			md5($password);
-						echo "      </td>";
+
+                        echo "      <td style='padding: 5px;'>";
+                        echo 			$row['mname'];
+                        echo "      </td>";
+
+                        echo "      <td style='padding: 5px;'>";
+                        echo 			$row['lname'];
+                        echo "      </td>";
+
+                        echo "      <td style='padding: 5px;'>";
+                        echo 			$row['email'];
+                        echo "      </td>";
+
+                        echo "      <td style='padding: 5px;'>";
+                        echo 			$row['contact'];
+                        echo "      </td>";
+
+                        echo "      <td>";
+                        echo 			'<form name="registration" action="update_student.php" method="post">
+                                            <input type="hidden" value="'. $row['student_no'] . '" name="student_no_update"  required />
+                                            <input class="btn btn-primary" type="submit" name="submit" value="Edit" />
+                                        </form>';
+                        echo "      </td>";
 
 						echo "   </tr>";
 					}
