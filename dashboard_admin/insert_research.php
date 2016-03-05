@@ -194,6 +194,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 			<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/consultation_history.php';?>">Consultation History</a></li>
 			<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/student_profiles.php';?>">Manage Student</a></li>
 			<li  class="active"><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/insert_research.php';?>">Add Research</a></li>
+			<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/admin_view_monitoring.php';?>">View Monitoring</a></li>
 			<li> <a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a></li>
 		</ul>
 		<div class="row">
