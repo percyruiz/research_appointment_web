@@ -32,7 +32,15 @@ Website: https://htmlcssphptutorial.wordpress.com
 				if(isset($_POST['percentage'])){
 					$research_code = $_POST['research_code'];
 					$percentage = $_POST['percentage'];
+                    $appointment_id = $_POST['appointment_id'];
 					$query = "UPDATE `researches` SET `percentage`='$percentage' WHERE research_code=$research_code";
+					$result = mysql_query($query) or die(mysql_error());
+
+					$query = "UPDATE `appointments` SET
+								`percentage`='$percentage',
+								`status`='done'
+								WHERE research_code=$research_code AND
+                                appointment_id = $appointment_id";
 					$result = mysql_query($query) or die(mysql_error());
 				}
 			?>
@@ -40,7 +48,11 @@ Website: https://htmlcssphptutorial.wordpress.com
 			<?php 
 				if (isset($_GET['id'])){
 
-					$research_code = $_GET['id'];
+                    $appointment_id = $_GET['id'];
+
+                    $result = mysql_query("SELECT * FROM `appointments` WHERE appointment_id='$appointment_id' LIMIT 1");
+                    $row = mysql_fetch_assoc($result);
+                    $research_code = $row['research_code'];
 							
 					$result = mysql_query("SELECT * FROM `researches` WHERE research_code='$research_code' LIMIT 1");
 					$row = mysql_fetch_assoc($result);
@@ -104,6 +116,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 						$percentage =			$row['percentage'];
 						echo "		<form action='' method='post' name='research'>
 										<input type='hidden' name='research_code' value='$research_code' />
+										<input type='hidden' name='appointment_id' value='$appointment_id' />
 										<input name='percentage' min='0' max='100' readonly id='percent' type='number' value='$percentage'/>
 										<input type='submit' id='save' value='save' style='display:none' />
 										<input onclick='updatePercentage()' type='button' id='edit_percentage' value='update' />

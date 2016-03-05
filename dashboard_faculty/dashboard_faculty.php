@@ -122,6 +122,9 @@ Website: https://htmlcssphptutorial.wordpress.com
 					echo "	 	<th>";
 					echo "	 		<strong>DATE REQUEST FILED</strong>";
 					echo "	 	</th>";
+                    echo "	 	<th>";
+                    echo "	 		<strong>PERCENTAGE</strong>";
+                    echo "	 	</th>";
 					echo "	 	<th>";
 					echo "	 		<strong>ACTION</strong>";
 					echo "	 	</th>";
@@ -148,14 +151,16 @@ Website: https://htmlcssphptutorial.wordpress.com
 					$to_pdf = $to_pdf . "	 	<th>";
 					$to_pdf = $to_pdf . "	 		<strong>TYPE</strong>";
 					$to_pdf = $to_pdf . "	 	</th>";
+                    $to_pdf = $to_pdf .	"       <th>";
+                    $to_pdf = $to_pdf .	"           <strong>DATE REQUEST FILED</strong>";
+                    $to_pdf = $to_pdf .	"       </th>";
+                    $to_pdf = $to_pdf .	"       <th>";
+                    $to_pdf = $to_pdf .	"           <strong>PERCENTAGE</strong>";
+                    $to_pdf = $to_pdf .	"       </th>";
 					$to_pdf = $to_pdf . "	 </tr>";
 					$to_pdf = $to_pdf . "	 </thead>";
 					$to_pdf = $to_pdf . "	 <tbody>";
-                    $to_pdf = $to_pdf .	 	"<th>";
-                    $to_pdf = $to_pdf .	 		"<strong>DATE REQUEST FILED</strong>";
-                    $to_pdf = $to_pdf .	 	"</th>";
 					while ($row = mysql_fetch_array($result)) {
-						
 						$research_code = $row['research_code'];
 
 						$result_r = mysql_query("SELECT * FROM `researches` WHERE research_code='$research_code' LIMIT 1");
@@ -164,7 +169,11 @@ Website: https://htmlcssphptutorial.wordpress.com
 						echo "   <tr>";
 						$to_pdf = $to_pdf . "   <tr>";
 						echo "      <td width='30%' style='padding: 5px;'>";
-						echo 			"<a href='research.php?id=$research_code'>" .$row_researches['research_title'] . "</a>";
+                        if($row['status']=='done'){
+                            echo $row_researches['research_title'];
+                        }else {
+                            echo "<a href='research.php?id=$appointment_id'>" . $row_researches['research_title'] . "</a>";
+                        }
 						echo "      </td>";
 						$to_pdf = $to_pdf . "      <td width='30%' style='padding: 5px;'>";
 						$to_pdf = $to_pdf . 			$row_researches['research_title'];
@@ -213,12 +222,20 @@ Website: https://htmlcssphptutorial.wordpress.com
 						echo "      </td>";
 						$to_pdf = $to_pdf . "      </td>";
 
-						echo "      <td width='15%' style='padding: 5px;'>";
+						echo "      <td width='10%' style='padding: 5px;'>";
 						echo 			$row['timestamp'];
 						echo "      </td>";
 
                         $to_pdf = $to_pdf . "      <td width='15%' style='padding: 5px;'>";
                         $to_pdf = $to_pdf . 			$row['timestamp'];
+                        $to_pdf = $to_pdf . "      </td>";
+
+                        echo "      <td width='5%' style='padding: 5px;'>";
+                        echo 			$row['percentage'] . "%";
+                        echo "      </td>";
+
+                        $to_pdf = $to_pdf . "      <td width='15%' style='padding: 5px;'>";
+                        $to_pdf = $to_pdf . 			$row['percentage'] . "%";
                         $to_pdf = $to_pdf . "      </td>";
 
 						echo "      <td width='20%' align='center'>";
@@ -242,6 +259,8 @@ Website: https://htmlcssphptutorial.wordpress.com
 															if($requestedDateTime > $rightNow){
 																echo "<input type = 'hidden' name = 'appointment_id' value = '$appointment_id' />
 																<input class=\"btn btn-primary\" style='color:#0000FF' type='submit' name='status' value='accepted'/>";
+															}else{
+																echo "Requested Date already past";
 															}
 
 											echo "				</form>
