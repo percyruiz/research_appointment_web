@@ -7,13 +7,26 @@
 }
 
 body {
-    background: #ffffff;
+    background-image: url(../../../image/bg.jpg);
 }
 
 .container {
     display: -webkit-flex;
     display: flex;
     height: 100%;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-danger {
+    background-color: #f2dede;
+    border-color: #eed3d7;
+    color: #b94a48;
 }
 
 #logbox {
