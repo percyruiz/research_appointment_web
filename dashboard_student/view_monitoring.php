@@ -52,16 +52,17 @@ include("auth.php"); //include auth.php file on all secure pages ?>
         $result = mysql_query($querySelect) or die(mysql_error());
         $rows = mysql_num_rows($result);
         while ($row = mysql_fetch_array($result)) {
-            $researchId = $row['research_id'];
+            $researchCode = $row['research_code'];
+            $researchTitle = $row['research_title'];
         }
 
-        $queryMonitoring = "SELECT * FROM `consultations` WHERE research_id='$researchId' AND status='done'";
+        $queryMonitoring = "SELECT * FROM `appointments` WHERE research_code='$researchCode' AND status='done' ORDER BY appointment_id ASC";
         $resultMonitoring = mysql_query($queryMonitoring) or die(mysql_error());
 
         if($resultMonitoring){
             echo "<div class='row'>";
-			echo "<div class='col-md-3'>";
-			echo "	<h4>GROUP PROJECT MONITORING</h4>";
+			echo "<div class='col-md-12'>";
+			echo "	<h5> $researchTitle - Monitoring</h5>";
 
             echo "<table class='table table-striped table-hover' style='width:100%'>";
             echo "	 <thead>";
@@ -70,16 +71,16 @@ include("auth.php"); //include auth.php file on all secure pages ?>
             echo "          <strong>DATE</strong>";
             echo "      </th>";
             echo "      <th>";
-            echo "          <strong>REMARKS</strong>";
+            echo "          <strong>DURATION</strong>";
+            echo "      </th>";
+            echo "      <th>";
+            echo "          <strong>COMMENTS</strong>";
             echo "      </th>";
             echo "      <th>";
             echo "          <strong>PROJECT PERCENTAGE</strong>";
             echo "      </th>";
-            echo "      <td align='center'>";
-            echo "          <strong>RESEARCH TITLE</strong>";
-            echo "      </td>";
             echo "      <th>";
-            echo "          <strong>ADVISER</strong>";
+            echo "          <strong>SIGNED BY</strong>";
             echo "      </th>";
             echo "   </tr>";
             echo "	 </thead>";
@@ -88,21 +89,25 @@ include("auth.php"); //include auth.php file on all secure pages ?>
             {
 
                 echo "   <tr>";
-                echo "      <td align='center'>";
-                echo           $rowMonitoring['date'];
+                echo "      <td>";
+                echo           $rowMonitoring['appoint_date'];
                 echo "      </td>";
-                echo "      <td align='center'>";
+
+                $time_fr = $rowMonitoring['appoint_time_fr'];
+                $time_to = $rowMonitoring['appoint_time_to'];
+                $time_min = (strtotime($time_to) - strtotime($time_fr)) / 60;
+
+                echo "      <td>";
+                echo           $time_min . " mins";
+                echo "      </td>";
+                echo "      <td>";
                 echo            $rowMonitoring['remarks'];
                 echo "      </td>";
-                echo "      <td align='center'>";
-                echo            $rowMonitoring['status'];
-                echo "      </td>";
-                echo "      <td align='center'>";
-                echo            $row['research_title'];
+                echo "      <td>";
+                echo            $rowMonitoring['percentage']."%";
                 echo "      </td>";
 
-                $facultyId = $row['faculty_id'];
-
+                $facultyId = $rowMonitoring['faculty_id'];
 
                 $queryFaculty = "SELECT * FROM `users` WHERE faculty_id='$facultyId'";
                 $resultFaculty = mysql_query($queryFaculty) or die(mysql_error());
@@ -112,7 +117,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                     $faculty = $rowFaculty['fname']." ".$rowFaculty['mname']." ".$rowFaculty['lname'];
                 }
 
-                echo "      <td align='center'>";
+                echo "      <td>";
                 echo            $faculty;
                 echo "      </td>";
 				echo "   </tr>";
@@ -124,9 +129,6 @@ include("auth.php"); //include auth.php file on all secure pages ?>
         }
     // }else{
 ?>
-</div>
-
-</div>
 </div>
 </body>
 </html>

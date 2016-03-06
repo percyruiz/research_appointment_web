@@ -60,6 +60,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
             while ($row = mysql_fetch_array($resultResearchId))
             {
                 $researchCode = $row['research_code'];
+                $percentage = $row['percentage'];
             }
 
             $query_sched_time = "SELECT *
@@ -88,7 +89,8 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                     status,
                     sched_time_id,
                     research_code,
-                    timestamp
+                    timestamp,
+                    percentage
                     ) VALUES (
                     '$appoint_date',
                     '$schedule_time_fr',
@@ -97,7 +99,8 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                     'pending',
                     '$sched_time_id',
                     '$researchCode',
-                    now())";
+                    now(),
+                    '$percentage')";
             $resultInsert = mysql_query($queryInsert);
 
             $queryUpdate = "UPDATE `sched_time` SET `is_taken`='yes' WHERE time_id='$sched_time_id'";

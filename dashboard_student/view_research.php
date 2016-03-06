@@ -53,7 +53,6 @@ include("auth.php"); //include auth.php file on all secure pages ?>
         $rows = mysql_num_rows($result);
 
         if($result){
-            echo "<div class='form'><h4>HERE ARE THE RESULTS.</h4><br/>";
             echo "<table class='table table-striped table-hover' style='width:100%'>";
             echo "	 <thead>";
             echo "   <tr>";

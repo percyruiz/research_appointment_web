@@ -102,66 +102,6 @@ Website: https://htmlcssphptutorial.wordpress.com
 						echo "<div class=\"alert alert-danger\">Date and time schedule already registered</div>";
 					}
 
-
-					/*$resched_appointment_id = $_POST['resched_appointment_id'];
-					$resched_time = $_POST['resched_time'];
-					$resched_date = $_POST['resched_date'];
-					$faculty_id = $_POST['faculty_id'];
-					$resched_remark = $_POST['remarks'];
-					$resched_remark = "RESCHEDULED - " . $resched_remark;
-					
-					$result_faculty_sched_time = mysql_query("SELECT * FROM `faculty_sched_time` WHERE id='$resched_time' LIMIT 1");
-					$faculty_sched_time = mysql_fetch_assoc($result_faculty_sched_time);
-					$faculty_sched_time_id = $faculty_sched_time['id'];
-
-					$datePieces = explode("-", $resched_date);
-					$year = $datePieces[0];
-					$month =  $datePieces[1];
-					$day = $faculty_sched_time['day'];
-
-					$timestamp = strtotime($resched_date);
-					$day_calendar = date('l', $timestamp);
-
-					$queryNotAvail = "SELECT * FROM `appointments` WHERE appoint_date='$resched_date' and sched_time_id='$faculty_sched_time_id'
-										AND NOT appointment_id='$resched_appointment_id'";
-					$resultNotAvail = mysql_query($queryNotAvail) or die(mysql_error());
-					$rowsNotAvail = mysql_num_rows($resultNotAvail);
-					if($day != $day_calendar){
-						echo "Date selected is not ". $faculty_sched_time['day'];
-					}else if(date("Y-m-d") > $resched_date){
-						echo "<div class=\"alert alert-danger\">Date selected is less than date today!</div>";
-					}
-					else if($rowsNotAvail > 0){
-						echo "<div class=\"alert alert-danger\">Date and time schedule already registered!</div>";
-					}else{
-						$query = "UPDATE `appointments` SET `appoint_date`='$resched_date', `sched_time_id`='$faculty_sched_time_id', `remarks`='$resched_remark' WHERE appointment_id=$resched_appointment_id";
-						$result = mysql_query($query) or die(mysql_error());
-						if($result){
-							echo "<div class=\"alert alert-info\">Update Succesful!</div>";
-							
-							$querySelectAppointment = mysql_query("SELECT * FROM `appointments` WHERE appointment_id='$resched_appointment_id' LIMIT 1");
-							$resultSelectAppointment = mysql_fetch_assoc($querySelectAppointment);
-							$research_id = $resultSelectAppointment['research_id'];
-							
-							$querySelectFaculty = mysql_query("SELECT * FROM `users` WHERE faculty_id='$faculty_id' LIMIT 1");
-							$resultSelectFaculty = mysql_fetch_assoc($querySelectFaculty);
-							$sign = $resultSelectFaculty['lname'] . ", " . $resultSelectFaculty['fname'] . " " . $resultSelectFaculty['mname'];
-							
-							$insertConsultation = "INSERT into `consultations` (
-								date,
-								research_id,
-								status,
-								sign,
-								remarks
-								) VALUES (
-								'$resched_date',
-								'$research_id',
-								'resched',
-								'$sign',
-								'$resched_remark')";
-							$insertConsultation = mysql_query($insertConsultation);
-						}
-					}*/
 				}
 			?>
 			
