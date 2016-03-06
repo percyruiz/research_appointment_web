@@ -55,8 +55,11 @@ Website: https://htmlcssphptutorial.wordpress.com
 <div class="container">
 
     <div id="logbox">
+        <center>
+            <img src="image/tip_logo.png" alt="Logo" style="width:100px;height:100px;">
+        </center>
         <form id="signup" action="" method="post" name="login">
-            <h1>researchAppointment</h1>
+            <h1>Research Appointment</h1>
             <input type="text" class="input pass" name="username" placeholder="Username" required autofocus>
             <input type="password" class="input pass" placeholder="Password"  name="password" required>
             <input type="submit" value="Sign me in!" class="inputButton"/>

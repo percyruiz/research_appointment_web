@@ -16,7 +16,7 @@ include("auth.php");
 
 	<div class="container">
 		<ul class="breadcrumb">
-			<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_faculty/dashboard_faculty.php';?>">Back</a></li>
+			<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_faculty/faculty_schedule.php';?>">Back</a></li>
 			<li> <a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a></li>
 		</ul>
 	<h4>Manage Availability</h4>
