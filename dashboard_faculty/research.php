@@ -28,20 +28,28 @@ Website: https://htmlcssphptutorial.wordpress.com
 			<br/>
 			<br/>
 
-			<?php 
+			<?php
+
+				$remarks = "";
 				if(isset($_POST['percentage'])){
 					$research_code = $_POST['research_code'];
 					$percentage = $_POST['percentage'];
                     $appointment_id = $_POST['appointment_id'];
+					$remarks = $_POST['remarks'];
+
 					$query = "UPDATE `researches` SET `percentage`='$percentage' WHERE research_code=$research_code";
 					$result = mysql_query($query) or die(mysql_error());
 
 					$query = "UPDATE `appointments` SET
 								`percentage`='$percentage',
-								`status`='done'
+								`status`='done',
+								`remarks`='$remarks'
 								WHERE research_code=$research_code AND
                                 appointment_id = $appointment_id";
 					$result = mysql_query($query) or die(mysql_error());
+					if($result){
+						echo "<div class=\"alert alert-info\">Update Successful!</div>";
+					}
 				}
 			?>
 
@@ -110,14 +118,15 @@ Website: https://htmlcssphptutorial.wordpress.com
 
 						echo "   <tr>";
 						echo "      <td style='padding: 5px;'>";
-						echo 			"<strong>Percentage</strong>";
+						echo 			"<strong>Comments & Percentage</strong>";
 						echo "      </td>";
-						echo "      <td style='padding: 5px;' align='center'>";
+						echo "      <td style='padding: 5px;'>";
 						$percentage =			$row['percentage'];
 						echo "		<form action='' method='post' name='research'>
 										<input type='hidden' name='research_code' value='$research_code' />
 										<input type='hidden' name='appointment_id' value='$appointment_id' />
-										<input name='percentage' min='0' max='100' readonly id='percent' type='number' value='$percentage'/>
+										<textarea name='remarks' rows=\"10\" cols=\"50\">". $remarks ."</textarea><br/>
+										<input name='percentage' min='0' max='100' readonly id='percent' type='number' value='$percentage'/>%
 										<input type='submit' id='save' value='save' style='display:none' />
 										<input onclick='updatePercentage()' type='button' id='edit_percentage' value='update' />
 									</form>";
