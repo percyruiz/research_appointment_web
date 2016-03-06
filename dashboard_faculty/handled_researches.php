@@ -72,10 +72,10 @@ include("auth.php"); //include auth.php file on all secure pages
 		$to_pdf = $to_pdf . "	 <tbody>";
 		while ($row = mysql_fetch_array($result)) {
 
-			$research_id = $row['research_id'];
+			$research_code = $row['research_code'];
 			$to_pdf = $to_pdf . "   <tr>";
 			$to_pdf = $to_pdf . "      <td width='30%' style='padding: 5px;'>";
-			$to_pdf = $to_pdf . 			"<a href='research.php?id=$research_id'>" .$row['research_title'] . "</a>";
+			$to_pdf = $to_pdf . 			"<a href='research_monitoring.php?id=$research_code'>" .$row['research_title'] . "</a>";
 			$to_pdf = $to_pdf . "      </td>";
 
 			$to_pdf = $to_pdf . "      <td width='20%' style='padding: 5px;'>";
