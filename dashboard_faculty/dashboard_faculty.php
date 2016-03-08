@@ -84,8 +84,65 @@ Website: https://htmlcssphptutorial.wordpress.com
 					}
 				?>
 
+				<form class="form" name="filter" action="" method="post">
+					<select class="form-control-static" name="month1">
+						<option value="None">Select</option>
+						<option value="Jan">January</option>
+						<option value="Feb">February</option>
+						<option value="Mar">March</option>
+						<option value="Apr">April</option>
+						<option value="May">May</option>
+						<option value="Jun">June</option>
+						<option value="Jul">July</option>
+						<option value="Aug">August</option>
+						<option value="Sep">September</option>
+						<option value="Oct">October</option>
+						<option value="Nov">November</option>
+						<option value="Dec">December</option>
+					</select>
+					<input placeholder="day"  class="form-control-static small" style="width:70px" type="number" name="day1"/>
+					<input placeholder="year" class="form-control-static small" style="width:70px" type="number" name="year1"/> to <br>
+					<select class="form-control-static" name="month2">
+						<option value="None">Select</option>
+						<option value="Jan">January</option>
+						<option value="Feb">February</option>
+						<option value="Mar">March</option>
+						<option value="Apr">April</option>
+						<option value="May">May</option>
+						<option value="Jun">June</option>
+						<option value="Jul">July</option>
+						<option value="Aug">August</option>
+						<option value="Sep">September</option>
+						<option value="Oct">October</option>
+						<option value="Nov">November</option>
+						<option value="Dec">December</option>
+					</select>
+					<input placeholder="day"  class="form-control-static small" style="width:70px" type="number" name="day2"/>
+					<input placeholder="year" class="form-control-static small" style="width:70px" type="number" name="year2"/><br/>
+					<input class="btn btn-primary" type="submit" name="submit" value="Filter" /><br/><br/>
+				</form>
+
 				<?php
-					$queryAllAppointments = "SELECT * from `appointments`";
+
+					if(isset($_POST['month1'])){
+						$hasFilter = true;
+						$month1 = $_POST['month1'];
+						$month2 = $_POST['month2'];
+						$day1 = $_POST['day1'];
+						$day2 = $_POST['day2'];
+						$year1 = $_POST['year1'];
+						$year2 = $_POST['year2'];
+						$date1 = strtotime($month1. " ".$day1. " " .$year1);
+						$date2 = strtotime($month2. " ".$day2. " " .$year2);
+						echo "<strong> FILTERED: ". $month1 . " " . $day1 . " " . $year1 . " - " . $month2 . " " . $day2 . " " . $year2 . "</strong><br/><br/>";
+                        if($date1=="" || $date2==""){
+                            $hasFilter = false;
+                        }
+					}else {
+						$hasFilter = false;
+					}
+
+					$queryAllAppointments = "SELECT * from `appointments` ORDER BY `appointment_id` DESC";
 					$resultAllAppontments = mysql_query($queryAllAppointments) or die(mysql_error());
 
 					$rightNow = date("Ymd");
@@ -170,133 +227,134 @@ Website: https://htmlcssphptutorial.wordpress.com
 					$to_pdf = $to_pdf . "	 </thead>";
 					$to_pdf = $to_pdf . "	 <tbody>";
 					while ($row = mysql_fetch_array($result)) {
-						$research_code = $row['research_code'];
+						$dateNow = strtotime($row['appoint_date']);
+						if (!$hasFilter || ($hasFilter &&  $date2 >= $dateNow && $date1 <= $dateNow)) {
+							$research_code = $row['research_code'];
 
-						$result_r = mysql_query("SELECT * FROM `researches` WHERE research_code='$research_code' LIMIT 1");
-						$row_researches = mysql_fetch_assoc($result_r);
-						$appointment_id = $row['appointment_id'];
-						echo "   <tr>";
-						$to_pdf = $to_pdf . "   <tr>";
-						echo "      <td width='30%' style='padding: 5px;'>";
-                        if($row['status']=='done'){
-                            echo $row_researches['research_title'];
-                        }else {
-                            echo "<a href='research.php?id=$appointment_id'>" . $row_researches['research_title'] . "</a>";
-                        }
-						echo "      </td>";
-						$to_pdf = $to_pdf . "      <td width='30%' style='padding: 5px;'>";
-						$to_pdf = $to_pdf . 			$row_researches['research_title'];
-						$to_pdf = $to_pdf . "      </td>";
+							$result_r = mysql_query("SELECT * FROM `researches` WHERE research_code='$research_code' LIMIT 1");
+							$row_researches = mysql_fetch_assoc($result_r);
+							$appointment_id = $row['appointment_id'];
+							echo "   <tr>";
+							$to_pdf = $to_pdf . "   <tr>";
+							echo "      <td width='30%' style='padding: 5px;'>";
+							if ($row['status'] == 'done') {
+								echo $row_researches['research_title'];
+							} else {
+								echo "<a href='research.php?id=$appointment_id'>" . $row_researches['research_title'] . "</a>";
+							}
+							echo "      </td>";
+							$to_pdf = $to_pdf . "      <td width='30%' style='padding: 5px;'>";
+							$to_pdf = $to_pdf . $row_researches['research_title'];
+							$to_pdf = $to_pdf . "      </td>";
 
-						echo "      <td width='15%' style='padding: 5px;'>";
-						echo 			$row['appoint_date'];
-						echo "      </td>";
-						$to_pdf = $to_pdf . "      <td width='15%' style='padding: 5px;'>";
-						$to_pdf = $to_pdf . 			$row['appoint_date'];
-						$to_pdf = $to_pdf . "      </td>";
+							echo "      <td width='15%' style='padding: 5px;'>";
+							echo $row['appoint_date'];
+							echo "      </td>";
+							$to_pdf = $to_pdf . "      <td width='15%' style='padding: 5px;'>";
+							$to_pdf = $to_pdf . $row['appoint_date'];
+							$to_pdf = $to_pdf . "      </td>";
 
-						echo "      <td width='10%' style='padding: 5px;'>";
-						$to_pdf = $to_pdf . "      <td width='10%' style='padding: 5px;'>";
-						$timeStart=$row['appoint_time_fr'];
-						$queryTimeStart = "SELECT TIME_FORMAT('$timeStart', '%h:%i:%s %p')";
-						$resultTimeStart = mysql_query($queryTimeStart) or die(mysql_error());
-						$rowStartTime = mysql_fetch_row($resultTimeStart);
-						echo 		$rowStartTime[0];
-						echo "      </td>";
-						$to_pdf = $to_pdf . 		$rowStartTime[0];
-						$to_pdf = $to_pdf . "      </td>";
+							echo "      <td width='10%' style='padding: 5px;'>";
+							$to_pdf = $to_pdf . "      <td width='10%' style='padding: 5px;'>";
+							$timeStart = $row['appoint_time_fr'];
+							$queryTimeStart = "SELECT TIME_FORMAT('$timeStart', '%h:%i:%s %p')";
+							$resultTimeStart = mysql_query($queryTimeStart) or die(mysql_error());
+							$rowStartTime = mysql_fetch_row($resultTimeStart);
+							echo $rowStartTime[0];
+							echo "      </td>";
+							$to_pdf = $to_pdf . $rowStartTime[0];
+							$to_pdf = $to_pdf . "      </td>";
 
-						echo "      <td width='10%' style='padding: 5px;'>";
-						$to_pdf = $to_pdf . "      <td width='10%' style='padding: 5px;'>";
-						$timeEnd = $row['appoint_time_to'];
-						$queryTimeEnd = "SELECT TIME_FORMAT('$timeEnd', '%h:%i:%s %p')";
-						$resultTimeEnd = mysql_query($queryTimeEnd) or die(mysql_error());
-						$rowEndTime = mysql_fetch_row($resultTimeEnd);
-						echo 		$rowEndTime[0];
-						echo "      </td>";
-						$to_pdf = $to_pdf . 		$rowEndTime[0];
-						$to_pdf = $to_pdf . "      </td>";
+							echo "      <td width='10%' style='padding: 5px;'>";
+							$to_pdf = $to_pdf . "      <td width='10%' style='padding: 5px;'>";
+							$timeEnd = $row['appoint_time_to'];
+							$queryTimeEnd = "SELECT TIME_FORMAT('$timeEnd', '%h:%i:%s %p')";
+							$resultTimeEnd = mysql_query($queryTimeEnd) or die(mysql_error());
+							$rowEndTime = mysql_fetch_row($resultTimeEnd);
+							echo $rowEndTime[0];
+							echo "      </td>";
+							$to_pdf = $to_pdf . $rowEndTime[0];
+							$to_pdf = $to_pdf . "      </td>";
 
-						echo "      <td width='5%' style='padding: 5px;'>";
-						$to_pdf = $to_pdf . "      <td width='5%' style='padding: 5px;'>";
-						$queryPanel = mysql_query("SELECT * FROM `panels` WHERE research_code='$research_code' AND faculty_id='$faculty_id' LIMIT 1");
-						$resultQueryPanel = mysql_fetch_assoc($queryPanel);
-						if($resultQueryPanel){
-							echo 			"panel";
-							$to_pdf = $to_pdf . 			"panel";
-						}else{
-							echo 			"advisee";
-							$to_pdf = $to_pdf . 			"advisee";
-						}
-						echo "      </td>";
-						$to_pdf = $to_pdf . "      </td>";
+							echo "      <td width='5%' style='padding: 5px;'>";
+							$to_pdf = $to_pdf . "      <td width='5%' style='padding: 5px;'>";
+							$queryPanel = mysql_query("SELECT * FROM `panels` WHERE research_code='$research_code' AND faculty_id='$faculty_id' LIMIT 1");
+							$resultQueryPanel = mysql_fetch_assoc($queryPanel);
+							if ($resultQueryPanel) {
+								echo "panel";
+								$to_pdf = $to_pdf . "panel";
+							} else {
+								echo "advisee";
+								$to_pdf = $to_pdf . "advisee";
+							}
+							echo "      </td>";
+							$to_pdf = $to_pdf . "      </td>";
 
-						echo "      <td width='10%' style='padding: 5px;'>";
-						echo 			$row['timestamp'];
-						echo "      </td>";
+							echo "      <td width='10%' style='padding: 5px;'>";
+							echo $row['timestamp'];
+							echo "      </td>";
 
-                        $to_pdf = $to_pdf . "      <td width='15%' style='padding: 5px;'>";
-                        $to_pdf = $to_pdf . 			$row['timestamp'];
-                        $to_pdf = $to_pdf . "      </td>";
+							$to_pdf = $to_pdf . "      <td width='15%' style='padding: 5px;'>";
+							$to_pdf = $to_pdf . $row['timestamp'];
+							$to_pdf = $to_pdf . "      </td>";
 
-                        echo "      <td width='5%' style='padding: 5px;'>";
-                        echo 			$row['percentage'] . "%";
-                        echo "      </td>";
+							echo "      <td width='5%' style='padding: 5px;'>";
+							echo $row['percentage'] . "%";
+							echo "      </td>";
 
-                        $to_pdf = $to_pdf . "      <td width='15%' style='padding: 5px;'>";
-                        $to_pdf = $to_pdf . 			$row['percentage'] . "%";
-                        $to_pdf = $to_pdf . "      </td>";
+							$to_pdf = $to_pdf . "      <td width='15%' style='padding: 5px;'>";
+							$to_pdf = $to_pdf . $row['percentage'] . "%";
+							$to_pdf = $to_pdf . "      </td>";
 
-						echo "      <td width='20%' align='center'>";
-										if($row['status']=='pending'){
-											echo "	<div class='row'>
+							echo "      <td width='20%' align='center'>";
+							if ($row['status'] == 'pending') {
+								echo "	<div class='row'>
 														<div class='col-md-6'>
 															<form action='' method='post' name='dashboard_faculty'>";
 
-															$d=strtotime($row['appoint_date']);
+								$d = strtotime($row['appoint_date']);
 
-															$timeStartExp=$row['appoint_time_fr'];
-															$queryTimeStartExp = "SELECT TIME_FORMAT('$timeStartExp', '%T')";
+								$timeStartExp = $row['appoint_time_fr'];
+								$queryTimeStartExp = "SELECT TIME_FORMAT('$timeStartExp', '%T')";
 
-															$resultTimeStartExp = mysql_query($queryTimeStartExp) or die(mysql_error());
-															$rowStartTimeExp = mysql_fetch_row($resultTimeStartExp);
-															$timeStartToCompare = preg_replace("/[^A-Za-z0-9]/", "", $rowStartTimeExp[0]);
+								$resultTimeStartExp = mysql_query($queryTimeStartExp) or die(mysql_error());
+								$rowStartTimeExp = mysql_fetch_row($resultTimeStartExp);
+								$timeStartToCompare = preg_replace("/[^A-Za-z0-9]/", "", $rowStartTimeExp[0]);
 
-															$requestedDateTime = date("Ymd", $d). "" .$timeStartToCompare;
-															$rightNow = date("Ymd"). "" .date("his");
+								$requestedDateTime = date("Ymd", $d) . "" . $timeStartToCompare;
+								$rightNow = date("Ymd") . "" . date("his");
 
-															if($requestedDateTime > $rightNow){
-																echo "<input type = 'hidden' name = 'appointment_id' value = '$appointment_id' />
+								if ($requestedDateTime > $rightNow) {
+									echo "<input type = 'hidden' name = 'appointment_id' value = '$appointment_id' />
 																<input class=\"btn btn-primary\" style='color:#0000FF' type='submit' name='status' value='accepted'/>";
-															}else{
-																echo "Requested Date already past";
-															}
+								} else {
+									echo "Requested Date already past";
+								}
 
-											echo "				</form>
+								echo "				</form>
 														</div> ";
-											echo "		<div class='col-md-6'>
+								echo "		<div class='col-md-6'>
 															<form action='resched_appointment.php' method='post' name='resched_appointment'>
 																<input type='hidden' name='appointment_id' value='$appointment_id'/>
 																<input class=\"btn btn-primary\" style='color:#FF0000' type='submit' name='status' value='resched'/>
 															</form>
 														</div>
 													</div>";
-										}
-										else if($row['status']=='done') {
-											echo "Done";
-										}
-										else if($row['status']=='expired') {
-											echo "Requested Date already past";
-										}else{
-											echo "	<form  action='' method='post' name='dashboard_faculty'>
+							} else if ($row['status'] == 'done') {
+								echo "Done";
+							} else if ($row['status'] == 'expired') {
+								echo "Requested Date already past";
+							} else {
+								echo "	<form  action='' method='post' name='dashboard_faculty'>
 														<input type='hidden' name='appointment_id' value='$appointment_id'/> 
 														<input class=\"btn btn-primary\" style='color:#FF0000' type='submit' name='status' value='remove'/>
 													</form> ";
-										}
-						echo "      </td>";
-						echo "   </tr>";
-						$to_pdf = $to_pdf . "      </td>";
-						$to_pdf = $to_pdf . "   </tr>";
+							}
+							echo "      </td>";
+							echo "   </tr>";
+							$to_pdf = $to_pdf . "      </td>";
+							$to_pdf = $to_pdf . "   </tr>";
+						}
 					}
 					echo "</tbody>";
 					echo "</table>";

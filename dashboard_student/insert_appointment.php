@@ -192,10 +192,69 @@ include("auth.php"); //include auth.php file on all secure pages ?>
             </div>
         </div>
         <div class="col-md-7">
-            <strong><?php echo $facultyName . ' - consultations ';?></strong>
+
+            <form class="form" name="filter" action="" method="post">
+                <select class="form-control-static" name="month1">
+                    <option value="None">Select</option>
+                    <option value="Jan">January</option>
+                    <option value="Feb">February</option>
+                    <option value="Mar">March</option>
+                    <option value="Apr">April</option>
+                    <option value="May">May</option>
+                    <option value="Jun">June</option>
+                    <option value="Jul">July</option>
+                    <option value="Aug">August</option>
+                    <option value="Sep">September</option>
+                    <option value="Oct">October</option>
+                    <option value="Nov">November</option>
+                    <option value="Dec">December</option>
+                </select>
+                <input placeholder="day"  class="form-control-static small" style="width:70px" type="number" name="day1"/>
+                <input placeholder="year" class="form-control-static small" style="width:70px" type="number" name="year1"/> to
+                <select class="form-control-static" name="month2">
+                    <option value="None">Select</option>
+                    <option value="Jan">January</option>
+                    <option value="Feb">February</option>
+                    <option value="Mar">March</option>
+                    <option value="Apr">April</option>
+                    <option value="May">May</option>
+                    <option value="Jun">June</option>
+                    <option value="Jul">July</option>
+                    <option value="Aug">August</option>
+                    <option value="Sep">September</option>
+                    <option value="Oct">October</option>
+                    <option value="Nov">November</option>
+                    <option value="Dec">December</option>
+                </select>
+                <input type="hidden" name="faculty_id" value="<?php echo $faculty_id;?>"/>
+                <input placeholder="day"  class="form-control-static small" style="width:70px" type="number" name="day2"/>
+                <input placeholder="year" class="form-control-static small" style="width:70px" type="number" name="year2"/>
+                <input class="btn btn-primary" type="submit" name="submit" value="Filter" /><br/><br/>
+            </form>
+
             <?php
 
-                $queryAllAppointments = "SELECT * from `appointments`";
+                if(isset($_POST['month1'])){
+                    $hasFilter = true;
+                    $month1 = $_POST['month1'];
+                    $month2 = $_POST['month2'];
+                    $day1 = $_POST['day1'];
+                    $day2 = $_POST['day2'];
+                    $year1 = $_POST['year1'];
+                    $year2 = $_POST['year2'];
+                    $date1 = strtotime($month1. " ".$day1. " " .$year1);
+                    $date2 = strtotime($month2. " ".$day2. " " .$year2);
+                    echo "<strong> FILTERED: ". $month1 . " " . $day1 . " " . $year1 . " - " . $month2 . " " . $day2 . " " . $year2 . "</strong><br/><br/>";
+                    if($date1=="" || $date2==""){
+                        $hasFilter = false;
+                    }
+                }else {
+                    $hasFilter = false;
+                }
+
+                echo '<strong>' . $facultyName . ' - consultations </strong>';
+
+                $queryAllAppointments = "SELECT * from `appointments` ORDER BY `appointment_id` DESC";
                 $resultAllAppontments = mysql_query($queryAllAppointments) or die(mysql_error());
 
                 $rightNow = date("Ymd");
@@ -246,38 +305,40 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                 echo "<tbody>";
                 while ($row = mysql_fetch_array($resultAppointment)) 
                 {
+                    $dateNow = strtotime($row['appoint_date']);
+                    if (!$hasFilter || ($hasFilter &&  $date2 >= $dateNow && $date1 <= $dateNow)) {
 
-					
-					$timeStart = $row['appoint_time_fr'];
-					$queryTimeStart = "SELECT TIME_FORMAT('$timeStart', '%h:%i:%s %p')";
-					$resultTimeStart = mysql_query($queryTimeStart) or die(mysql_error());
-					$rowStartTime = mysql_fetch_row($resultTimeStart);
-					
-					$timeEnd = $row['appoint_time_to'];
-					$queryTimeEnd = "SELECT TIME_FORMAT('$timeEnd', '%h:%i:%s %p')";
-					$resultTimeEnd = mysql_query($queryTimeEnd) or die(mysql_error());
-					$rowEndTime = mysql_fetch_row($resultTimeEnd);
+                        $timeStart = $row['appoint_time_fr'];
+                        $queryTimeStart = "SELECT TIME_FORMAT('$timeStart', '%h:%i:%s %p')";
+                        $resultTimeStart = mysql_query($queryTimeStart) or die(mysql_error());
+                        $rowStartTime = mysql_fetch_row($resultTimeStart);
 
-                    echo "   <tr>";
-                    echo "      <td>";
-                    echo            $row['appoint_date'];
-                    echo "      </td>";
-                    echo "      <td>";
-                    echo            $rowStartTime[0];
-                    echo "      </td>";
-                    echo "      <td>";
-                    echo            $rowEndTime[0];
-                    echo "      </td>";
-                    echo "      <td>";
-                    echo            $facultyName;
-                    echo "      </td>";
-                    echo "      <td>";
-                    echo            $row['status'];
-                    echo "      </td>";
-                    echo "      <td>";
-                    echo            $row['remarks'];
-                    echo "      </td>";
-                    echo "   </tr>";
+                        $timeEnd = $row['appoint_time_to'];
+                        $queryTimeEnd = "SELECT TIME_FORMAT('$timeEnd', '%h:%i:%s %p')";
+                        $resultTimeEnd = mysql_query($queryTimeEnd) or die(mysql_error());
+                        $rowEndTime = mysql_fetch_row($resultTimeEnd);
+
+                        echo "   <tr>";
+                        echo "      <td>";
+                        echo $row['appoint_date'];
+                        echo "      </td>";
+                        echo "      <td>";
+                        echo $rowStartTime[0];
+                        echo "      </td>";
+                        echo "      <td>";
+                        echo $rowEndTime[0];
+                        echo "      </td>";
+                        echo "      <td>";
+                        echo $facultyName;
+                        echo "      </td>";
+                        echo "      <td>";
+                        echo $row['status'];
+                        echo "      </td>";
+                        echo "      <td>";
+                        echo $row['remarks'];
+                        echo "      </td>";
+                        echo "   </tr>";
+                    }
                 }
                 echo "</tbody>";
                 echo "<table>";
