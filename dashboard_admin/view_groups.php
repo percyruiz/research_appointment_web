@@ -91,7 +91,8 @@ include("auth.php");
 
 				echo "      <td style='padding: 5px;'>";
 				echo "		<form action='view_members.php'  method='post' name='groups'>";
-				$_SESSION['userID'] = $row['user_id'];
+				$uID = $row['user_id'];
+				echo "<input type= 'hidden' name='uID' value='$uID'/>";
 				echo "			<input class=\"form-control\" style='color:#0000FF' type='submit' name='viewgroups' value='View Group'/>";
 				echo "		</form>";
 				echo "      </td>";
