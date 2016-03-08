@@ -36,16 +36,68 @@ include("auth.php"); //include auth.php file on all secure pages ?>
             </div>
         </div>
     </nav>
+    <form class="form" name="filter" action="" method="post">
+        <select class="form-control-static" name="month1">
+            <option value="None">Select</option>
+            <option value="Jan">January</option>
+            <option value="Feb">February</option>
+            <option value="Mar">March</option>
+            <option value="Apr">April</option>
+            <option value="May">May</option>
+            <option value="Jun">June</option>
+            <option value="Jul">July</option>
+            <option value="Aug">August</option>
+            <option value="Sep">September</option>
+            <option value="Oct">October</option>
+            <option value="Nov">November</option>
+            <option value="Dec">December</option>
+        </select>
+        <input placeholder="day"  class="form-control-static small" style="width:70px" type="number" name="day1"/>
+        <input placeholder="year" class="form-control-static small" style="width:70px" type="number" name="year1"/> to
+        <select class="form-control-static" name="month2">
+            <option value="None">Select</option>
+            <option value="Jan">January</option>
+            <option value="Feb">February</option>
+            <option value="Mar">March</option>
+            <option value="Apr">April</option>
+            <option value="May">May</option>
+            <option value="Jun">June</option>
+            <option value="Jul">July</option>
+            <option value="Aug">August</option>
+            <option value="Sep">September</option>
+            <option value="Oct">October</option>
+            <option value="Nov">November</option>
+            <option value="Dec">December</option>
+        </select>
+        <input placeholder="day"  class="form-control-static small" style="width:70px" type="number" name="day2"/>
+        <input placeholder="year" class="form-control-static small" style="width:70px" type="number" name="year2"/>
+        <input class="btn btn-primary" type="submit" name="submit" value="Filter" /><br/><br/>
+    </form>
 
 <?php
-	// require('db.php');
-	//access from root folder
-	$path = $_SERVER['DOCUMENT_ROOT'];
-	$path .= "/db.php";
-	require($path);
-   
-    // If form submitted, insert values into the database.
-     // if (isset($_POST['research'])){
+        // require('db.php');
+        //access from root folder
+        $path = $_SERVER['DOCUMENT_ROOT'];
+        $path .= "/db.php";
+        require($path);
+
+        if(isset($_POST['month1'])){
+            $hasFilter = true;
+            $month1 = $_POST['month1'];
+            $month2 = $_POST['month2'];
+            $day1 = $_POST['day1'];
+            $day2 = $_POST['day2'];
+            $year1 = $_POST['year1'];
+            $year2 = $_POST['year2'];
+            $date1 = strtotime($month1. " ".$day1. " " .$year1);
+            $date2 = strtotime($month2. " ".$day2. " " .$year2);
+            echo "<strong> FILTERED: ". $month1 . " " . $day1 . " " . $year1 . " - " . $month2 . " " . $day2 . " " . $year2 . "</strong><br/><br/>";
+            if($date1=="" || $date2==""){
+                $hasFilter = false;
+            }
+        }else {
+            $hasFilter = false;
+        }
 
         $userid = $_SESSION['userid'];
 
@@ -98,39 +150,42 @@ include("auth.php"); //include auth.php file on all secure pages ?>
             while ($rowMonitoring = mysql_fetch_array($resultMonitoring))
             {
 
-                echo "   <tr>";
-                echo "      <td>";
-                echo           $rowMonitoring['appoint_date'];
-                echo "      </td>";
+                $dateNow = strtotime($rowMonitoring['appoint_date']);
+                if( !$hasFilter || ($hasFilter && $date2>=$dateNow && $date1<=$dateNow) ) {
 
-                $time_fr = $rowMonitoring['appoint_time_fr'];
-                $time_to = $rowMonitoring['appoint_time_to'];
-                $time_min = (strtotime($time_to) - strtotime($time_fr)) / 60;
+                    echo "   <tr>";
+                    echo "      <td>";
+                    echo $rowMonitoring['appoint_date'];
+                    echo "      </td>";
 
-                echo "      <td>";
-                echo           $time_min . " mins";
-                echo "      </td>";
-                echo "      <td>";
-                echo            $rowMonitoring['remarks'];
-                echo "      </td>";
-                echo "      <td>";
-                echo            $rowMonitoring['percentage']."%";
-                echo "      </td>";
+                    $time_fr = $rowMonitoring['appoint_time_fr'];
+                    $time_to = $rowMonitoring['appoint_time_to'];
+                    $time_min = (strtotime($time_to) - strtotime($time_fr)) / 60;
 
-                $facultyId = $rowMonitoring['faculty_id'];
+                    echo "      <td>";
+                    echo $time_min . " mins";
+                    echo "      </td>";
+                    echo "      <td>";
+                    echo $rowMonitoring['remarks'];
+                    echo "      </td>";
+                    echo "      <td>";
+                    echo $rowMonitoring['percentage'] . "%";
+                    echo "      </td>";
 
-                $queryFaculty = "SELECT * FROM `users` WHERE faculty_id='$facultyId'";
-                $resultFaculty = mysql_query($queryFaculty) or die(mysql_error());
+                    $facultyId = $rowMonitoring['faculty_id'];
 
-                while ($rowFaculty = mysql_fetch_array($resultFaculty))
-                {
-                    $faculty = $rowFaculty['fname']." ".$rowFaculty['mname']." ".$rowFaculty['lname'];
+                    $queryFaculty = "SELECT * FROM `users` WHERE faculty_id='$facultyId'";
+                    $resultFaculty = mysql_query($queryFaculty) or die(mysql_error());
+
+                    while ($rowFaculty = mysql_fetch_array($resultFaculty)) {
+                        $faculty = $rowFaculty['fname'] . " " . $rowFaculty['mname'] . " " . $rowFaculty['lname'];
+                    }
+
+                    echo "      <td>";
+                    echo $faculty;
+                    echo "      </td>";
+                    echo "   </tr>";
                 }
-
-                echo "      <td>";
-                echo            $faculty;
-                echo "      </td>";
-				echo "   </tr>";
 			}
             echo "</tbody>";
             echo "</table>";
