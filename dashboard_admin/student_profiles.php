@@ -31,15 +31,15 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                     <a class="navbar-brand" href="#">ADMIN</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/dashboard_admin.php';?>">Manage Faculty</a></li>
-                        <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/consultation_history.php';?>">Consultation History</a></li>
-                        <li class="active"><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/student_profiles.php';?>">Manage Student</a></li>
-                        <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/insert_research.php';?>">Add Research</a></li>
-                        <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/view_researches.php';?>">View Monitoring</a></li>
-                        <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/view_groups.php';?>">View Groups</a></li>
-                        <li> <a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout</a></li>
-                    </ul>
+					<ul class="nav navbar-nav">
+						<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/dashboard_admin.php';?>"> <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Manage Faculty</a></li>
+						<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/consultation_history.php';?>"> <span class="glyphicon glyphicon-time" aria-hidden="true"></span> Consultation History</a></li>
+						<li class="active"><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/student_profiles.php';?>"> <span class="glyphicon glyphicon-education" aria-hidden="true"></span> Manage Student</a></li>
+						<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/insert_research.php';?>"> <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Add Research</a></li>
+						<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/view_researches.php';?>"> <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span> View Monitoring</a></li>
+						<li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_admin/view_groups.php';?>"> <span class="glyphicon glyphicon-tower" aria-hidden="true"></span> View Groups</a></li>
+						<li> <a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>"> <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Logout</a></li>
+					</ul>
                 </div>
             </div>
         </nav>
@@ -131,7 +131,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                     <input class="form-control" type="number" name="studentnum" placeholder="Student Number" min="0" max="99999999999" required /><br/>
                     <input class="form-control" type="email" name="email" placeholder="Email" required /><br/>
                     <input class="form-control" type="text" name="contact" placeholder="Contact Number" required /><br/>
-                    <input class="btn btn-primary" type="submit" name="submit" value="Register" /><br/>
+                    <input class="btn btn-default" type="submit" name="submit" value="Register" /><br/>
                 </form>
             </div>
 
@@ -196,7 +196,7 @@ include("auth.php"); //include auth.php file on all secure pages ?>
                         echo "      <td>";
                         echo 			'<form name="registration" action="update_student.php" method="post">
                                             <input type="hidden" value="'. $row['student_no'] . '" name="student_no_update"  required />
-                                            <input class="btn btn-primary" type="submit" name="submit" value="Edit" />
+                                            <input class="btn btn-default" type="submit" name="submit" value="Edit" />
                                         </form>';
                         echo "      </td>";
 

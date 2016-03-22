@@ -152,9 +152,9 @@ Website: https://htmlcssphptutorial.wordpress.com
 
                         echo "    <td valign='top' width='20%'>";
                         if($research_type == 'Thesis 1' || $research_type == 'Thesis 2'){
-                            echo "<strong>Program: </strong> BS IT<br/>";
+                            echo "<strong>Program: </strong> BS COMSCI <br/>";
                         }else{
-                            echo "<strong>Program: </strong> BS COMSCI<br/>";
+                            echo "<strong>Program: </strong> BS IT<br/>";
                         }
                         echo "    </td>";
                         echo "</tr>";
@@ -189,9 +189,9 @@ Website: https://htmlcssphptutorial.wordpress.com
 
                     $to_pdf = $to_pdf . "        <td valign='top' width='20%'>";
                     if($research_type == 'Thesis 1' || $research_type == 'Thesis 2'){
-                        $to_pdf = $to_pdf . "<strong>Program: </strong> BS IT<br/>";
+                        $to_pdf = $to_pdf . "<strong>Program: </strong> BS COMSCI <br/>";
                     }else{
-                        $to_pdf = $to_pdf . "<strong>Program: </strong> BS COMSCI<br/>";
+                        $to_pdf = $to_pdf . "<strong>Program: </strong> BS IT <br/>";
                     }
                     $to_pdf = $to_pdf . "        </td>";
                     $to_pdf = $to_pdf . "    </tr>";

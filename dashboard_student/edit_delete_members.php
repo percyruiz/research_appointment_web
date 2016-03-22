@@ -88,13 +88,13 @@ include("auth.php"); //include auth.php file on all secure pages ?>
 
 					//echo '			<input type="hidden" name="membername" value='.$row['name'].'/>';
 					echo '			<input type="hidden" name="memberid" value='.$row['member_id'].'/>';
-					echo "			<input class=\"btn btn-primary\" type='submit' name='savebutton' value='SAVE'/>";
+					echo "			<input class=\"btn btn-default\" type='submit' name='savebutton' value='SAVE'/>";
 					echo "		</form>";
 					echo "		</div>";
 					echo "		<div class='col-md-6'>";
 					echo "		<form action='delete_member.php'  method='post' name='deleteForm'>";
 					echo '			<input type="hidden" name="memberid" value='.$row['member_id'].'/>';
-					echo "			<input class=\"btn btn-primary\" type='submit' name='delete' value='DELETE'/>";
+					echo "			<input class=\"btn btn-default\" type='submit' name='delete' value='DELETE'/>";
 					echo "		</form>";
 					echo "		</div>";
 					echo "		</div>";

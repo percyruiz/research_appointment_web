@@ -20,6 +20,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 	
     // If form submitted, insert values into the database.
     if (isset($_POST['to_pdf'])){
+		ob_clean();
 		$to_pdf = $_POST['to_pdf'];
 		include("mpdf/mpdf.php");
 		$mpdf = new mPDF('win-1252', 'A4-L', '', '', 10, '', '', '', '', '');
