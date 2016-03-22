@@ -41,11 +41,11 @@ Website: https://htmlcssphptutorial.wordpress.com
 					</div>
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
-                            <li class="active"><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_faculty/dashboard_faculty.php';?>">Appointments</a></li>
-                            <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_faculty/handled_researches.php';?>">View Researches Handled</a></li>
-                            <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_faculty/faculty_schedule.php';?>">Manage Schedule</a></li>
-                            <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/change_password_form.php';?>">Change Password</a></li>
-                            <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>">Logout </a></li>
+                            <li class="active"><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_faculty/dashboard_faculty.php';?>"> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Appointments</a></li>
+                            <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_faculty/handled_researches.php';?>"> <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> View Researches Handled</a></li>
+                            <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/dashboard_faculty/faculty_schedule.php';?>"> <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Manage Schedule</a></li>
+                            <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/change_password_form.php';?>"> <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Change Password</a></li>
+                            <li><a href="<?php echo 'http://' . $_SERVER['SERVER_NAME'].'/logout.php';?>"> <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Logout </a></li>
 						</ul>
 					</div>
 				</div>
@@ -119,7 +119,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 					</select>
 					<input placeholder="day"  class="form-control-static small" style="width:70px" type="number" name="day2"/>
 					<input placeholder="year" class="form-control-static small" style="width:70px" type="number" name="year2"/><br/>
-					<input class="btn btn-primary" type="submit" name="submit" value="Filter" /><br/><br/>
+					<input class="btn btn-default" type="submit" name="submit" value="Filter" /><br/><br/>
 				</form>
 
 				<?php
@@ -326,7 +326,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 
 								if ($requestedDateTime > $rightNow) {
 									echo "<input type = 'hidden' name = 'appointment_id' value = '$appointment_id' />
-																<input class=\"btn btn-primary\" style='color:#0000FF' type='submit' name='status' value='accepted'/>";
+																<input class=\"btn btn-default\" style='color:#0000FF' type='submit' name='status' value='accepted'/>";
 								} else {
 									echo "Requested Date already past";
 								}
@@ -336,7 +336,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 								echo "		<div class='col-md-6'>
 															<form action='resched_appointment.php' method='post' name='resched_appointment'>
 																<input type='hidden' name='appointment_id' value='$appointment_id'/>
-																<input class=\"btn btn-primary\" style='color:#FF0000' type='submit' name='status' value='resched'/>
+																<input class=\"btn btn-default\" style='color:#FF0000' type='submit' name='status' value='resched'/>
 															</form>
 														</div>
 													</div>";
@@ -347,7 +347,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 							} else {
 								echo "	<form  action='' method='post' name='dashboard_faculty'>
 														<input type='hidden' name='appointment_id' value='$appointment_id'/> 
-														<input class=\"btn btn-primary\" style='color:#FF0000' type='submit' name='status' value='remove'/>
+														<input class=\"btn btn-default\" style='color:#FF0000' type='submit' name='status' value='remove'/>
 													</form> ";
 							}
 							echo "      </td>";
@@ -363,7 +363,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 				?>
 				<form class="form-horizontal" name="to_pdf" action="../to_pdf.php" method="post">
 					<input type="hidden" name="to_pdf" value="<?php echo '<br/><br/>Appointments <br/><br/>' . $to_pdf?>"/>
-					<input class="btn btn-primary" type="submit" name="submit" value="Generate PDF" /><br/><br/>
+					<input class="btn btn-default" type="submit" name="submit" value="Generate PDF" /><br/><br/>
 				</form>
 			</div>
 		</div>

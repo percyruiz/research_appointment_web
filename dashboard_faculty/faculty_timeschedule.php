@@ -54,7 +54,7 @@ include("auth.php");
 						<form name="set_schedule" action="" method="post">
 							<input class="form-control" type="time" name="scheduletimefr" placeholder="Start Time" required/> <br/>
 							<input class="form-control" type="time" name="scheduletimeto" placeholder="End Time" required/> <br/>
-							<input class="btn btn-primary" type="submit" name="submit" value="Set" /><br/><br/>
+							<input class="btn btn-default" type="submit" name="submit" value="Set" /><br/><br/>
 						</form>
 					</div>
 					</div>

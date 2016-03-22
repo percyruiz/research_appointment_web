@@ -7,7 +7,7 @@
 }
 
 body {
-    background-image: url(../../../image/bg.jpg);
+	background-color: #262626;
 }
 
 .container {
@@ -42,7 +42,7 @@ body {
 h1 {
     text-align: center;
     font-size: 175%;
-    color: #757575;
+    color: #262626;
     font-weight: 300;
 }
 
@@ -80,18 +80,18 @@ h1, input, .text-center {
     height: 50px;
     display: block;
     margin: 30px auto 30px;
-    color: white;
-    background-color: #3CC;
+    color: #262626;
+    background-color: #FFCC00;
     border: none;
-    -webkit-box-shadow: 0 5px 0 #2CADAD;
-    -moz-box-shadow: 0 5px 0 #2CADAD;
-    box-shadow: 0 5px 0 #2CADAD;
+    -webkit-box-shadow: 0 5px 0 #b2b200;
+    -moz-box-shadow: 0 5px 0 #b2b200;
+    box-shadow: 0 5px 0 #b2b200;
 }
 .inputButton:hover {
     top: 2px;
-    -webkit-box-shadow: 0 3px 0 #2CADAD;
-    -moz-box-shadow: 0 3px 0 #2CADAD;
-    box-shadow: 0 3px 0 #2CADAD;
+    -webkit-box-shadow: 0 3px 0 #b2b200;
+    -moz-box-shadow: 0 3px 0 #b2b200;
+    box-shadow: 0 3px 0 #b2b200;
 }
 .inputButton:active {
     top: 5px;

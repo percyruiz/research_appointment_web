@@ -23,7 +23,7 @@ Website: https://htmlcssphptutorial.wordpress.com
 				<input class="form-control" type="password" name="oldpassword" placeholder="Old Password" required /><br/>
 				<input class="form-control" type="password" name="newpassword" placeholder="New Password" required /><br/>
 				<input class="form-control" type="password" name="confirmpassword" placeholder="New Password" required /><br/>
-				<input class="btn btn-primary" name="submit" type="submit" value="Change Password" />
+				<input class="btn btn-default" name="submit" type="submit" value="Change Password" />
 			</form>
 		</div>
 	</div>
